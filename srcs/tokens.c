@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/05 09:23:31 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/06 22:59:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,13 @@ static void		sq_input(t_buf *buffer, t_input *input
 			if (!prompt(input, "> "))
 				exit_perror(EOTHER, "syntax error");
 		}
-		if (*(input->str) == '\'')
+		else if (*(input->str) == '\'')
 			break ;
-		ft_buf_add_char(buffer, *(input->str));
-		(input->str)++;
+		else
+		{
+			ft_buf_add_char(buffer, *(input->str));
+			(input->str)++;
+		}
 	}
 	ft_buf_add_char(buffer, *(input->str));
 	(input->str)++;
@@ -71,9 +74,18 @@ static void		bs_input(t_buf *buffer, t_input *input
 {
 	ft_buf_add_char(buffer, *(input->str));
 	(input->str)++;
-	ft_buf_add_char(buffer, *(input->str));
-	(input->str)++;
-	f_params[0] = 1;
+	if (!*(input->str))
+	{
+		free(input->save);
+		if (!prompt(input, "> "))
+			exit_perror(EOTHER, "syntax error");
+	}
+	if (*(input->str))
+	{
+		ft_buf_add_char(buffer, *(input->str));
+		(input->str)++;
+		f_params[0] = 1;
+	}
 }
 
 static void		dollar_input(t_buf *buffer, t_input *input
@@ -102,14 +114,20 @@ static void		dq_input(t_buf *buffer, t_input *input
 {
 	ft_buf_add_char(buffer, *(input->str));
 	(input->str)++;
-	while (*(input->str))
+	while (1)
 	{
-		if (*(input->str) == '\\')
+		if (!*(input->str))
+		{
+			free(input->save);
+			if (!prompt(input, "> "))
+				exit_perror(EOTHER, "syntax error");
+		}
+		if (*(input->str) == '"')
+			break ;
+		else if (*(input->str) == '\\')
 			bq_input(buffer, input, f_params);
 		else if (*(input->str) == '$')
 			dollar_input(buffer, input, f_params);
-		else if (*(input->str) == '"')
-			break ;
 		else
 		{
 			ft_buf_add_char(buffer, *(input->str));
@@ -123,13 +141,16 @@ static void		dq_input(t_buf *buffer, t_input *input
 
 static void		comment_input(t_input *input)
 {
-	(void)input;
+	while (*(input->str) && *(input->str) != '\n')
+		(input->str)++;
+	if (*(input->str))
+		(input->str)++;
 }
 
 static int		get_token_loop(t_list **tokens, t_input *input
 		, t_buf *buffer, unsigned char f_params[3])
 {
-	while (input->str)
+	while (*(input->str))
 	{
 		if (f_params[1])
 		{
@@ -169,12 +190,15 @@ static int		get_token_loop(t_list **tokens, t_input *input
 			f_params[1] = 1;
 			(input->str)++;
 		}
-		else if (*(input->str) == ' ' && (f_params[0] || f_params[1]))
+		else if (*(input->str) == ' ')
 		{
-			if (!insert_token(tokens, ft_buf_flush(buffer)))
-				return (return_perror(ENOMEM, NULL));
-			f_params[0] = 0;
-			f_params[1] = 0;
+			if (f_params[0] || f_params[1])
+			{
+				if (!insert_token(tokens, ft_buf_flush(buffer)))
+					return (return_perror(ENOMEM, NULL));
+				f_params[0] = 0;
+				f_params[1] = 0;
+			}
 			(input->str)++;
 		}
 		else if (f_params[0])

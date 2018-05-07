@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/05 09:20:56 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/05 12:10:56 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	prompt(t_input *input, char *prompt)
 		ft_putstr(prompt);
 	else
 		ft_putstr("21sh> ");
-	ret = get_next_line(1, &(input->str));
-	input->str = input->save;
+	ret = get_next_line(0, &(input->str));
+	input->save = input->str;
 	return (ret);
 }
 
