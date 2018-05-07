@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/06 22:59:05 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/07 13:13:22 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ static int is_op(t_buf *buffer, char c)
 	i = -1;
 	while (g_op_token[++i])
 	{
-		if (buffer && !ft_strncmp(g_op_token[i], buffer->buf, buffer->i)
+		if (*(buffer->buf) && !ft_strncmp(g_op_token[i], buffer->buf, buffer->i)
 				&& g_op_token[i][buffer->i] == c)
 			return (1);
-		else if (!buffer && c == g_op_token[i][0])
+		else if (!*(buffer->buf) && c == g_op_token[i][0])
 			return (1);
 	}
 	return (0);
@@ -181,7 +181,7 @@ static int		get_token_loop(t_list **tokens, t_input *input
 			dollar_input(buffer, input, f_params);
 		else if (*(input->str) == '`')
 			bq_input(buffer, input, f_params);
-		else if (is_op(NULL, *(input->str)) && f_params[0])
+		else if (is_op(buffer, *(input->str)) && f_params[0])
 		{
 			if (!insert_token(tokens, ft_buf_flush(buffer))
 					|| ft_buf_add_char(buffer, *(input->str)))
