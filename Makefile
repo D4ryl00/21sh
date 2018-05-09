@@ -6,13 +6,13 @@
 #    By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/05/04 14:48:48 by rbarbero         ###   ########.fr        #
+#    Updated: 2018/05/09 13:50:29 by amordret         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = 21sh
 
-SRCS = main.c error.c eval.c tokens.c
+SRCS = main.c error.c eval.c tokens.c termcaps.c prompt.c input.c
 SRCS_DIR = srcs/
 LIB_DIR = libft
 
@@ -31,7 +31,7 @@ debug: CFLAGS += -g
 debug: all
 
 $(NAME): $(OBJS) $(LIB_DIR)/libft.a
-	$(CC) -o $(NAME) $^
+	$(CC) -lncurses -o $(NAME) $^
 
 $(LIB_DIR)/libft.a:
 	$(MAKE) -C $(LIB_DIR)

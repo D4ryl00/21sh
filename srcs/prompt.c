@@ -1,41 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/09 14:03:49 by amordret         ###   ########.fr       */
+/*   Created: 2018/05/09 13:48:23 by amordret          #+#    #+#             */
+/*   Updated: 2018/05/09 13:49:27 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
-#include "libft.h"
 
-void    mainloop(t_input *input, char *promptstring, t_btree *ast)
+static void     sh_print_prompt(void)
 {
-    while (42)
+    char    *pwd;
+
+    if (!(((pwd = getenv("PWD")) == NULL)))
     {
-        prompt(promptstring);
-        if (read_input(input) > -1)
-        {
-            ast = eval(ast, input);
-        }
+        ft_putstr(PROMPT1);
+        ft_putstr(pwd);
     }
+    ft_putstr(PROMPT2);
+    ft_putstr(PROMPT3);
 }
 
-int     main(int argc, char **argv, char **environ)
+void            prompt(char *promptstring)
 {
-	t_btree	*ast;
-	t_input	input;
-
-	(void)argc;
-	(void)argv;
-	(void)environ;
-
-	ast = NULL;
-    ft_set_term();
-    mainloop(&input, NULL, ast);
-	return (0);
+	int	ret;
+	if (promptstring)
+		ft_putstr(prompt);
+	else
+		sh_print_prompt();
 }
