@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/09 13:48:04 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/09 14:18:10 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,10 @@ typedef struct          s_input
 
 extern char             *g_errors[];
 
+int                     newprompt(t_input *input, char *promptstring);
 void                    exit_perror(enum e_errno num, char *str);
 int                     return_perror(enum e_errno num, char *str);
-int                     prompt(char *promptstring);
+void                     prompt(char *promptstring);
 t_btree                 *eval(t_btree *ast, t_input *input);
 t_list                  *get_tokens(t_input *input);
 void                    token_free(void *content, size_t size);

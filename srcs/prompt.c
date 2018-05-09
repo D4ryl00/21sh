@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:48:23 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/09 13:49:27 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/09 14:18:50 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,8 @@ static void     sh_print_prompt(void)
 
 void            prompt(char *promptstring)
 {
-	int	ret;
 	if (promptstring)
-		ft_putstr(prompt);
+		ft_putstr(promptstring);
 	else
 		sh_print_prompt();
 }
