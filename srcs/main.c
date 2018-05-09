@@ -3,15 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/05 12:10:56 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/09 11:43:31 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 #include "libft.h"
+
+void    sh_print_prompt(void)
+{
+    char    *pwd;
+
+    if (!(((pwd = getenv("PWD")) == NULL)))
+    {
+        ft_putstr(PROMPT1);
+        ft_putstr(pwd);
+        //free(pwd);
+    }
+    ft_putstr(PROMPT2);
+    ft_putstr(PROMPT3);
+}
 
 int	prompt(t_input *input, char *prompt)
 {
@@ -19,7 +33,7 @@ int	prompt(t_input *input, char *prompt)
 	if (prompt)
 		ft_putstr(prompt);
 	else
-		ft_putstr("21sh> ");
+		sh_print_prompt();
 	ret = get_next_line(0, &(input->str));
 	input->save = input->str;
 	return (ret);
