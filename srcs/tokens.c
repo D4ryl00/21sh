@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/09 14:03:46 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/09 14:16:33 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void		sq_input(t_buf *buffer, t_input *input
 		if (!*(input->str))
 		{
 			free(input->save);
-			if (!mainloop(input, "> "))
+			if (!newprompt(input, "> "))
 				exit_perror(EOTHER, "syntax error");
 		}
 		else if (*(input->str) == '\'')
@@ -77,7 +77,7 @@ static void		bs_input(t_buf *buffer, t_input *input
 	if (!*(input->str))
 	{
 		free(input->save);
-		if (!mainloop(input, "> "))
+		if (!newprompt(input, "> "))
 			exit_perror(EOTHER, "syntax error");
 	}
 	if (*(input->str))
@@ -153,7 +153,7 @@ static void		dq_input(t_buf *buffer, t_input *input
 		if (!*(input->str))
 		{
 			free(input->save);
-			if (!mainloop(input, "> "))
+			if (!newprompt(input, "> "))
 				exit_perror(EOTHER, "syntax error");
 		}
 		if (*(input->str) == '"')
