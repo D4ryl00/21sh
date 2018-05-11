@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/11 16:40:15 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/11 17:00:35 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int     read_input(t_input *input)
             return (-1);
         if (ft_isprint(c) == 1 || c == '\n')
             termcaps_echoandputchar(c);
-        //else
-            //input_is_special_char(c); A CODER
+        else
+            input_is_special_char(c);
     }
     if (ft_buf_add_char(&buffer, '\0') == 0 ||
     !((input->str) = ft_buf_flush(&buffer)))

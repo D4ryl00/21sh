@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/11 16:31:17 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/11 17:00:28 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define ERR_TGETENT    "TGETENT() error. Check ENV. TERMCAPS OFF\n"
 # define ERR_TCGETATTR  "TCGETATTR() error. Check ENV. TERMCAPS OFF\n"
 # define ERR_TCSETATTR  "TCSETATTR() error. Check ENV. TERMCAPS OFF\n"
+# define ERR_TGETSTR    "TGETSTR() error. Check ENV. cursor move wont work \n"
 
 
 
@@ -52,6 +53,10 @@ typedef struct          s_termcaps
 {
     t_termios           current_termios;
     t_termios           backup_termios;
+    char                *cursorup;
+    char                *cursordown;
+    char                *cursorleft;
+    char                *cursorright;
 }                       t_termcaps;
 
 t_termcaps               g_termcaps;
@@ -113,5 +118,6 @@ void                    ft_set_term(void);
 int                     read_input(t_input *input);
 void                    termcaps_echo(char c);
 void                    termcaps_echoandputchar(char c);
+void                    input_is_special_char(char c);
 
 #endif

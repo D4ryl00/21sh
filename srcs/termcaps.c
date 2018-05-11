@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 10:16:11 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/11 16:31:06 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/11 17:00:02 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,15 @@ void    ft_set_term(void)
 	(g_termcaps.current_termios).c_cc[VTIME] = 0;
     if (tcsetattr(0, TCSANOW, &(g_termcaps.current_termios)) < 0)
         return (ft_putstr(ERR_TCSETATTR));
+}
+void    termcaps_strings(void)
+{
+    if ((g_termcaps.cursordown = tgetstr("do", NULL)) == NULL)
+        ft_putstr(ERR_TGETSTR);
+    if ((g_termcaps.cursorup = tgetstr("up", NULL)) == NULL)
+        ft_putstr(ERR_TGETSTR);
+    if ((g_termcaps.cursorright = tgetstr("nd", NULL)) == NULL)
+        ft_putstr(ERR_TGETSTR);
+    if ((g_termcaps.cursorleft = tgetstr("le", NULL)) == NULL)
+        ft_putstr(ERR_TGETSTR);
 }
