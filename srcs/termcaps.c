@@ -6,12 +6,29 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 10:16:11 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/09 13:18:10 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/11 16:31:06 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+
+void    termcaps_echo(char c)
+{
+    if (c == 0)
+        (g_termcaps.current_termios).c_lflag &= ~(ECHO);
+    else
+        (g_termcaps.current_termios).c_lflag &= (ECHO);
+     if (tcsetattr(0, TCSANOW, &(g_termcaps.current_termios)) < 0)
+        return (ft_putstr(ERR_TCSETATTR));
+}
+
+void    termcaps_echoandputchar(char c)
+{
+    termcaps_echo(1);
+    ft_putchar(c);
+    termcaps_echo(0);
+}
 
 void    ft_set_term(void)
 {
@@ -25,7 +42,7 @@ void    ft_set_term(void)
 	(tcgetattr(0, &(g_termcaps.backup_termios)) == -1))
         return (ft_putstr(ERR_TCGETATTR));
     (g_termcaps.current_termios).c_lflag &= ~(ICANON);
-	//(g_termcaps.current_termios).c_lflag &= ~(ECHO);
+	(g_termcaps.current_termios).c_lflag &= ~(ECHO);
 	(g_termcaps.current_termios).c_cc[VMIN] = 1;
 	(g_termcaps.current_termios).c_cc[VTIME] = 0;
     if (tcsetattr(0, TCSANOW, &(g_termcaps.current_termios)) < 0)
