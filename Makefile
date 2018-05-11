@@ -3,16 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+         #
+#    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/05/11 17:01:25 by amordret         ###   ########.fr        #
+#    Updated: 2018/05/11 17:54:42 by amordret         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = 21sh
 
-SRCS = main.c error.c eval.c tokens.c termcaps.c prompt.c input.c cursor.c
+SRCS = main.c error.c eval.c tokens.c termcaps.c prompt.c input.c \
+input_termcaps.c
 SRCS_DIR = srcs/
 LIB_DIR = libft
 
@@ -22,7 +23,7 @@ LHEADERS = $(HEADERS:%.h=$(HEADERS_DIR)%.h)
 
 OBJS = $(SRCS:%.c=%.o)
 
-CC = gcc
+CC = clang
 CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)

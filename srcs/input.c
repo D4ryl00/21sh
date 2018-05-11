@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/11 17:00:35 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/11 18:05:24 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,20 @@
 
 int     read_input(t_input *input)
 {
-    int     charsread;
-    char    c;
+    char    c[4];
     t_buf   buffer;
 
-    charsread = 1;
-    c = 'a';
+    c[0] = 0;
+    c[3] = 1;
     if (ft_buf_init(&buffer) == 0)
         return (-1);
-    while (charsread && c != '\n')
+    while (c[3] && c[0] != '\n')
     {
-        charsread = read(0, &c, 1);
-        if (ft_isprint(c) == 1 && (ft_buf_add_char(&buffer, c)) == 0)
+        c[3] = read(0, &c, 3);
+        if (ft_isprint(c[0]) == 1 && (ft_buf_add_char(&buffer, c[0])) == 0)
             return (-1);
-        if (ft_isprint(c) == 1 || c == '\n')
-            termcaps_echoandputchar(c);
+        if (ft_isprint(c[0]) == 1 || c[0] == '\n')
+            termcaps_echoandputchar(c[0]);
         else
             input_is_special_char(c);
     }
@@ -37,5 +36,5 @@ int     read_input(t_input *input)
         return (-1);
     input->save = &(input->str[0]);
     ft_buf_destroy(&buffer);
-    return (charsread);
+    return (c[3]);
 }

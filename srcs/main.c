@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/09 14:16:00 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/11 18:12:30 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int     main(int argc, char **argv, char **environ)
 	(void)environ;
     ast = NULL;
     ft_set_term();
-     while (42)
+    while (42)
     {
         newprompt(&input, NULL);
         ast = eval(ast, &input);

@@ -46,7 +46,7 @@ OBJS += $(SRCS_FT_VSDPRINTF:%.c=$(DIR_FT_VSDPRINTF)/%.o)
 HEADERS_DIR = includes/
 HEADERS = libft.h get_next_line.h ft_vsdprintf.h
 LHEADERS = $(HEADERS:%.h=$(HEADERS_DIR)%.h)
-CC = gcc
+CC = clang
 CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)

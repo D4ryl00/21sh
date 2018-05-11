@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/11 17:00:28 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/11 18:05:37 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,6 @@ void                    ft_set_term(void);
 int                     read_input(t_input *input);
 void                    termcaps_echo(char c);
 void                    termcaps_echoandputchar(char c);
-void                    input_is_special_char(char c);
+void                    input_is_special_char(char c[4]);
 
 #endif
