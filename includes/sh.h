@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/11 18:05:37 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/14 14:44:45 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,14 +110,14 @@ extern char             *g_errors[];
 int                     newprompt(t_input *input, char *promptstring);
 void                    exit_perror(enum e_errno num, char *str);
 int                     return_perror(enum e_errno num, char *str);
-void                     prompt(char *promptstring);
+void                    prompt(char *promptstring);
 t_btree                 *eval(t_btree *ast, t_input *input);
 t_list                  *get_tokens(t_input *input);
 void                    token_free(void *content, size_t size);
 void                    ft_set_term(void);
-int                     read_input(t_input *input);
+int                     read_input(t_input *input, int cursorpos);
 void                    termcaps_echo(char c);
 void                    termcaps_echoandputchar(char c);
-void                    input_is_special_char(char c[4]);
+void                    input_is_special_char(char c[4], int *cursorpos);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/11 18:05:24 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/14 14:44:27 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 
-int     read_input(t_input *input)
+int     read_input(t_input *input, int cursorpos)
 {
     char    c[4];
     t_buf   buffer;
@@ -24,12 +24,13 @@ int     read_input(t_input *input)
     while (c[3] && c[0] != '\n')
     {
         c[3] = read(0, &c, 3);
-        if (ft_isprint(c[0]) == 1 && (ft_buf_add_char(&buffer, c[0])) == 0)
+        if (ft_isprint(c[0]) == 1 && (cursorpos += 
+        ft_buf_add_char(&buffer, c[0])) == 0)
             return (-1);
         if (ft_isprint(c[0]) == 1 || c[0] == '\n')
             termcaps_echoandputchar(c[0]);
         else
-            input_is_special_char(c);
+            input_is_special_char(c, &cursorpos);
     }
     if (ft_buf_add_char(&buffer, '\0') == 0 ||
     !((input->str) = ft_buf_flush(&buffer)))
