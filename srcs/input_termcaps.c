@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/14 16:22:51 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/14 16:37:52 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ static void input_is_del(int *cursorpos, int bufferpos)
 {
         char c;
 
+        read(0, &c, 1);
         if (*cursorpos == bufferpos)
             return ;
         ft_putstr_fd(g_termcaps.delete, 0);
-        read(0, &c, 1);        
 }
 
 void    input_is_special_char(char c[4], int *cursorpos, int bufferpos,
