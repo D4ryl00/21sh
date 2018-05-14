@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/11 15:04:35 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/14 15:44:55 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,8 @@ static int is_op(t_buf *buffer, char c)
 	int	i;
 
 	i = -1;
-	while (g_op_token[++i] && i < 10)
+	while (*g_op_token[++i])
 	{
-        if (g_op_token[i] == '\0')
-            return (0);
 		if (*(buffer->buf) && !ft_strncmp(g_op_token[i], buffer->buf, buffer->i)
 				&& g_op_token[i][buffer->i] == c)
 			return (1);
