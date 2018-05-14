@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/14 15:42:53 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/14 16:41:38 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int                     read_input(t_input *input, int cursorpos);
 void                    termcaps_echo(char c);
 void                    termcaps_echoandputchar(char c);
 void                    input_is_special_char(char c[4], int *cursorpos,
-int bufferpos, char *czero);
+t_buf *buffer, char *czero);
 void                    termcaps_reset_term_and_exit(void);
 
 #endif
