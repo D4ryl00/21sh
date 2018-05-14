@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 12:13:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/04/25 10:23:47 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/14 14:38:47 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,8 @@ int				ft_buf_init(t_buf *buffer);
 char			*ft_buf_flush(t_buf *buffer);
 int				ft_buf_extend(t_buf *buffer);
 int				ft_buf_add_char(t_buf *buffer, char c);
+int				ft_buf_insert_char(t_buf *buffer, char c, int index);
+int				ft_buf_delete_char(t_buf *buffer, char c, int index);
 void			ft_buf_destroy(t_buf *buffer);
 
 #endif
