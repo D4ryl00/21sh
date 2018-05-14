@@ -6,13 +6,13 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/14 14:44:27 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/14 16:08:15 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 
-int     read_input(t_input *input, int cursorpos)
+int            read_input(t_input *input, int cursorpos)
 {
     char    c[4];
     t_buf   buffer;
@@ -24,13 +24,13 @@ int     read_input(t_input *input, int cursorpos)
     while (c[3] && c[0] != '\n')
     {
         c[3] = read(0, &c, 3);
-        if (ft_isprint(c[0]) == 1 && (cursorpos += 
-        ft_buf_add_char(&buffer, c[0])) == 0)
+        if (c[0] != 27 && ft_isprint(c[0]) == 1 && (cursorpos += 
+        ft_buf_insert_char(&buffer, c[0], cursorpos)) == 0)
             return (-1);
-        if (ft_isprint(c[0]) == 1 || c[0] == '\n')
+        if ((c[0] != 27 && c[0] != 0 && ft_isprint(c[0]) == 1) || c[0] == '\n')
             termcaps_echoandputchar(c[0]);
         else
-            input_is_special_char(c, &cursorpos);
+            input_is_special_char(c, &cursorpos, buffer.i, &c[0]);
     }
     if (ft_buf_add_char(&buffer, '\0') == 0 ||
     !((input->str) = ft_buf_flush(&buffer)))

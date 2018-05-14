@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 10:16:11 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/11 18:13:36 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/14 15:45:52 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,20 @@ void    termcaps_strings(void)
         ft_putstr(ERR_TGETSTR);
     if ((g_termcaps.cursorleft = tgetstr("le", NULL)) == NULL)
         ft_putstr(ERR_TGETSTR);
+    if ((g_termcaps.enterinsertmode = tgetstr("im", NULL)) == NULL)
+        ft_putstr(ERR_TGETSTR);
+    if ((g_termcaps.leaveinsertmode = tgetstr("ei", NULL)) == NULL)
+        ft_putstr(ERR_TGETSTR);
+    if ((g_termcaps.delete = tgetstr("dc", NULL)) == NULL)
+        ft_putstr(ERR_TGETSTR);
+}
+
+void    termcaps_reset_term_and_exit(void)
+{
+    if (tcsetattr(0, TCSANOW, &(g_termcaps.backup_termios)) < 0)
+        return (ft_putstr(ERR_TCSETATTR));
+    ft_putstr_fd(g_termcaps.leaveinsertmode, 0);
+    exit(0);
 }
 
 void    ft_set_term(void)
@@ -60,4 +74,5 @@ void    ft_set_term(void)
     if (tcsetattr(0, TCSANOW, &(g_termcaps.current_termios)) < 0)
         return (ft_putstr(ERR_TCSETATTR));
     termcaps_strings();
+    ft_putstr_fd(g_termcaps.enterinsertmode, 0);
 }

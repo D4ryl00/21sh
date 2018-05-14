@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/14 14:44:45 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/14 15:42:53 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ typedef struct          s_termcaps
     char                *cursordown;
     char                *cursorleft;
     char                *cursorright;
+    char                *enterinsertmode;
+    char                *leaveinsertmode;
+    char                *delete;
 }                       t_termcaps;
 
 t_termcaps               g_termcaps;
@@ -118,6 +121,8 @@ void                    ft_set_term(void);
 int                     read_input(t_input *input, int cursorpos);
 void                    termcaps_echo(char c);
 void                    termcaps_echoandputchar(char c);
-void                    input_is_special_char(char c[4], int *cursorpos);
+void                    input_is_special_char(char c[4], int *cursorpos,
+int bufferpos, char *czero);
+void                    termcaps_reset_term_and_exit(void);
 
 #endif

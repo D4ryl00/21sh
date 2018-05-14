@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/14 14:40:44 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/14 15:34:39 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ int     main(int argc, char **argv, char **environ)
         newprompt(&input, NULL);
         ast = eval(ast, &input);
     }
+    termcaps_reset_term_and_exit();
 	return (0);
 }
