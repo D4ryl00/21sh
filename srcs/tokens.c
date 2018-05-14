@@ -6,13 +6,15 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/14 15:44:55 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/14 18:58:54 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 #include "libft.h"
 #include <stdlib.h>
+
+static void		dollar_input(t_buf *buffer, t_input *input, unsigned char f_params[3]);
 
 static int	insert_token(t_list **tokens, char *token)
 {
@@ -88,48 +90,6 @@ static void		bs_input(t_buf *buffer, t_input *input
 	}
 }
 
-static void		get_token_expansion(t_buf *buffer, t_input *input
-		, unsigned char f_params[3], char close)
-{
-	(void)buffer;
-	(void)input;
-	(void)f_params;
-	(void)close;
-}
-
-static void		get_token_arithmetic(t_buf *buffer, t_input *input
-		, unsigned char f_params[3])
-{
-	(void)buffer;
-	(void)input;
-	(void)f_params;
-	(void)close;
-}
-
-static void		get_token_substitution(t_buf *buffer, t_input *input
-		, unsigned char f_params[3], char close)
-{
-	(void)buffer;
-	(void)input;
-	(void)f_params;
-	(void)close;
-}
-
-static void		dollar_input(t_buf *buffer, t_input *input
-		, unsigned char f_params[3])
-{
-	ft_buf_add_char(buffer, *(input->str));
-	(input->str)++;
-	if (*(input->str) == '{')
-		get_token_expansion(buffer, input, f_params, '}');
-	else if (*(input->str) == '(' && input->str[1] == '(')
-		get_token_arithmetic(buffer, input, f_params);
-	else if (*(input->str) == '(')
-		get_token_substitution(buffer, input, f_params, ')');
-	else
-		get_token_expansion(buffer, input, f_params, '\0');
-}
-
 static void		bq_input(t_buf *buffer, t_input *input
 		, unsigned char f_params[3])
 {
@@ -179,6 +139,66 @@ static void		comment_input(t_input *input)
 		(input->str)++;
 	if (*(input->str))
 		(input->str)++;
+}
+
+static void		get_token_expansion(t_buf *buffer, t_input *input
+		, unsigned char f_params[3])
+{
+	while (42)
+	{
+		if (!*(input->str))
+		{
+			free(input->save);
+			if (!newprompt(input, "> "))
+				exit_perror(EOTHER, "syntax error");
+		}
+		if (*(input->str) == '}')
+			break ;
+		else if (*(input->str) == '\'')
+			sq_input(buffer, input, f_params);
+		else if (*(input->str) == '"')
+			dq_input(buffer, input, f_params);
+		else if (*(input->str) == '\\')
+			bq_input(buffer, input, f_params);
+		else
+		{
+			ft_buf_add_char(buffer, *(input->str));
+			(input->str)++;
+		}
+	}
+	ft_buf_add_char(buffer, *(input->str));
+	(input->str)++;
+}
+
+static void		get_token_arithmetic(t_buf *buffer, t_input *input
+		, unsigned char f_params[3])
+{
+	(void)buffer;
+	(void)input;
+	(void)f_params;
+}
+
+static void		get_token_substitution(t_buf *buffer, t_input *input
+		, unsigned char f_params[3], char close)
+{
+	(void)buffer;
+	(void)input;
+	(void)f_params;
+	(void)close;
+}
+
+static void		dollar_input(t_buf *buffer, t_input *input
+		, unsigned char f_params[3])
+{
+	ft_buf_add_char(buffer, *(input->str));
+	(input->str)++;
+	if (*(input->str) == '{')
+		get_token_expansion(buffer, input, f_params);
+	else if (*(input->str) == '(' && input->str[1] == '(')
+		get_token_arithmetic(buffer, input, f_params);
+	else if (*(input->str) == '(')
+		get_token_substitution(buffer, input, f_params, ')');
+	f_params[0] = 1;
 }
 
 static int		get_token_loop(t_list **tokens, t_input *input
