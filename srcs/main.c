@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/11 18:12:30 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/14 14:40:44 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int    newprompt(t_input *input, char *promptstring)
 {
     prompt(promptstring);
-    return (read_input(input));
+    return (read_input(input, 0));
 }
 
 int     main(int argc, char **argv, char **environ)
