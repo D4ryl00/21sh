@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/14 18:58:54 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/15 18:25:40 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ static void		dq_input(t_buf *buffer, t_input *input
 		if (*(input->str) == '"')
 			break ;
 		else if (*(input->str) == '\\')
-			bq_input(buffer, input, f_params);
+			bs_input(buffer, input, f_params);
 		else if (*(input->str) == '$')
 			dollar_input(buffer, input, f_params);
 		else
@@ -159,7 +159,7 @@ static void		get_token_expansion(t_buf *buffer, t_input *input
 		else if (*(input->str) == '"')
 			dq_input(buffer, input, f_params);
 		else if (*(input->str) == '\\')
-			bq_input(buffer, input, f_params);
+			bs_input(buffer, input, f_params);
 		else
 		{
 			ft_buf_add_char(buffer, *(input->str));
@@ -181,10 +181,34 @@ static void		get_token_arithmetic(t_buf *buffer, t_input *input
 static void		get_token_substitution(t_buf *buffer, t_input *input
 		, unsigned char f_params[3], char close)
 {
-	(void)buffer;
-	(void)input;
-	(void)f_params;
-	(void)close;
+	while (42)
+	{
+		if (!*(input->str))
+		{
+			free(input->save);
+			if (!newprompt(input, "> "))
+				exit_perror(EOTHER, "syntax error");
+		}
+		if (*(input->str) == close)
+			break ;
+		else if (*(input->str) == '\'')
+			sq_input(buffer, input, f_params);
+		else if (*(input->str) == '"')
+			dq_input(buffer, input, f_params);
+		else if (*(input->str) == '\\')
+			bs_input(buffer, input, f_params);
+		else if (*(input->str) == '$')
+			dollar_input(buffer, input, f_params);
+		else if (*(input->str) == '`')
+			bq_input(buffer, input, f_params);
+		else
+		{
+			ft_buf_add_char(buffer, *(input->str));
+			(input->str)++;
+		}
+	}
+	ft_buf_add_char(buffer, *(input->str));
+	(input->str)++;
 }
 
 static void		dollar_input(t_buf *buffer, t_input *input
