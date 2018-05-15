@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/14 16:56:30 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/15 17:54:55 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,18 @@ static void input_is_backspace(int *cursorpos, t_buf *buffer)
     ft_putstr_fd(g_termcaps.delete, 0);
 }
 
-void    input_is_special_char(char c[4], int *cursorpos, t_buf *buffer,
-char *czero)
+void    input_is_special_char(t_read_input *s)
 {
-    if (c[0] == 3)
+    if (s->c[0] == 3)
         termcaps_reset_term_and_exit();
-    if (c[0] == 27 && c[1] == 91 && c[2] == 68)
-        return (input_is_left(cursorpos));
-    if (c[0] == 27 && c[1] == 91 && c[2] == 67)
-        return (input_is_right(cursorpos, buffer->i));
-    if (c[0] == 27 && c[1] == 91 && c[2] == 51)
-        return (input_is_del(cursorpos, buffer));
-    if (c[0] == 127)
-        return (input_is_backspace(cursorpos, buffer));
+    if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 68)
+        return (input_is_left(&(s->cursorpos)));
+    if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 67)
+        return (input_is_right(&(s->cursorpos), (s->buffer.i)));
+    if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 51)
+        return (input_is_del(&(s->cursorpos), &(s->buffer)));
+    if (s->c[0] == 127)
+        return (input_is_backspace(&(s->cursorpos), &(s->buffer)));
     /*if (c[0] == 27 && c[1] == 91 && c[2] == 65)
         return (input_is_up(cursorpos));
     if (c[0] == 27 && c[1] == 91 && c[2] == 65)
@@ -68,5 +67,5 @@ char *czero)
     ft_putnbr(c[1]);
     ft_putchar(' ');    
     ft_putnbr(c[2]);*/
-    *czero = 0;
+    s->c[0] = 0;
 }
