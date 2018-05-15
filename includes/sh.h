@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/15 18:06:34 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/15 18:25:28 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@
 # define ERR_TCSETATTR  "\nTCSETATTR() error. Check ENV. TERMCAPS OFF\n"
 # define ERR_TGETSTR    "\nTGETSTR() error. Check ENV. cursor move wont work \n"
 # define ERR_READ       "\nread() error. Check ~/.21sh. History wont work \n"
-
+# define ERR_CLOSE		"\nclose() error :S. crap...\n"
+# define ERR_COM_HIST	"\nError while fetching command history -> Wont work \n"
 enum							e_type
 {
 	WORD,
@@ -59,7 +60,7 @@ typedef struct					s_read_input
 	char						c[4];
 	t_buf						buffer;
 	int							cursorpos;
-	t_command_history			**command_hist;
+	t_command_history			**first_command_hist;
 	int							fd_history;
 
 }								t_read_input;

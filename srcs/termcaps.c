@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 10:16:11 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/14 15:45:52 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/15 18:19:00 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,6 @@ void    termcaps_echo(char c)
         (g_termcaps.current_termios).c_lflag &= (ECHO);
      if (tcsetattr(0, TCSANOW, &(g_termcaps.current_termios)) < 0)
         return (ft_putstr(ERR_TCSETATTR));
-}
-
-void    termcaps_echoandputchar(char c)
-{
-    termcaps_echo(1);
-    ft_putchar(c);
-    termcaps_echo(0);
 }
 
 void    termcaps_strings(void)
