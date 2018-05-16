@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/16 13:01:55 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/16 13:07:41 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ typedef struct					s_token
 	char						*content;
 }								t_token;
 
-extern char						*g_op_token [];
+extern char						*g_op_token[];
 
 enum							e_errno
 {

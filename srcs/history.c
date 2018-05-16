@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 11:49:18 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/15 18:30:22 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/16 12:54:57 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	add_to_command_hist(t_command_history **first_command_hist, char *line)
 
 	if ((new_element = malloc(sizeof(*new_element))) == NULL)
 		return (termcaps_echoandputstr(ERR_COM_HIST));
-	
 }
 
 void	fill_command_hist(t_read_input *s)

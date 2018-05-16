@@ -6,66 +6,66 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/15 18:19:01 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/16 12:54:21 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 
-static void input_is_left(int *cursorpos)
+static void	input_is_left(int *cursorpos)
 {
-    if (*cursorpos == 0)
-            return ;
-    ft_putstr_fd(g_termcaps.cursorleft, 0);
-        (*cursorpos)--;
+	if (*cursorpos == 0)
+		return ;
+	ft_putstr_fd(g_termcaps.cursorleft, 0);
+	(*cursorpos)--;
 }
 
-static void input_is_right(int *cursorpos, int bufferpos)
+static void	input_is_right(int *cursorpos, int bufferpos)
 {
-        if (*cursorpos == bufferpos)
-            return ;
-        ft_putstr_fd(g_termcaps.cursorright, 0);
-        (*cursorpos)++;
+	if (*cursorpos == bufferpos)
+		return ;
+	ft_putstr_fd(g_termcaps.cursorright, 0);
+	(*cursorpos)++;
 }
 
-static void input_is_del(int *cursorpos, t_buf *buffer)
+static void	input_is_del(int *cursorpos, t_buf *buffer)
 {
-        char c;
+	char c;
 
-        read(0, &c, 1);
-        if (*cursorpos == buffer->i)
-            return ;
-        ft_buf_delete_char(buffer, *(cursorpos));
-        ft_putstr_fd(g_termcaps.delete, 0);
+	read(0, &c, 1);
+	if (*cursorpos == buffer->i)
+		return ;
+	ft_buf_delete_char(buffer, *(cursorpos));
+	ft_putstr_fd(g_termcaps.delete, 0);
 }
 
-static void input_is_backspace(int *cursorpos, t_buf *buffer)
+static void	input_is_backspace(int *cursorpos, t_buf *buffer)
 {
-    input_is_left(cursorpos);
-    ft_buf_delete_char(buffer, *(cursorpos));
-    ft_putstr_fd(g_termcaps.delete, 0);
+	input_is_left(cursorpos);
+	ft_buf_delete_char(buffer, *(cursorpos));
+	ft_putstr_fd(g_termcaps.delete, 0);
 }
 
-void    input_is_special_char(t_read_input *s)
+void		input_is_special_char(t_read_input *s)
 {
-    if (s->c[0] == 3)
-        termcaps_reset_term_and_exit();
-    if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 68)
-        return (input_is_left(&(s->cursorpos)));
-    if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 67)
-        return (input_is_right(&(s->cursorpos), (s->buffer.i)));
-    if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 51)
-        return (input_is_del(&(s->cursorpos), &(s->buffer)));
-    if (s->c[0] == 127)
-        return (input_is_backspace(&(s->cursorpos), &(s->buffer)));
-    /*if (c[0] == 27 && c[1] == 91 && c[2] == 65)
-        return (input_is_up(cursorpos));
-    if (c[0] == 27 && c[1] == 91 && c[2] == 65)
-        return (input_is_down(cursorpos));
-    ft_putnbr(c[0]);
-    ft_putchar(' ');
-    ft_putnbr(c[1]);
-    ft_putchar(' ');    
-    ft_putnbr(c[2]);*/
-    s->c[0] = 0;
+	if (s->c[0] == 3)
+		termcaps_reset_term_and_exit();
+	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 68)
+		return (input_is_left(&(s->cursorpos)));
+	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 67)
+		return (input_is_right(&(s->cursorpos), (s->buffer.i)));
+	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 51)
+		return (input_is_del(&(s->cursorpos), &(s->buffer)));
+	if (s->c[0] == 127)
+		return (input_is_backspace(&(s->cursorpos), &(s->buffer)));
+	/*if (c[0] == 27 && c[1] == 91 && c[2] == 65)
+		return (input_is_up(cursorpos));
+	if (c[0] == 27 && c[1] == 91 && c[2] == 65)
+		return (input_is_down(cursorpos));
+	ft_putnbr(c[0]);
+	ft_putchar(' ');
+	ft_putnbr(c[1]);
+	ft_putchar(' ');
+	ft_putnbr(c[2]);*/
+	s->c[0] = 0;
 }
