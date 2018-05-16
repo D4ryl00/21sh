@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/15 18:25:40 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/16 10:44:47 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,9 +173,33 @@ static void		get_token_expansion(t_buf *buffer, t_input *input
 static void		get_token_arithmetic(t_buf *buffer, t_input *input
 		, unsigned char f_params[3])
 {
-	(void)buffer;
-	(void)input;
-	(void)f_params;
+	int	parenthesis;
+
+	parenthesis = 2;
+	while (42)
+	{
+		if (!*(input->str))
+		{
+			free(input->save);
+			if (!newprompt(input, "> "))
+				exit_perror(EOTHER, "syntax error");
+		}
+		if (*(input->str) == ')' && !(--parenthesis))
+			break ;
+		else if (*(input->str) == '\'')
+			sq_input(buffer, input, f_params);
+		else if (*(input->str) == '"')
+			dq_input(buffer, input, f_params);
+		else if (*(input->str) == '\\')
+			bs_input(buffer, input, f_params);
+		else
+		{
+			ft_buf_add_char(buffer, *(input->str));
+			(input->str)++;
+		}
+	}
+	ft_buf_add_char(buffer, *(input->str));
+	(input->str)++;
 }
 
 static void		get_token_substitution(t_buf *buffer, t_input *input

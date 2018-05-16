@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/15 18:25:28 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/16 13:01:55 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,9 @@
 # include <signal.h>
 # include <sys/ioctl.h>
 
-# define BUF_SIZ		10
 # define PROMPT1		"\033[0;30;44m"
 # define PROMPT2		"\033[0;33m $>"
 # define PROMPT3		"\033[0m "
-
 
 # define ERR_GETENV		"\nGETENV() error. Check ENV. TERMCAPS OFF\n"
 # define ERR_TGETENT    "\nTGETENT() error. Check ENV. TERMCAPS OFF\n"
@@ -39,14 +37,7 @@
 # define ERR_READ       "\nread() error. Check ~/.21sh. History wont work \n"
 # define ERR_CLOSE		"\nclose() error :S. crap...\n"
 # define ERR_COM_HIST	"\nError while fetching command history -> Wont work \n"
-enum							e_type
-{
-	WORD,
-	ASSIGNMENT_WORD,
-	NAME,
-	NEWLINE,
-	IO_NUMBER
-};
+
 typedef struct termios			t_termios;
 
 typedef struct					s_command_history
@@ -65,8 +56,6 @@ typedef struct					s_read_input
 
 }								t_read_input;
 
-
-
 typedef struct					s_termcaps
 {
 	t_termios					current_termios;
@@ -82,14 +71,9 @@ typedef struct					s_termcaps
 
 t_termcaps						g_termcaps;
 
-typedef struct					s_token
+enum							e_token
 {
-	enum e_type					type;
-	char						*content;
-}								t_token;
-
-enum							e_op_type
-{
+	OPERATOR,
 	AND_IF,
 	O_RIF,
 	DSEMI,
@@ -99,15 +83,18 @@ enum							e_op_type
 	GREATAND,
 	LESSGREAT,
 	DLESSDASH,
-	CLOBBER
+	CLOBBER,
+	IO_NUMBER,
+	WORD,
+	ASSIGNMENT_WORD,
+	NAME,
+	NEWLINE
 };
-
-typedef struct					s_op_token
+typedef struct					s_token
 {
-	enum e_op_type				type;
+	enum e_token				type;
 	char						*content;
-	void						*op;
-}								t_op_token;
+}								t_token;
 
 extern char						*g_op_token [];
 
