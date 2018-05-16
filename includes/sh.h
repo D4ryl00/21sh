@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/15 18:25:28 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/16 12:56:23 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@
 # define PROMPT1		"\033[0;30;44m"
 # define PROMPT2		"\033[0;33m $>"
 # define PROMPT3		"\033[0m "
-
-
 # define ERR_GETENV		"\nGETENV() error. Check ENV. TERMCAPS OFF\n"
 # define ERR_TGETENT    "\nTGETENT() error. Check ENV. TERMCAPS OFF\n"
 # define ERR_TCGETATTR  "\nTCGETATTR() error. Check ENV. TERMCAPS OFF\n"
@@ -39,6 +37,7 @@
 # define ERR_READ       "\nread() error. Check ~/.21sh. History wont work \n"
 # define ERR_CLOSE		"\nclose() error :S. crap...\n"
 # define ERR_COM_HIST	"\nError while fetching command history -> Wont work \n"
+
 enum							e_type
 {
 	WORD,
@@ -64,8 +63,6 @@ typedef struct					s_read_input
 	int							fd_history;
 
 }								t_read_input;
-
-
 
 typedef struct					s_termcaps
 {
@@ -109,7 +106,7 @@ typedef struct					s_op_token
 	void						*op;
 }								t_op_token;
 
-extern char						*g_op_token [];
+extern char						*g_op_token[];
 
 enum							e_errno
 {

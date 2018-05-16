@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/16 10:48:41 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/16 12:53:58 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	set_t_read_input(t_read_input *s)
 	s->first_command_hist = NULL;
 }
 
-int	read_input(t_input *input)
+int			read_input(t_input *input)
 {
 	t_read_input	s;
 
@@ -30,7 +30,7 @@ int	read_input(t_input *input)
 	while (s.c[3] && s.c[0] != '\n')
 	{
 		s.c[3] = read(0, &(s.c), 3);
-		if (s.c[0] != 27 && ft_isprint(s.c[0]) == 1 && (s.cursorpos += 
+		if (s.c[0] != 27 && ft_isprint(s.c[0]) == 1 && (s.cursorpos +=
 		ft_buf_insert_char(&(s.buffer), s.c[0], s.cursorpos)) == 0)
 			return (-1);
 		if ((s.c[0] != 27 && s.c[0] != 0 && ft_isprint(s.c[0]) == 1) ||
