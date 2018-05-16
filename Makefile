@@ -6,14 +6,14 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/05/15 18:16:52 by amordret         ###   ########.fr        #
+#    Updated: 2018/05/16 13:19:52 by amordret         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = 21sh
 
 SRCS = main.c error.c eval.c tokens.c termcaps.c prompt.c input.c \
-input_termcaps.c misctools.c
+input_termcaps.c input_termcaps2.c misctools.c history.c
 SRCS_DIR = srcs/
 LIB_DIR = libft
 
