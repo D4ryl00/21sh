@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/16 13:20:26 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/17 16:59:57 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ typedef struct					s_read_input
 	int							cursorpos;
 	t_command_history			**first_command_hist;
 	int							fd_history;
+	int							charsinline;
+	int							historynb;
 
 }								t_read_input;
 
@@ -67,6 +69,9 @@ typedef struct					s_termcaps
 	char						*enterinsertmode;
 	char						*leaveinsertmode;
 	char						*delete;
+	char						*deleteline;
+	char						*returnhome;
+	int							writtenchars;
 }								t_termcaps;
 
 t_termcaps						g_termcaps;
@@ -133,4 +138,8 @@ void							input_is_backspace(int *cursorpos,
 								t_buf *buffer);
 void							input_is_up(t_read_input *s);
 void							fill_command_hist(t_read_input *s);
+int								termcaps_clearline(t_read_input *s);
+void							add_to_command_hist(
+								t_command_history **first_command_hist,
+								char *line);
 #endif

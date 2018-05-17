@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/16 13:18:42 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/17 14:16:00 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static void	input_is_left(int *cursorpos)
 	(*cursorpos)--;
 }
 
-static void	input_is_right(int *cursorpos, int bufferpos)
+static void	input_is_right(int *cursorpos)
 {
-	if (*cursorpos == bufferpos)
+	if (*cursorpos >= g_termcaps.writtenchars)
 		return ;
 	ft_putstr_fd(g_termcaps.cursorright, 0);
 	(*cursorpos)++;
@@ -53,7 +53,7 @@ void		input_is_special_char(t_read_input *s)
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 68)
 		return (input_is_left(&(s->cursorpos)));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 67)
-		return (input_is_right(&(s->cursorpos), (s->buffer.i)));
+		return (input_is_right(&(s->cursorpos)));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 51)
 		return (input_is_del(&(s->cursorpos), &(s->buffer)));
 	if (s->c[0] == 127)

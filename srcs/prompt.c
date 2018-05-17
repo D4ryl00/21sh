@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:48:23 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/16 11:57:44 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/17 14:08:52 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	sh_print_prompt(void)
 	}
 	ft_putstr(PROMPT2);
 	ft_putstr(PROMPT3);
+	g_termcaps.writtenchars = 0;
 }
 
 void		prompt(char *promptstring)
