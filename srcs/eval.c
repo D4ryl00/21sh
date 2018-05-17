@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/11 14:30:56 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/17 14:40:40 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ char			*g_op_token [] =
 
 t_btree	*eval(t_btree *ast, t_input *input)
 {
-	t_list	*tokens;
+	t_list			*tokens;
+	enum e_token	type;
 
 	if (!(tokens = get_tokens(input)))
 	{
@@ -41,7 +42,8 @@ t_btree	*eval(t_btree *ast, t_input *input)
 	//free(input);
 	while (tokens)
 	{
-		ft_putstr(tokens->content);
+		type = ((t_token *)tokens->content)->type;
+		ft_printf("%s(%s)", ((t_token *)tokens->content)->content, type == WORD ? "WORD" : "OPERATOR");
 		if (tokens->next)
 			ft_putstr(" | ");
 		ft_lstdelnode(&tokens, tokens, token_free);

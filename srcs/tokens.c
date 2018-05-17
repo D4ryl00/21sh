@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/16 10:44:47 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/17 17:02:36 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,43 @@
 
 static void		dollar_input(t_buf *buffer, t_input *input, unsigned char f_params[3]);
 
-static int	insert_token(t_list **tokens, char *token)
+static int	insert_token(t_list **tokens, char *token
+		, unsigned char f_params[3])
 {
 	t_list	*tmp;
 
 	if (!token || !(tmp = (t_list *)malloc(sizeof(t_list))))
 		return (return_perror(ENOMEM, NULL));
-	tmp->content = (void *)token;
-	tmp->content_size = ft_strlen(token) + 1;
+	if (!(tmp->content = (t_token *)malloc(sizeof(t_token))))
+		return (return_perror(ENOMEM, NULL));
+	((t_token *)tmp->content)->content = token;
+	((t_token *)tmp->content)->type = f_params[0] ? WORD : OPERATOR;
+	tmp->content_size = sizeof(t_token);
 	tmp->next = NULL;
 	ft_lstaddback(tokens, tmp);
 	return (1);
 }
 
-static int is_op(t_buf *buffer, char c)
+static int is_op(t_buf *buffer, char c, unsigned char f_params[3])
 {
 	int	i;
 
 	i = -1;
 	while (*g_op_token[++i])
 	{
-		if (*(buffer->buf) && !ft_strncmp(g_op_token[i], buffer->buf, buffer->i)
-				&& g_op_token[i][buffer->i] == c)
-			return (1);
-		else if (!*(buffer->buf) && c == g_op_token[i][0])
-			return (1);
+		if (f_params[0])
+		{
+			if (c == g_op_token[i][0])
+				return (1);
+		}
+		else
+		{
+			if (buffer->i && !ft_strncmp(g_op_token[i], buffer->buf, buffer->i)
+					&& g_op_token[i][buffer->i] == c)
+				return (1);
+			else if (!(buffer->i) && c == g_op_token[i][0])
+				return (1);
+		}
 	}
 	return (0);
 }
@@ -256,21 +268,15 @@ static int		get_token_loop(t_list **tokens, t_input *input
 	{
 		if (f_params[1])
 		{
-			if (is_op(buffer, *(input->str)))
+			if (!is_op(buffer, *(input->str), f_params))
 			{
-				
-				if (!ft_buf_add_char(buffer, *(input->str)))
-					return (return_perror(ENOMEM, NULL));
-			}
-			else
-			{
-				if (!insert_token(tokens, ft_buf_flush(buffer))
-						|| ft_buf_add_char(buffer, *(input->str)))
+				if (!insert_token(tokens, ft_buf_flush(buffer), f_params))
 					return (return_perror(ENOMEM, NULL));
 				f_params[0] = 1;
 				f_params[1] = 0;
-				(input->str)++;
 			}
+			if (!ft_buf_add_char(buffer, *(input->str)))
+				return (return_perror(ENOMEM, NULL));
 			(input->str)++;
 		}
 		else if (*(input->str) == '\'')
@@ -283,10 +289,12 @@ static int		get_token_loop(t_list **tokens, t_input *input
 			dollar_input(buffer, input, f_params);
 		else if (*(input->str) == '`')
 			get_token_substitution(buffer, input, f_params, '`');
-		else if (is_op(buffer, *(input->str)) && f_params[0])
+		else if (is_op(buffer, *(input->str), f_params))
 		{
-			if (!insert_token(tokens, ft_buf_flush(buffer))
-					|| ft_buf_add_char(buffer, *(input->str)))
+			if (f_params[0]
+					&& !insert_token(tokens, ft_buf_flush(buffer), f_params))
+					return (return_perror(ENOMEM, NULL));
+			if (!ft_buf_add_char(buffer, *(input->str)))
 				return (return_perror(ENOMEM, NULL));
 			f_params[0] = 0;
 			f_params[1] = 1;
@@ -296,7 +304,7 @@ static int		get_token_loop(t_list **tokens, t_input *input
 		{
 			if (f_params[0] || f_params[1])
 			{
-				if (!insert_token(tokens, ft_buf_flush(buffer)))
+				if (!insert_token(tokens, ft_buf_flush(buffer), f_params))
 					return (return_perror(ENOMEM, NULL));
 				f_params[0] = 0;
 				f_params[1] = 0;
@@ -321,7 +329,7 @@ static int		get_token_loop(t_list **tokens, t_input *input
 	}
 	if (f_params[0] || f_params[1])
 	{
-		if (!insert_token(tokens, ft_buf_flush(buffer)))
+		if (!insert_token(tokens, ft_buf_flush(buffer), f_params))
 				return (return_perror(ENOMEM, NULL));
 	}
 	return (1);
