@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/17 17:02:36 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/18 10:42:51 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 #include "libft.h"
 #include <stdlib.h>
 
-static void		dollar_input(t_buf *buffer, t_input *input, unsigned char f_params[3]);
+static void		dollar_input(t_buf *buffer, t_input *input, unsigned char f_params[2]);
 
 static int	insert_token(t_list **tokens, char *token
-		, unsigned char f_params[3])
+		, unsigned char f_params[2])
 {
 	t_list	*tmp;
 
@@ -30,10 +30,10 @@ static int	insert_token(t_list **tokens, char *token
 	tmp->content_size = sizeof(t_token);
 	tmp->next = NULL;
 	ft_lstaddback(tokens, tmp);
-	return (1);
+	return (0);
 }
 
-static int is_op(t_buf *buffer, char c, unsigned char f_params[3])
+static int is_op(t_buf *buffer, char c, unsigned char f_params[2])
 {
 	int	i;
 
@@ -58,7 +58,7 @@ static int is_op(t_buf *buffer, char c, unsigned char f_params[3])
 }
 
 static void		sq_input(t_buf *buffer, t_input *input
-		, unsigned char f_params[3])
+		, unsigned char f_params[2])
 {
 	ft_buf_add_char(buffer, *(input->str));
 	(input->str)++;
@@ -84,7 +84,7 @@ static void		sq_input(t_buf *buffer, t_input *input
 }
 
 static void		bs_input(t_buf *buffer, t_input *input
-		, unsigned char f_params[3])
+		, unsigned char f_params[2])
 {
 	ft_buf_add_char(buffer, *(input->str));
 	(input->str)++;
@@ -103,7 +103,7 @@ static void		bs_input(t_buf *buffer, t_input *input
 }
 
 static void		bq_input(t_buf *buffer, t_input *input
-		, unsigned char f_params[3])
+		, unsigned char f_params[2])
 {
 	ft_buf_add_char(buffer, *(input->str));
 	(input->str)++;
@@ -116,7 +116,7 @@ static void		bq_input(t_buf *buffer, t_input *input
 }
 
 static void		dq_input(t_buf *buffer, t_input *input
-		, unsigned char f_params[3])
+		, unsigned char f_params[2])
 {
 	ft_buf_add_char(buffer, *(input->str));
 	(input->str)++;
@@ -154,7 +154,7 @@ static void		comment_input(t_input *input)
 }
 
 static void		get_token_expansion(t_buf *buffer, t_input *input
-		, unsigned char f_params[3])
+		, unsigned char f_params[2])
 {
 	while (42)
 	{
@@ -183,7 +183,7 @@ static void		get_token_expansion(t_buf *buffer, t_input *input
 }
 
 static void		get_token_arithmetic(t_buf *buffer, t_input *input
-		, unsigned char f_params[3])
+		, unsigned char f_params[2])
 {
 	int	parenthesis;
 
@@ -215,7 +215,7 @@ static void		get_token_arithmetic(t_buf *buffer, t_input *input
 }
 
 static void		get_token_substitution(t_buf *buffer, t_input *input
-		, unsigned char f_params[3], char close)
+		, unsigned char f_params[2], char close)
 {
 	while (42)
 	{
@@ -248,7 +248,7 @@ static void		get_token_substitution(t_buf *buffer, t_input *input
 }
 
 static void		dollar_input(t_buf *buffer, t_input *input
-		, unsigned char f_params[3])
+		, unsigned char f_params[2])
 {
 	ft_buf_add_char(buffer, *(input->str));
 	(input->str)++;
@@ -261,24 +261,29 @@ static void		dollar_input(t_buf *buffer, t_input *input
 	f_params[0] = 1;
 }
 
+int	operator_case(t_list **tokens, t_input *input, t_buf *buffer,
+		unsigned char f_params[2])
+{
+	if (!is_op(buffer, *(input->str), f_params))
+	{
+		if (insert_token(tokens, ft_buf_flush(buffer), f_params) == -1)
+			return (return_perror(ENOMEM, NULL));
+		f_params[0] = 1;
+		f_params[1] = 0;
+	}
+	if (ft_buf_add_char(buffer, *(input->str)) == -1)
+		return (return_perror(ENOMEM, NULL));
+	(input->str)++;
+	return (0);
+}
+
 static int		get_token_loop(t_list **tokens, t_input *input
-		, t_buf *buffer, unsigned char f_params[3])
+		, t_buf *buffer, unsigned char f_params[2])
 {
 	while (*(input->str))
 	{
 		if (f_params[1])
-		{
-			if (!is_op(buffer, *(input->str), f_params))
-			{
-				if (!insert_token(tokens, ft_buf_flush(buffer), f_params))
-					return (return_perror(ENOMEM, NULL));
-				f_params[0] = 1;
-				f_params[1] = 0;
-			}
-			if (!ft_buf_add_char(buffer, *(input->str)))
-				return (return_perror(ENOMEM, NULL));
-			(input->str)++;
-		}
+			operator_case(tokens, input, buffer, f_params);
 		else if (*(input->str) == '\'')
 			sq_input(buffer, input, f_params);
 		else if (*(input->str) == '"')
@@ -291,10 +296,10 @@ static int		get_token_loop(t_list **tokens, t_input *input
 			get_token_substitution(buffer, input, f_params, '`');
 		else if (is_op(buffer, *(input->str), f_params))
 		{
-			if (f_params[0]
-					&& !insert_token(tokens, ft_buf_flush(buffer), f_params))
+			if (f_params[0] && insert_token(tokens
+						, ft_buf_flush(buffer), f_params) == -1)
 					return (return_perror(ENOMEM, NULL));
-			if (!ft_buf_add_char(buffer, *(input->str)))
+			if (ft_buf_add_char(buffer, *(input->str)) == -1)
 				return (return_perror(ENOMEM, NULL));
 			f_params[0] = 0;
 			f_params[1] = 1;
@@ -304,7 +309,7 @@ static int		get_token_loop(t_list **tokens, t_input *input
 		{
 			if (f_params[0] || f_params[1])
 			{
-				if (!insert_token(tokens, ft_buf_flush(buffer), f_params))
+				if (insert_token(tokens, ft_buf_flush(buffer), f_params) == -1)
 					return (return_perror(ENOMEM, NULL));
 				f_params[0] = 0;
 				f_params[1] = 0;
@@ -313,7 +318,7 @@ static int		get_token_loop(t_list **tokens, t_input *input
 		}
 		else if (f_params[0])
 		{
-			if (!ft_buf_add_char(buffer, *(input->str)))
+			if (ft_buf_add_char(buffer, *(input->str)) == -1)
 				return (return_perror(ENOMEM, NULL));
 			(input->str)++;
 		}
@@ -321,7 +326,7 @@ static int		get_token_loop(t_list **tokens, t_input *input
 			comment_input(input);
 		else
 		{
-			if (!ft_buf_add_char(buffer, *(input->str)))
+			if (ft_buf_add_char(buffer, *(input->str)) == -1)
 				return (return_perror(ENOMEM, NULL));
 			f_params[0] = 1;
 			(input->str)++;
@@ -329,39 +334,41 @@ static int		get_token_loop(t_list **tokens, t_input *input
 	}
 	if (f_params[0] || f_params[1])
 	{
-		if (!insert_token(tokens, ft_buf_flush(buffer), f_params))
+		if (insert_token(tokens, ft_buf_flush(buffer), f_params) == -1)
 				return (return_perror(ENOMEM, NULL));
 	}
-	return (1);
+	return (0);
 }
 
 void	token_free(void *content, size_t size)
 {
 	(void)size;
 	if (content)
+	{
+		if (((t_token *)content)->content)
+			free(((t_token *)content)->content);
 		free(content);
+	}
 }
 
 /*
-** f_params[3]: flags while parsing the input
+** f_params[2]: flags while parsing the input
 ** 1: is reading a token;
 ** 2: is reading a operator token;
-** 3: is quoted.
 */
 
 t_list	*get_tokens(t_input *input)
 {
 	t_list			*tokens;
-	unsigned char	f_params[3];
+	unsigned char	f_params[2];
 	t_buf			buffer;
 
 	tokens = NULL;
-	if (!ft_buf_init(&buffer))
+	if (ft_buf_init(&buffer) == -1)
 		exit_perror(ENOMEM, NULL);
 	f_params[0] = 0;
 	f_params[1] = 0;
-	f_params[2] = 0;
-	if (!get_token_loop(&tokens, input, &buffer, f_params))
+	if (get_token_loop(&tokens, input, &buffer, f_params) == -1)
 	{
 		ft_lstdel(&tokens, token_free);
 		ft_buf_destroy(&buffer);

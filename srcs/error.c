@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 22:09:25 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/05 08:19:51 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/18 10:20:51 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ int		return_perror(enum e_errno num, char *str)
 		ft_dprintf(2, "42: %s: %s\n", str, g_errors[num]);
 	else
 		ft_dprintf(2, "42: %s\n", g_errors[num]);
-	return (0);
+	return (-1);
 }

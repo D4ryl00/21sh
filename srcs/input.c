@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/17 17:00:03 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/18 10:30:09 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ int			read_input(t_input *input)
 	t_read_input	s;
 
 	set_t_read_input(&s);
-	if (ft_buf_init(&(s.buffer)) == 0)
+	if (ft_buf_init(&(s.buffer)) == -1)
 		return (-1);
 	while (s.c[3] && s.c[0] != '\n')
 	{
 		s.c[3] = read(0, &(s.c), 3);
 		if (s.c[0] != 27 && ft_isprint(s.c[0]) == 1 && (s.cursorpos +=
-		ft_buf_insert_char(&(s.buffer), s.c[0], s.cursorpos)) == 0)
+		ft_buf_insert_char(&(s.buffer), s.c[0], s.cursorpos)) == -1)
 			return (-1);
 		if ((s.c[0] != 27 && s.c[0] != 0 && ft_isprint(s.c[0]) == 1) ||
 		s.c[0] == '\n')
@@ -39,7 +39,7 @@ int			read_input(t_input *input)
 		else
 			input_is_special_char(&s);
 	}
-	if (ft_buf_add_char(&(s.buffer), '\0') == 0 ||
+	if (ft_buf_add_char(&(s.buffer), '\0') == -1 ||
 	!((input->str) = ft_buf_flush(&(s.buffer))))
 		return (-1);
 	input->save = &(input->str[0]);

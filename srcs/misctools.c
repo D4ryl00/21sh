@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 18:15:42 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/17 17:01:20 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/18 10:31:32 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int		termcaps_clearline(t_read_input *s)
 	ft_putstr_fd(g_termcaps.deleteline, 0);
 	s->cursorpos = 0;
 	ft_buf_destroy(&(s->buffer));
-	if (ft_buf_init(&(s->buffer)) == 0)
+	if (ft_buf_init(&(s->buffer)) == -1)
 		return (-1);
 	prompt(NULL);
 	return (0);
