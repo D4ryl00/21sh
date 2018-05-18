@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/18 10:30:09 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/18 13:38:31 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int			read_input(t_input *input)
 	{
 		s.c[3] = read(0, &(s.c), 3);
 		if (s.c[0] != 27 && ft_isprint(s.c[0]) == 1 && (s.cursorpos +=
-		ft_buf_insert_char(&(s.buffer), s.c[0], s.cursorpos)) == -1)
+		ft_buf_insert_char(&(s.buffer), s.c[0], s.cursorpos) + 1) == -1)
 			return (-1);
 		if ((s.c[0] != 27 && s.c[0] != 0 && ft_isprint(s.c[0]) == 1) ||
 		s.c[0] == '\n')
