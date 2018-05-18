@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/17 16:59:57 by amordret         ###   ########.fr       */
+/*   Updated: 2018/05/18 14:33:17 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,37 @@ int								return_perror(enum e_errno num, char *str);
 void							prompt(char *promptstring);
 t_btree							*eval(t_btree *ast, t_input *input);
 t_list							*get_tokens(t_input *input);
+int								sq_case(t_buf *buffer, t_input *input
+		, unsigned char f_params[2]);
+int								bs_case(t_buf *buffer, t_input *input
+		, unsigned char f_params[2]);
+int								dq_case(t_buf *buffer, t_input *input
+		, unsigned char f_params[2]);
+int								dollar_case(t_buf *buffer, t_input *input
+		, unsigned char f_params[2]);
+int								get_token_expansion(t_buf *buffer
+		, t_input *input, unsigned char f_params[2]);
+int								get_token_arithmetic(t_buf *buffer
+		, t_input *input, unsigned char f_params[2]);
+int								substitution_case(t_buf *buffer, t_input *input
+		, unsigned char f_params[2], char close);
+int								bq_input(t_buf *buffer, t_input *input
+		, unsigned char f_params[2]);
+int								word_add_char_case(t_buf *buffer
+		, t_input *input);
+int								word_start_case(t_buf *buffer, t_input *input
+		, unsigned char f_params[2]);
+int								 is_operator(t_buf *buffer, char c
+		, unsigned char f_params[2]);
+int								operator_case(t_list **tokens, t_buf *buffer
+		, t_input *input, unsigned char f_params[2]);
+int								operator_start_case(t_list **tokens
+		, t_buf *buffer, t_input *input, unsigned char f_params[2]);
+int								insert_token(t_list **tokens, char *token
+		, unsigned char f_params[2]);
+int								comment_input(t_input *input);
+int								delimiter_case(t_list **tokens, t_buf *buffer
+		, t_input *input, unsigned char f_params[2]);
 void							token_free(void *content, size_t size);
 void							ft_set_term(void);
 int								read_input(t_input *input);

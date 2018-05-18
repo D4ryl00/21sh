@@ -6,14 +6,17 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/05/16 13:19:52 by amordret         ###   ########.fr        #
+#    Updated: 2018/05/18 14:25:54 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = 21sh
 
-SRCS = main.c error.c eval.c tokens.c termcaps.c prompt.c input.c \
-input_termcaps.c input_termcaps2.c misctools.c history.c
+SRCS = main.c error.c free.c eval.c tokens.c termcaps.c prompt.c input.c \
+	   input_termcaps.c input_termcaps2.c misctools.c history.c \
+	   get_token_quote.c get_token_expansion.c get_token_arithmetic.c \
+	   get_token_substitution.c get_token_word.c get_token_operator.c \
+	   get_token_various.c
 SRCS_DIR = srcs/
 LIB_DIR = libft
 
