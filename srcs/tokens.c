@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/18 14:33:39 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/19 13:21:36 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ int				is_operator(t_buf *buffer, char c, unsigned char f_params[2])
 	return (0);
 }
 
-int				insert_token(t_list **tokens, char *token
-		, unsigned char f_params[2])
+int				insert_token(t_list **tokens, char *token)
 {
 	t_list	*tmp;
 
@@ -48,7 +47,7 @@ int				insert_token(t_list **tokens, char *token
 	if (!(tmp->content = (t_token *)malloc(sizeof(t_token))))
 		return (return_perror(ENOMEM, NULL));
 	((t_token *)tmp->content)->content = token;
-	((t_token *)tmp->content)->type = f_params[0] ? WORD : OPERATOR;
+	((t_token *)tmp->content)->type = TOKEN;
 	tmp->content_size = sizeof(t_token);
 	tmp->next = NULL;
 	ft_lstaddback(tokens, tmp);
@@ -88,7 +87,7 @@ static int		get_token_loop(t_list **tokens, t_input *input
 			return (return_perror(ENOMEM, NULL));
 	}
 	if ((f_params[0] || f_params[1]) && insert_token(tokens
-				, ft_buf_flush(buffer), f_params) == -1)
+				, ft_buf_flush(buffer)) == -1)
 			return (return_perror(ENOMEM, NULL));
 	return (0);
 }

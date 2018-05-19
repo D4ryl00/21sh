@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 14:24:53 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/18 14:31:16 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/19 13:23:11 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	delimiter_case(t_list **tokens, t_buf *buffer, t_input *input,
 {
 	if (f_params[0] || f_params[1])
 	{
-		if (insert_token(tokens, ft_buf_flush(buffer), f_params) == -1)
+		if (insert_token(tokens, ft_buf_flush(buffer)) == -1)
 			return (return_perror(ENOMEM, NULL));
 		f_params[0] = 0;
 		f_params[1] = 0;

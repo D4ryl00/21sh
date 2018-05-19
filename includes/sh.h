@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/18 14:33:17 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/19 13:22:13 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ t_termcaps						g_termcaps;
 
 enum							e_token
 {
+	TOKEN,
 	OPERATOR,
 	AND_IF,
 	O_RIF,
@@ -90,7 +91,6 @@ enum							e_token
 	DLESSDASH,
 	CLOBBER,
 	IO_NUMBER,
-	WORD,
 	ASSIGNMENT_WORD,
 	NAME,
 	NEWLINE
@@ -152,8 +152,7 @@ int								operator_case(t_list **tokens, t_buf *buffer
 		, t_input *input, unsigned char f_params[2]);
 int								operator_start_case(t_list **tokens
 		, t_buf *buffer, t_input *input, unsigned char f_params[2]);
-int								insert_token(t_list **tokens, char *token
-		, unsigned char f_params[2]);
+int								insert_token(t_list **tokens, char *token);
 int								comment_input(t_input *input);
 int								delimiter_case(t_list **tokens, t_buf *buffer
 		, t_input *input, unsigned char f_params[2]);
