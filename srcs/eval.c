@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/19 14:08:46 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/22 10:28:14 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 #include "libft.h"
 #include <stdlib.h>
 
+/*
+** The order is important. It's linked with e_token.
+** PLEASE DO NOT CHANGE THAT!
+*/
 char			*g_op_token [] =
 {
 	"&&",
@@ -39,13 +43,13 @@ t_btree	*eval(t_btree *ast, t_input *input)
 		//free(input);
 		return (NULL);
 	}
-	/*if (classify_token(tokens) == -1)
-		return (NULL);*/
+	if (classify_token(tokens) == -1)
+		return (NULL);
 	//free(input);
 	while (tokens)
 	{
 		type = ((t_token *)tokens->content)->type;
-		ft_printf("%s", ((t_token *)tokens->content)->content);
+		ft_printf("%s(%d)", ((t_token *)tokens->content)->content, ((t_token *)tokens->content)->type);
 		if (tokens->next)
 			ft_putstr(" | ");
 		ft_lstdelnode(&tokens, tokens, token_free);

@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/19 13:22:13 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/05/22 10:27:54 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,15 @@ typedef struct					s_termcaps
 
 t_termcaps						g_termcaps;
 
+/*
+** The order of the first ten entries is important.
+** It's linked with g_op_token.
+** PLEASE DO NOT CHANGE THAT!
+*/
 enum							e_token
 {
-	TOKEN,
-	OPERATOR,
 	AND_IF,
-	O_RIF,
+	OR_IF,
 	DSEMI,
 	DLESS,
 	DGREAT,
@@ -90,6 +93,7 @@ enum							e_token
 	LESSGREAT,
 	DLESSDASH,
 	CLOBBER,
+	TOKEN,
 	IO_NUMBER,
 	ASSIGNMENT_WORD,
 	NAME,
@@ -172,4 +176,5 @@ int								termcaps_clearline(t_read_input *s);
 void							add_to_command_hist(
 								t_command_history **first_command_hist,
 								char *line);
+int								classify_token(t_list *tokens);
 #endif
