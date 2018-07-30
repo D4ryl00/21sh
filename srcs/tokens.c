@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/19 13:21:36 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/07/30 18:34:22 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,7 @@ t_list	*get_tokens(t_input *input)
 	if (get_token_loop(&tokens, input, &buffer, f_params) == -1)
 	{
 		ft_lstdel(&tokens, token_free);
-		ft_buf_destroy(&buffer);
-		return (NULL);
+		tokens = NULL;
 	}
 	ft_buf_destroy(&buffer);
 	return (tokens);

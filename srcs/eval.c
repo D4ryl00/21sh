@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/22 10:28:14 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/07/30 23:49:10 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,11 @@ char			*g_op_token [] =
 	""
 };
 
-t_btree	*eval(t_btree *ast, t_input *input)
+t_btree	*eval(t_input *input)
 {
 	t_list			*tokens;
 	enum e_token	type;
+	t_btree			*ast;
 
 	if (!(tokens = get_tokens(input)))
 	{
@@ -55,6 +56,6 @@ t_btree	*eval(t_btree *ast, t_input *input)
 		ft_lstdelnode(&tokens, tokens, token_free);
 	}
 	ft_putchar('\n');
-	//ast = parse_tokens(tokens);
+	ast = make_ast(tokens);
 	return (ast);
 }

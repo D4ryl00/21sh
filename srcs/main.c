@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/15 17:53:38 by amordret         ###   ########.fr       */
+/*   Updated: 2018/07/30 23:50:51 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int		main(int argc, char **argv, char **environ)
 	while (42)
 	{
 		newprompt(&input, NULL);
-		ast = eval(ast, &input);
+		if (!(ast = eval(&input)))
+			continue;
 	}
 	termcaps_reset_term_and_exit();
 	return (0);
