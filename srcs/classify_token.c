@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:26:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/22 11:03:44 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/07/31 10:37:06 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	classify_operator_token(t_list *tokens)
 	while (tokens)
 	{
 		i = -1;
-		while (g_op_token[++i])
+		while (*g_op_token[++i])
 		{
 			if (!ft_strcmp(g_op_token[i]
 						, ((t_token *)tokens->content)->content))
