@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:26:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/07/31 10:37:06 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/08/01 17:01:18 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,16 @@ void	classify_operator_token(t_list *tokens)
 void	classify_ionumber_token(t_list *tokens)
 {
 	char	*str;
+	t_list	*next_token;
+	char	*next_str;
 
 	while (tokens)
 	{
 		str = ((t_token *)tokens->content)->content;
-		if (*str == '<' || *str == '>')
+		if (ft_isstrdigit(str) && (next_token = tokens->next))
 		{
-			while (*str)
-			{
-				if (!ft_isdigit(*(str++)))
-					break ;
-			}
-			if (!(*str))
-				((t_token *)tokens->content)->type = IO_NUMBER;
-		}
-		else if (ft_isdigit(*str))
-		{
-			while (ft_isdigit(*str))
-				str++;
-			if ((*str == '>' || *str == '<') && !str[1])
+			next_str = ((t_token *)next_token->content)->content;
+			if (*next_str == '<' || *next_str == '>')
 				((t_token *)tokens->content)->type = IO_NUMBER;
 		}
 		tokens = tokens->next;

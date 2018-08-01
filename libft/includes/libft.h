@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 12:13:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/14 15:06:18 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/08/01 16:38:57 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int				ft_isprint(int c);
 int				ft_isspace(int c);
 int				ft_toupper(int c);
 int				ft_tolower(int c);
+int				ft_isstrdigit(char *str);
 void			ft_strtoupper(char *s);
 void			ft_strtolower(char *s);
 void			*ft_memalloc(size_t size);
