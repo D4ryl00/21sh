@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 12:13:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/08/01 16:38:57 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/10 16:17:04 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct	s_list
 typedef struct	s_btree
 {
 	void			*content;
-	struct s_btree	*parent;
+	size_t			content_size;
 	struct s_btree	*left;
 	struct s_btree	*right;
 }				t_btree;
@@ -147,5 +147,8 @@ int				ft_buf_add_char(t_buf *buffer, char c);
 int				ft_buf_insert_char(t_buf *buffer, char c, int index);
 int				ft_buf_delete_char(t_buf *buffer, int index);
 void			ft_buf_destroy(t_buf *buffer);
+t_btree			*ft_btreenew(void const *content, size_t content_size);
+void			ft_btreedelone(t_btree **abtree, void (*del)(void *, size_t));
+void			ft_btreedel(t_btree **abtree, void (*del)(void *, size_t));
 
 #endif
