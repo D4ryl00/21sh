@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/07/30 23:50:40 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/11 22:27:36 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int								newprompt(t_input *input, char *promptstring);
 void							exit_perror(enum e_errno num, char *str);
 int								return_perror(enum e_errno num, char *str);
 void							prompt(char *promptstring);
-t_btree							*eval(t_input *input);
+t_list							*eval(t_input *input);
 t_list							*get_tokens(t_input *input);
 int								sq_case(t_buf *buffer, t_input *input
 		, unsigned char f_params[2]);
@@ -177,5 +177,5 @@ void							add_to_command_hist(
 								t_command_history **first_command_hist,
 								char *line);
 int								classify_token(t_list *tokens);
-t_btree							*make_ast(t_list *tokens);
+t_list							*make_command_list(t_list *tokens);
 #endif

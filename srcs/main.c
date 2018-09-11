@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/07/30 23:50:51 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/11 22:22:34 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,17 @@ int		newprompt(t_input *input, char *promptstring)
 int		main(int argc, char **argv, char **environ)
 {
 	t_input	input;
-	t_btree	*ast;
+	t_list	*lcmd;
 
 	(void)argc;
 	(void)argv;
 	(void)environ;
-	ast = NULL;
+	lcmd = NULL;
 	ft_set_term();
 	while (42)
 	{
 		newprompt(&input, NULL);
-		if (!(ast = eval(&input)))
+		if (!(lcmd = eval(&input)))
 			continue;
 	}
 	termcaps_reset_term_and_exit();
