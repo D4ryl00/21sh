@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/11 22:27:36 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/12 17:02:20 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,13 +122,82 @@ typedef struct					s_input
 	char						*save;
 }								t_input;
 
+/*
+** Structures for the AST
+*/
+
+typedef struct					s_ast_cmd_name
+{
+	char						*word;
+}								t_ast_cmd_name;
+
+typedef struct					s_ast_filename
+{
+	char						*word;
+}								t_ast_filename;
+
+typedef struct					s_ast_io_file
+{
+	char						*operator;
+	t_ast_filename				*filename;
+}								t_ast_io_file;
+
+typedef struct					s_ast_here_end
+{
+	char						*word;
+}								t_ast_here_end;
+
+typedef struct					s_ast_io_here
+{
+	char						*operator;
+	t_ast_here_end				*here_end;
+}								t_ast_io_here;
+
+typedef struct					s_ast_io_redirect
+{
+	char						ionumber[3];
+	t_ast_io_file				*io_file;
+	t_ast_io_here				*io_here;
+}								t_ast_io_redirect;
+
+typedef struct					s_ast_cmd_suffix
+{
+	t_ast_io_redirect			*io_redirect;
+	char						*word;
+}								t_ast_cmd_suffix;
+
+typedef struct					s_ast_simple_command
+{
+	t_ast_cmd_name				*cmd_name;
+	t_list						*cmd_suffix;
+}								t_ast_simple_command;
+
+typedef struct					s_ast_command
+{
+	t_ast_simple_command		*simple_command;
+	t_list						*redirect_list;
+}								t_ast_command;
+
+typedef struct					s_ast_program
+{
+	t_ast_command				*command;
+}								t_ast_program;
+
+/*
+** Globales
+*/
+
 extern char						*g_errors[];
+
+/*
+** Prototypes
+*/
 
 int								newprompt(t_input *input, char *promptstring);
 void							exit_perror(enum e_errno num, char *str);
 int								return_perror(enum e_errno num, char *str);
 void							prompt(char *promptstring);
-t_list							*eval(t_input *input);
+t_ast_program					*eval(t_input *input);
 t_list							*get_tokens(t_input *input);
 int								sq_case(t_buf *buffer, t_input *input
 		, unsigned char f_params[2]);
@@ -177,5 +246,5 @@ void							add_to_command_hist(
 								t_command_history **first_command_hist,
 								char *line);
 int								classify_token(t_list *tokens);
-t_list							*make_command_list(t_list *tokens);
+t_ast_program					*make_ast(t_list *tokens);
 #endif
