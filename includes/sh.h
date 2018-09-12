@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/12 17:02:20 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/13 00:12:55 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,4 +247,5 @@ void							add_to_command_hist(
 								char *line);
 int								classify_token(t_list *tokens);
 t_ast_program					*make_ast(t_list *tokens);
+void							free_ast_program(t_ast_program *program);
 #endif
