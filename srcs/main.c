@@ -6,12 +6,14 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/12 16:56:49 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/13 15:35:56 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 #include "libft.h"
+
+t_command_history	*g_first_cmd_history = NULL;
 
 int		newprompt(t_input *input, char *promptstring)
 {
@@ -29,6 +31,7 @@ int		main(int argc, char **argv, char **environ)
 	(void)environ;
 	program = NULL;
 	ft_set_term();
+	fill_command_hist();
 	while (42)
 	{
 		newprompt(&input, NULL);
