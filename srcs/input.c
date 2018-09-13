@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/18 13:38:31 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/13 16:18:42 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	set_t_read_input(t_read_input *s)
 	s->c[0] = 0;
 	s->c[3] = 1;
 	s->cursorpos = 0;
-	s->first_command_hist = NULL;
+	s->historynb = 0;
 }
 
 int			read_input(t_input *input)

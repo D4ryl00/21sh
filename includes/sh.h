@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/13 15:33:10 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/13 16:34:21 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ typedef struct					s_read_input
 	char						c[4];
 	t_buf						buffer;
 	int							cursorpos;
-	t_command_history			**first_command_hist;
-	int							fd_history;
 	int							charsinline;
 	int							historynb;
 
@@ -113,6 +111,7 @@ enum							e_errno
 	enocmd,
 	enoent,
 	eacces,
+	EBUFF,
 	EOTHER
 };
 
