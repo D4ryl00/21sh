@@ -6,7 +6,11 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2018/09/13 16:34:21 by amordret         ###   ########.fr       */
+=======
+/*   Updated: 2018/09/13 16:40:41 by rbarbero         ###   ########.fr       */
+>>>>>>> 0ca6c5e150ffa28279d9aab8d78588ae73e46ca4
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,22 +163,29 @@ typedef struct					s_ast_io_redirect
 	t_ast_io_here				*io_here;
 }								t_ast_io_redirect;
 
+typedef struct					s_ast_redirect_list
+{
+	t_list						*redirect_list;
+	t_ast_io_redirect			*io_redirect;
+}								t_ast_redirect_list;
+
 typedef struct					s_ast_cmd_suffix
 {
 	t_ast_io_redirect			*io_redirect;
 	char						*word;
+	struct s_ast_cmd_suffix		*cmd_suffix;
 }								t_ast_cmd_suffix;
 
 typedef struct					s_ast_simple_command
 {
 	t_ast_cmd_name				*cmd_name;
-	t_list						*cmd_suffix;
+	t_ast_cmd_suffix			*cmd_suffix;
 }								t_ast_simple_command;
 
 typedef struct					s_ast_command
 {
 	t_ast_simple_command		*simple_command;
-	t_list						*redirect_list;
+	t_ast_redirect_list			*redirect_list;
 }								t_ast_command;
 
 typedef struct					s_ast_program
@@ -246,4 +257,6 @@ void							add_to_command_hist(char *line);
 int								classify_token(t_list *tokens);
 t_ast_program					*make_ast(t_list *tokens);
 void							free_ast_program(t_ast_program *program);
+void							free_ast_command(t_ast_command *command);
+void							free_ast_simple_command(t_ast_simple_command *sc);
 #endif
