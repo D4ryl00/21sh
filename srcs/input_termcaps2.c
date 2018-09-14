@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 13:00:53 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/14 14:43:14 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/14 15:45:14 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	input_is_up(t_read_input *s)
 		return ;
 	if (g_first_cmd_history)
 	{
-		//save_current_hist(s);
+		if (s->historynb)
+			save_current_hist(s);
 		s->historynb++;
 		current_element = g_first_cmd_history;
 		while (++i < s->historynb && current_element->next)
@@ -39,5 +40,6 @@ void	input_is_up(t_read_input *s)
 		}
 		termcaps_echoandputstr((current_element->command));
 		s->cursorpos = ft_strlen(current_element->command);
+
 	}
 }
