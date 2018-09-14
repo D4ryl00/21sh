@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/13 16:37:51 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/14 16:48:27 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,106 @@ t_ast_cmd_name			*ast_cmd_name(t_list *tokens)
 	return (name);
 }
 
+t_ast_filename	*ast_filename(t_list *tokens)
+{
+	t_ast_filename	*filename;
+
+	filename = NULL;
+	if (tokens)
+	{
+		if (!(filename = (t_ast_filename *)malloc(sizeof(t_ast_filename))))
+			exit_perror(ENOMEM, NULL);
+		if (!(filename->word = ft_strdup(((t_token *)tokens->content)->content)))
+			exit_perror(ENOMEM, NULL);
+	}
+	return (filename);
+}
+
+t_ast_io_file	*ast_io_file(t_list *tokens)
+{
+	t_ast_io_file	*file;
+
+	file = NULL;
+	if (tokens)
+	{
+		if (!(file = (t_ast_io_file *)malloc(sizeof(t_ast_io_file))))
+			exit_perror(ENOMEM, NULL);
+		if (!ft_strcmp(((t_token *)tokens->content)->content, "<") ||
+				!ft_strcmp(((t_token *)tokens->content)->content, "<&") ||
+				!ft_strcmp(((t_token *)tokens->content)->content, ">") ||
+				!ft_strcmp(((t_token *)tokens->content)->content, ">&") ||
+				!ft_strcmp(((t_token *)tokens->content)->content, ">>") ||
+				!ft_strcmp(((t_token *)tokens->content)->content, "<>") ||
+				!ft_strcmp(((t_token *)tokens->content)->content, ">|"))
+		{
+			if (!(file->operator = ft_strdup(((t_token *)tokens->content)->content)))
+				exit_perror(ENOMEM, NULL);
+			tokens = tokens->next;
+			file->filename = ast_filename(tokens);
+		}
+		if (!(file->filename))
+		{
+			free_ast_io_file(file);
+			file = NULL;
+		}
+	}
+	return (file);
+}
+
+t_ast_io_redirect	*ast_io_redirect(t_list *tokens)
+{
+	t_ast_io_redirect	*redirect;
+
+	redirect = NULL;
+	if (tokens)
+	{
+		if (!(redirect = (t_ast_io_redirect *)malloc(sizeof(t_ast_io_redirect))))
+			exit_perror(ENOMEM, NULL);
+		if (((t_token *)tokens->content)->type == IO_NUMBER)
+		redirect->io_file = ast_io_file(tokens->next);
+		if (!(redirect->io_file))
+		{
+			free_ast_io_redirect(redirect);
+			redirect = NULL;
+		}
+	}
+	return (redirect);
+}
+
+struct s_ast_cmd_suffix	*ast_cmd_suffix_r(t_list *tokens)
+{
+	struct s_ast_cmd_suffix	*suffix;
+
+	suffix = NULL;
+	if (tokens)
+	{
+		if (!(suffix = (struct s_ast_cmd_suffix *)
+					malloc(sizeof(struct s_ast_cmd_suffix))))
+			exit_perror(ENOMEM, NULL);
+		if ((suffix->io_redirect = ast_io_redirect(tokens)))
+		{
+			if (!(suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next)))
+				free_ast_io_redirect(suffix->io_redirect);
+			suffix->io_redirect = NULL;
+		}
+		else if (!suffix->io_redirect)
+		{
+			suffix->word = ft_strdup(tokens->content);
+			if (!(suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next)))
+			{
+				free(suffix->word);
+				suffix->word = NULL;
+			}
+		}
+		if (!(suffix->io_redirect) && !(suffix->word))
+		{
+			free_ast_cmd_suffix(suffix);
+			suffix = NULL;
+		}
+	}
+	return (suffix);
+}
+
 t_ast_cmd_suffix		*ast_cmd_suffix(t_list *tokens)
 {
 	t_ast_cmd_suffix	*suffix;
@@ -36,9 +136,29 @@ t_ast_cmd_suffix		*ast_cmd_suffix(t_list *tokens)
 	suffix = NULL;
 	if (tokens)
 	{
-		if (!(suffix = (t_ast_cmd_suffix *)malloc(sizeof(t_ast_cmd_suffix))))
+		if (!(suffix = (struct s_ast_cmd_suffix *)
+					malloc(sizeof(struct s_ast_cmd_suffix))))
 			exit_perror(ENOMEM, NULL);
-		//while (
+		if ((suffix->io_redirect = ast_io_redirect(tokens)))
+		{
+			if (!(suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next)))
+				free_ast_io_redirect(suffix->io_redirect);
+			suffix->io_redirect = NULL;
+		}
+		else if (!suffix->io_redirect)
+		{
+			suffix->word = ft_strdup(tokens->content);
+			if (!(suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next)))
+			{
+				free(suffix->word);
+				suffix->word = NULL;
+			}
+		}
+		if (!(suffix->io_redirect) && !(suffix->word))
+		{
+			free_ast_cmd_suffix(suffix);
+			suffix = NULL;
+		}
 	}
 	return (suffix);
 }

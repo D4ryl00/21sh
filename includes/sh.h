@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/13 16:47:10 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/14 16:43:03 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,4 +255,7 @@ t_ast_program					*make_ast(t_list *tokens);
 void							free_ast_program(t_ast_program *program);
 void							free_ast_command(t_ast_command *command);
 void							free_ast_simple_command(t_ast_simple_command *sc);
+void							free_ast_cmd_suffix(t_ast_cmd_suffix *suffix);
+void							free_ast_io_redirect(t_ast_io_redirect *redirect);
+void							free_ast_io_file(t_ast_io_file *file);
 #endif
