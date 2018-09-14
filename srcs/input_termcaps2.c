@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 13:00:53 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/13 16:37:01 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/14 14:43:14 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,30 @@
 
 void	input_is_up(t_read_input *s)
 {
-	int	i;
+	int					i;
+	t_command_history	*current_element;
 
-	i = -1;
+	i = 0;
 	if (termcaps_clearline(s) == -1)
 		return ;
-	//fill_command_hist(s);
 	if (g_first_cmd_history)
 	{
-		add_to_command_hist(s->buffer.buf);
+		//save_current_hist(s);
+		s->historynb++;
+		current_element = g_first_cmd_history;
+		while (++i < s->historynb && current_element->next)
+			current_element = current_element->next;
+		i = -1;
+		/*if (s->historynb == 1)
+			add_to_command_hist(s->buffer.buf);*/
 		ft_buf_destroy(&(s->buffer));
 		ft_buf_init(&(s->buffer));
-		while (g_first_cmd_history->command[i++])
+		while (current_element->command[++i])
 		{
-			if ((ft_buf_insert_char(&(s->buffer), g_first_cmd_history->command[i], i)) == -1)
+			if ((ft_buf_insert_char(&(s->buffer), (current_element->command)[i], i)) == -1)
 				exit_perror(EBUFF, NULL);				
 		}
-		termcaps_echoandputstr((g_first_cmd_history->next->command));
-		s->cursorpos = ft_strlen(g_first_cmd_history->next->command);
+		termcaps_echoandputstr((current_element->command));
+		s->cursorpos = ft_strlen(current_element->command);
 	}
-	/*while (((*(s->first_command_hist))->command)[i])
-	{
-		if (ft_buf_insert_char(&(s->buffer),(((*(s->first_command_hist))->command)[i]) , i) == 0)
-			return ;
-		i++;
-	}*/
 }
