@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/09/13 00:13:07 by rbarbero         ###   ########.fr        #
+#    Updated: 2018/09/14 13:58:43 by amordret         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ LHEADERS = $(HEADERS:%.h=$(HEADERS_DIR)%.h)
 OBJS = $(SRCS:%.c=%.o)
 
 CC = clang
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -Fsanitize=address
 
 all: $(NAME)
 

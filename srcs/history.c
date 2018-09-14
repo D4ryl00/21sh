@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 11:49:18 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/13 15:36:25 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/14 14:41:18 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,28 @@ void	add_to_command_hist(char *line)
 	g_first_cmd_history = new_element;
 }
 
+void	save_current_hist(t_read_input *s)
+{
+	int					i;
+	t_command_history	*current_element;
+
+	i = -1;
+	current_element = g_first_cmd_history;
+	if (s->historynb == 0)
+		return ;
+		//return (add_to_command_hist(s->buffer.buf));
+	while (++i < s->historynb && current_element->next)
+		current_element = current_element->next;
+	if (current_element->command)
+		free(current_element->command);
+	current_element->command = ft_strdup(((s->buffer).buf));
+}
+
 void	fill_command_hist(void)
 {
 	char	*line;
 	int		fd;
-	
+
 	line = NULL;
 	fd = 0;
 
