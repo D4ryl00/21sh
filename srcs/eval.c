@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/12 16:57:55 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/14 22:29:58 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ t_ast_program*eval(t_input *input)
 	if (classify_token(tokens) == -1)
 		return (NULL);
 	//free(input);
+	program = make_ast(tokens);
 	while (tokens)
 	{
 		type = ((t_token *)tokens->content)->type;
@@ -56,6 +57,5 @@ t_ast_program*eval(t_input *input)
 		ft_lstdelnode(&tokens, tokens, token_free);
 	}
 	ft_putchar('\n');
-	program = make_ast(tokens);
 	return (program);
 }

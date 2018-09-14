@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/14 16:49:58 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/14 23:04:35 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ typedef struct					s_ast_io_here
 
 typedef struct					s_ast_io_redirect
 {
-	char						ionumber[3];
+	char						io_number[3];
 	t_ast_io_file				*io_file;
 	t_ast_io_here				*io_here;
 }								t_ast_io_redirect;
