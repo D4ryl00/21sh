@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/15 20:19:18 by d4ryl00          ###   ########.fr       */
+/*   Updated: 2018/09/16 01:39:40 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,9 @@ extern char						*g_op_token[];
 enum							e_errno
 {
 	ENOMEM,
-	enocmd,
-	enoent,
-	eacces,
+	ENOCMD,
+	ENOENT,
+	EACCES,
 	EBUFF,
 	ENOFORK,
 	EOTHER
@@ -204,6 +204,7 @@ extern t_command_history		*g_first_cmd_history;
 int								newprompt(t_input *input, char *promptstring);
 void							exit_perror(enum e_errno num, char *str);
 int								return_perror(enum e_errno num, char *str);
+void							ft_perror(enum e_errno num, char *str);
 void							prompt(char *promptstring);
 t_ast_program					*eval(t_input *input);
 t_list							*get_tokens(t_input *input);
@@ -262,4 +263,7 @@ void							free_ast_cmd_suffix(t_ast_cmd_suffix *suffix);
 void							free_ast_io_redirect(t_ast_io_redirect *redirect);
 void							free_ast_io_file(t_ast_io_file *file);
 int								run_program(t_ast_program *program);
+char							*ast_get_cmd_name(t_ast_simple_command *sc);
+char							**ast_construct_cmd_args(t_ast_simple_command *sc);
+int								cmd_search(char *name, char **args);
 #endif

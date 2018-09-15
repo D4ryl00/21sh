@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/15 23:31:01 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/16 01:28:58 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #include "sh.h"
 #include <stdlib.h>
 
+/*
+** For a simple_command, return the command name for execve
+*/
 char	*ast_get_cmd_name(t_ast_simple_command *sc)
 {
 	if (sc && sc->cmd_name && sc->cmd_name->word)
@@ -22,12 +25,54 @@ char	*ast_get_cmd_name(t_ast_simple_command *sc)
 		return (NULL);
 }
 
-char	**ast_get_cmd_args(t_ast_simple_command *sc)
+/*
+** For a simple_command, return the number of arguments of the command.
+*/
+static int	ast_get_cmd_args_size(t_ast_simple_command *sc)
 {
-	char	**args;
+	int	size;
+	t_ast_cmd_suffix	*suffix;
+
+	size = 0;
+	suffix = sc->cmd_suffix;
+	while (suffix)
+	{
+		if (suffix->word)
+			size++;
+		suffix = suffix->cmd_suffix;
+	}
+	return (size);
+}
+
+/*
+** For a simple_command, return an array of string with arguments
+** of the command for execve. It's begin by the command name
+** and terminate by a NULL pointer.
+*/
+char	**ast_construct_cmd_args(t_ast_simple_command *sc)
+{
+	char				**args;
+	int					size;
+	int					i;
+	t_ast_cmd_suffix	*suffix;
 
 	args = NULL;
-	(void)sc;
+	size = ast_get_cmd_args_size(sc) + 1;
+	if (!(args = (char **)malloc(sizeof(char *) * size + 1)))
+		exit_perror(ENOMEM, NULL);
+	args[0] = ft_strdup(ast_get_cmd_name(sc));
+	i = 1;
+	suffix = sc->cmd_suffix;
+	while (suffix)
+	{
+		if (suffix->word)
+		{
+			if (!(args[i++] = ft_strdup(suffix->word)))
+				exit_perror(ENOMEM, NULL);
+		}
+		suffix = suffix->cmd_suffix;
+	}
+	args[size] = NULL;
 	return (args);
 }
 

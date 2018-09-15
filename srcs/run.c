@@ -6,40 +6,66 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/15 23:31:52 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/16 01:42:43 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 #include "libft.h"
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 
-int	run_simple_command(t_ast_simple_command *sc)
+int	exec_builtin(char *name, char **args)
 {
-	pid_t	pid;
-	int		status;
+	(void)name;
+	(void)args;
+	return (0);
+}
 
-	(void)sc;
-	if ((pid = fork()) > 0)
-		wait(&status);
-	else if (!pid)
+int	exec_special_builtin(char *name, char **args)
+{
+	(void)name;
+	(void)args;
+	return (0);
+}
+
+int	exec_utility(char *name, char **args)
+{
+	(void)name;
+	(void)args;
+	return (0);
+}
+
+int	exec_cmd(char *name, char **args)
+{
+	(void)name;
+	(void)args;
+	return (0);
+}
+
+int	cmd_search(char *name, char **args)
+{
+	if (!ft_strchr(name, '/'))
 	{
+		if (!exec_builtin(name, args))
+			;
+		else if (!exec_special_builtin(name, args))
+			;
+		else if (!exec_utility(name, args))
+			;
+		else
+			exec_cmd(name, args);
+	}
+	/*if (!access(name, F_OK))
+	{
+		if (!access(name, X_OK))
+		{
+			execve(name, args, NULL);
+			ft_strarrdel(args);
+			args = NULL;
+		}
+		else
+			return_perror(EACCES, name);
 	}
 	else
-		return_perror(ENOFORK, NULL);
-	return (0);
-}
-
-int	run_command(t_ast_command *command)
-{
-	run_simple_command(command->simple_command);
-	return (0);
-}
-
-int	run_program(t_ast_program *program)
-{
-	run_command(program->command);
+		return_perror(ENOCMD, name);*/
 	return (0);
 }

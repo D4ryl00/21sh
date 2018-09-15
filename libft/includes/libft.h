@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 12:13:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/10 16:17:04 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/15 22:24:44 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ char			**ft_strsplit(char const *s, char c);
 char			**ft_strsplitstr(char const *s, char *tokens);
 t_list			*ft_strnarrtolist(char **arr, int len);
 t_list			*ft_strarrtolist(char **arr);
+void			ft_strarrdel(char **arr);
 int				ft_absolute(int nbr);
 char			*ft_itoa(int n);
 int				ft_nbrlen(intmax_t n);
