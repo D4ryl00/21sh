@@ -6,13 +6,30 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/15 01:15:05 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/15 23:31:01 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
 #include <stdlib.h>
+
+char	*ast_get_cmd_name(t_ast_simple_command *sc)
+{
+	if (sc && sc->cmd_name && sc->cmd_name->word)
+		return (sc->cmd_name->word);
+	else
+		return (NULL);
+}
+
+char	**ast_get_cmd_args(t_ast_simple_command *sc)
+{
+	char	**args;
+
+	args = NULL;
+	(void)sc;
+	return (args);
+}
 
 t_ast_cmd_name			*ast_cmd_name(t_list *tokens)
 {
@@ -53,7 +70,7 @@ t_ast_io_file	*ast_io_file(t_list *tokens)
 	{
 		if (!(file = (t_ast_io_file *)malloc(sizeof(t_ast_io_file))))
 			exit_perror(ENOMEM, NULL);
-		file->operator = NULL;
+		file->operator[0] = '\0';
 		file->filename = NULL;
 		if (!ft_strcmp(((t_token *)tokens->content)->content, "<") ||
 				!ft_strcmp(((t_token *)tokens->content)->content, "<&") ||
@@ -63,8 +80,7 @@ t_ast_io_file	*ast_io_file(t_list *tokens)
 				!ft_strcmp(((t_token *)tokens->content)->content, "<>") ||
 				!ft_strcmp(((t_token *)tokens->content)->content, ">|"))
 		{
-			if (!(file->operator = ft_strdup(((t_token *)tokens->content)->content)))
-				exit_perror(ENOMEM, NULL);
+			ft_strncpy(file->operator, ((t_token *)tokens->content)->content, 3);
 			file->filename = ast_filename(tokens->next);
 		}
 		if (!(file->filename))

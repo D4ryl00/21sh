@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/14 22:29:58 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/15 23:30:24 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char			*g_op_token [] =
 t_ast_program*eval(t_input *input)
 {
 	t_list			*tokens;
-	enum e_token	type;
+	//enum e_token	type;
 	t_ast_program	*program;
 
 	if (!(tokens = get_tokens(input)))
@@ -48,7 +48,8 @@ t_ast_program*eval(t_input *input)
 		return (NULL);
 	//free(input);
 	program = make_ast(tokens);
-	while (tokens)
+	run_program(program);
+/*	while (tokens)
 	{
 		type = ((t_token *)tokens->content)->type;
 		ft_printf("%s(%d)", ((t_token *)tokens->content)->content, ((t_token *)tokens->content)->type);
@@ -56,6 +57,6 @@ t_ast_program*eval(t_input *input)
 			ft_putstr(" | ");
 		ft_lstdelnode(&tokens, tokens, token_free);
 	}
-	ft_putchar('\n');
+	ft_putchar('\n');*/
 	return (program);
 }

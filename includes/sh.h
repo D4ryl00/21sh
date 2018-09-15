@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/14 23:04:35 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/15 20:19:18 by d4ryl00          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ enum							e_errno
 	enoent,
 	eacces,
 	EBUFF,
+	ENOFORK,
 	EOTHER
 };
 
@@ -137,7 +138,7 @@ typedef struct					s_ast_filename
 
 typedef struct					s_ast_io_file
 {
-	char						*operator;
+	char						operator[3];
 	t_ast_filename				*filename;
 }								t_ast_io_file;
 
@@ -148,7 +149,7 @@ typedef struct					s_ast_here_end
 
 typedef struct					s_ast_io_here
 {
-	char						*operator;
+	char						operator[3];
 	t_ast_here_end				*here_end;
 }								t_ast_io_here;
 
@@ -260,4 +261,5 @@ void							free_ast_simple_command(t_ast_simple_command *sc);
 void							free_ast_cmd_suffix(t_ast_cmd_suffix *suffix);
 void							free_ast_io_redirect(t_ast_io_redirect *redirect);
 void							free_ast_io_file(t_ast_io_file *file);
+int								run_program(t_ast_program *program);
 #endif

@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 22:09:25 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/13 16:47:20 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/15 20:18:59 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char			*g_errors[] =
 	"No such file or directory",
 	"Permission denied",
 	"Buffer error, irrecoverable, exiting...",
+	"Fork error",
 	""
 };
 
