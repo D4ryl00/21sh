@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/16 01:39:40 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/17 01:03:09 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,8 @@ enum							e_errno
 	ENOENT,
 	EACCES,
 	EBUFF,
-	ENOFORK,
+	EFORK,
+	EWAIT,
 	EOTHER
 };
 
@@ -196,6 +197,7 @@ typedef struct					s_ast_program
 
 extern char						*g_errors[];
 extern t_command_history		*g_first_cmd_history;
+extern t_list					*g_env;
 
 /*
 ** Prototypes
@@ -265,5 +267,9 @@ void							free_ast_io_file(t_ast_io_file *file);
 int								run_program(t_ast_program *program);
 char							*ast_get_cmd_name(t_ast_simple_command *sc);
 char							**ast_construct_cmd_args(t_ast_simple_command *sc);
-int								cmd_search(char *name, char **args);
+int								cmd_search_and_run(char **av);
+int								run(char *path, char **av);
+int								run_cmd_path(char **av);
+char							*p_to_equ_char(char *str);
+int								env_select_key(t_list *node, void *data);
 #endif

@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/14 16:44:51 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/16 15:38:38 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 
 t_command_history	*g_first_cmd_history = NULL;
+t_list				*g_env = NULL;
 
 int		newprompt(t_input *input, char *promptstring)
 {
@@ -28,7 +29,8 @@ int		main(int argc, char **argv, char **environ)
 
 	(void)argc;
 	(void)argv;
-	(void)environ;
+
+	g_env = ft_strarrtolist(environ);
 	program = NULL;
 	ft_set_term();
 	fill_command_hist();

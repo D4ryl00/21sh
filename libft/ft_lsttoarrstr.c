@@ -1,32 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strarrdel.c                                     :+:      :+:    :+:   */
+/*   ft_lsttoarrstr.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/15 22:24:59 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/17 01:12:23 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/09/16 22:40:41 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/09/16 22:48:50 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 
-/*
-** Free a array of string finished by a NULL pointer.
-*/
-void	ft_strarrdel(char **arr)
+char	**ft_lsttoarrstr(t_list *lst)
 {
-	char	**p;
-	if (arr)
+	char	**dest;
+	int		i;
+
+	dest = NULL;
+	if (!(dest = (char **)malloc(sizeof(char *) * ft_lstsize(lst) + 1)))
 	{
-		p = arr;
-		while (*p)
+		i = 0;
+		while (lst)
 		{
-			free(*p);
-			p++;
+			if (!(dest[i++] = ft_strdup(lst->content)))
+			{
+				ft_strarrdel(dest);
+				return (NULL);
+			}
+			lst = lst->next;
 		}
-		free(arr);
+		dest[i] = NULL;
 	}
+	return (dest);
 }
