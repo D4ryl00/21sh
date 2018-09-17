@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 22:40:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/16 22:48:50 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/17 13:06:12 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	**ft_lsttoarrstr(t_list *lst)
 	int		i;
 
 	dest = NULL;
-	if (!(dest = (char **)malloc(sizeof(char *) * ft_lstsize(lst) + 1)))
+	if ((dest = (char **)malloc(sizeof(char *) * (ft_lstsize(lst) + 1))))
 	{
 		i = 0;
 		while (lst)
