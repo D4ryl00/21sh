@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 15:00:41 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/17 15:10:20 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int			read_input(t_input *input)
 			return (-1);
 		if ((s.c[0] != 27 && s.c[0] != 0 && ft_isprint(s.c[0]) == 1) ||
 		s.c[0] == '\n')
-			termcaps_echoandputchar(s.c[0]);
+			term_putchar(s.c[0]);
 		else
 			input_is_special_char(&s);
 		if (s.c[0] == '?')

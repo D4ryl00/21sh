@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 13:00:53 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 15:00:53 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/17 15:10:38 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	input_is_up(t_read_input *s)
 			if ((ft_buf_insert_char(&(s->buffer), (current_element->command)[i], i)) == -1)
 				exit_perror(EBUFF, NULL);				
 		}
-		termcaps_echoandputstr((current_element->command));
+		term_putstr((current_element->command));
 		s->cursorpos = ft_strlen(current_element->command);
 
 	}

@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 11:49:18 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 14:16:33 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/17 15:11:02 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	add_to_command_hist(char *line)
 	t_command_history	*new_element;
 
 	if ((new_element = malloc(sizeof(*new_element))) == NULL)
-		return (termcaps_echoandputstr(ERR_COM_HIST));
+		return (term_putstr(ERR_COM_HIST));
 	new_element->command = ft_strdup(line);
 	new_element->next = g_first_cmd_history;
 	g_first_cmd_history = new_element;
@@ -81,7 +81,7 @@ void	fill_command_hist(void)
 	if (g_first_cmd_history)
 		return ;
 	if ((g_first_cmd_history = malloc(sizeof(t_command_history*))) == NULL)
-		return (termcaps_echoandputstr(ERR_COM_HIST));
+		return (term_putstr(ERR_COM_HIST));
 	g_first_cmd_history = NULL;
 	fd = open_history_file(0);
 	while (get_next_line(fd, &line))

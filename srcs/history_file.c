@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 11:22:17 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 15:02:22 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/17 15:11:35 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	open_history_file(char write)
 	{
 		if ((fd = open(historyfilepath,
 		O_RDWR | O_CREAT, S_IRWXG | S_IRWXO | S_IRWXU)) < 1)
-			termcaps_echoandputstr(ERR_READ);
+			term_putstr(ERR_READ);
 	}
 	/*if (write == 0)
 	{
@@ -41,5 +41,5 @@ void	close_history_file(int fd)
 {
 	if (fd > 1)
 		if ((close(fd)) == -1)
-			termcaps_echoandputstr(ERR_CLOSE);
+			term_putstr(ERR_CLOSE);
 }

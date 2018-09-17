@@ -6,13 +6,13 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 18:15:42 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/14 10:54:13 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/17 15:06:08 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 
-void	termcaps_echoandputchar(char c)
+void	term_putchar(char c)
 {
 	termcaps_echo(1);
 	ft_putchar(c);
@@ -20,7 +20,7 @@ void	termcaps_echoandputchar(char c)
 	termcaps_echo(0);
 }
 
-void	termcaps_echoandputstr(char *s)
+void	term_putstr(char *s)
 {
 	termcaps_echo(1);
 	ft_putstr(s);
