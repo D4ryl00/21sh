@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 11:22:17 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 11:22:59 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/17 15:02:22 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,18 @@ int	open_history_file(char write)
 	historyfilepath = ft_memalloc(ft_strlen(getenv("HOME")) + 5);
 	ft_strcat(historyfilepath, getenv("HOME"));
 	ft_strcat(historyfilepath, "/.21sh");
-	if (write == 1)
+	if (write == 1 || write == 0)
 	{
 		if ((fd = open(historyfilepath,
 		O_RDWR | O_CREAT, S_IRWXG | S_IRWXO | S_IRWXU)) < 1)
 			termcaps_echoandputstr(ERR_READ);
 	}
-	if (write == 0)
+	/*if (write == 0)
 	{
 		if ((fd = open(historyfilepath,
 		O_RDONLY | O_APPEND )) < 1)
 			(termcaps_echoandputstr(ERR_READ));
-	}
+	}*/
 	free(historyfilepath);
 	return (fd);
 }
