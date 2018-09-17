@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 10:16:11 by amordret          #+#    #+#             */
-/*   Updated: 2018/05/17 13:58:03 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/17 14:36:41 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,13 @@ void	termcaps_reset_term_and_exit(void)
 		return (ft_putstr(ERR_TCSETATTR));
 	ft_putstr_fd(g_termcaps.leaveinsertmode, 0);
 	exit(0);
+}
+
+void	termcaps_reset_term(void)
+{
+	if (tcsetattr(0, TCSANOW, &(g_termcaps.backup_termios)) < 0)
+		return (ft_putstr(ERR_TCSETATTR));
+	ft_putstr_fd(g_termcaps.leaveinsertmode, 0);
 }
 
 void	ft_set_term(void)

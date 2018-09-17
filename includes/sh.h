@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/17 01:03:09 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/17 14:33:42 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ typedef struct					s_termcaps
 	int							writtenchars;
 }								t_termcaps;
 
-t_termcaps						g_termcaps;
 
 /*
 ** The order of the first ten entries is important.
@@ -198,6 +197,7 @@ typedef struct					s_ast_program
 extern char						*g_errors[];
 extern t_command_history		*g_first_cmd_history;
 extern t_list					*g_env;
+t_termcaps				g_termcaps;
 
 /*
 ** Prototypes
@@ -245,13 +245,17 @@ void							ft_set_term(void);
 int								read_input(t_input *input);
 void							termcaps_echo(char c);
 void							termcaps_echoandputchar(char c);
+void							termcaps_reset_term(void);
 void							termcaps_echoandputstr(char *s);
 void							input_is_special_char(t_read_input *readstruct);
 void							termcaps_reset_term_and_exit(void);
 void							input_is_backspace(int *cursorpos,
 								t_buf *buffer);
 void							input_is_up(t_read_input *s);
+int								open_history_file(char write);
+void							close_history_file(int fd);
 void							fill_command_hist(void);
+void							save_hist_to_file(void);
 int								termcaps_clearline(t_read_input *s);
 int								termcaps_clearlineandbuff(t_read_input *s);
 void							add_to_command_hist(char *line);

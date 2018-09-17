@@ -6,51 +6,49 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 11:49:18 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/14 16:47:26 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/17 14:16:33 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 
-static int	open_history_file(void)
-{
-	char	*historyfilepath;
-	int		fd;
-
-	fd = 0;
-	historyfilepath = ft_memalloc(ft_strlen(getenv("HOME")) + 5);
-	ft_strcat(historyfilepath, getenv("HOME"));
-	ft_strcat(historyfilepath, "/.21sh");
-
-	if ((fd = open(historyfilepath,
-	O_RDWR | O_CREAT | O_APPEND, S_IRWXG | S_IRWXO | S_IRWXU)) < 1)
-		termcaps_echoandputstr(ERR_READ);
-
-	/*if ((s->fd_history = open(historyfilepath,
-	O_RDWR | O_APPEND )) < 1)
-		return (termcaps_echoandputstr(ERR_READ));*/
-	free(historyfilepath);
-	return (fd);
-}
-
-static void	close_history_file(int fd)
-{
-	if (fd > 1)
-		if ((close(fd)) == -1)
-			termcaps_echoandputstr(ERR_CLOSE);
-}
-
 void	add_to_command_hist(char *line)
 {
-	t_command_history *new_element;
+	t_command_history	*new_element;
 
-//	if (first_command_hist == NULL)
-//		return termcaps_echoandputstr(ERR_COM_HIST);
 	if ((new_element = malloc(sizeof(*new_element))) == NULL)
 		return (termcaps_echoandputstr(ERR_COM_HIST));
 	new_element->command = ft_strdup(line);
 	new_element->next = g_first_cmd_history;
 	g_first_cmd_history = new_element;
+}
+
+void	save_hist_to_file(void)
+{
+	int					fd;
+	t_command_history	*current_element;
+	t_command_history	*previous_element;
+
+	previous_element = NULL;
+	if ((fd = open_history_file(1)) < 1)
+		return ;
+	while (g_first_cmd_history)
+	{
+		current_element = g_first_cmd_history;
+		while (current_element->next)
+		{
+			previous_element = current_element;
+			current_element = current_element->next;
+		}
+		ft_putendl_fd(current_element->command, fd);
+		free(current_element->command);
+		free(current_element);
+		if (previous_element)
+			previous_element->next = NULL;
+		if (current_element == g_first_cmd_history)
+			g_first_cmd_history = NULL;
+	}
+	close_history_file(fd);
 }
 
 void	save_current_hist(t_read_input *s)
@@ -59,6 +57,8 @@ void	save_current_hist(t_read_input *s)
 	t_command_history	*current_element;
 
 	i = 0;
+	if (g_first_cmd_history == NULL)
+		return ;
 	current_element = g_first_cmd_history;
 	if (s->historynb == 0)
 		return ;
@@ -83,7 +83,7 @@ void	fill_command_hist(void)
 	if ((g_first_cmd_history = malloc(sizeof(t_command_history*))) == NULL)
 		return (termcaps_echoandputstr(ERR_COM_HIST));
 	g_first_cmd_history = NULL;
-	fd = open_history_file();
+	fd = open_history_file(0);
 	while (get_next_line(fd, &line))
 	{
 		add_to_command_hist(line);

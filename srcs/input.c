@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/14 11:41:25 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/17 14:23:36 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,15 @@ int			read_input(t_input *input)
 			termcaps_echoandputchar(s.c[0]);
 		else
 			input_is_special_char(&s);
+		if (s.c[0] == '?')
+			save_hist_to_file();
 	}
 	if (ft_buf_add_char(&(s.buffer), '\0') == -1 ||
 	!((input->str) = ft_buf_flush(&(s.buffer))))
 		return (-1);
-	add_to_command_hist(input->str);
+	if (s.cursorpos)
+		add_to_command_hist(input->str);
+	
 	input->save = &(input->str[0]);
 	ft_buf_destroy(&(s.buffer));
 	return (s.c[3]);

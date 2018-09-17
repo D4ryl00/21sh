@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/17 01:03:50 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/17 14:33:22 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	run(char *path, char **av)
 	if ((pid = fork()) > 0)
 	{
 		ret = wait(&status);
+		ft_set_term();
 		ft_strarrdel(av);
 		if (ret == -1)
 			return (return_perror(EWAIT, NULL));
@@ -99,6 +100,7 @@ int	run(char *path, char **av)
 	{
 		if (!(env = ft_lsttoarrstr(g_env)))
 			exit_perror(ENOMEM, NULL);
+		termcaps_reset_term();
 		execve(path, av, env);
 		return (0);
 	}
