@@ -1,34 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strarrdel.c                                     :+:      :+:    :+:   */
+/*   ft_strarrchr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/15 22:24:59 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/17 15:52:07 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/09/17 16:01:14 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/09/17 16:07:42 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
 /*
-** Free a array of string finished by a NULL pointer.
+** Return index of str if it's is in array. Else return -1.
 */
 
-void	ft_strarrdel(char **arr)
+int	ft_strarrchr(char *str, char **arr)
 {
-	char	**p;
+	int	i;
 
+	i = -1;
 	if (arr)
 	{
-		p = arr;
-		while (*p)
+		while (arr[++i])
 		{
-			free(*p);
-			p++;
+			if (!ft_strcmp(arr[i], str))
+				return (i);
 		}
-		free(arr);
 	}
+	return (-1);
 }

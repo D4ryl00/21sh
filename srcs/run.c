@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/17 14:33:22 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/17 16:31:24 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,48 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+char	*g_builtin_cmd[] =
+{
+	"exit",
+	""
+};
+
+char	*g_special_builtin_cmd[] =
+{
+	"alloc",
+	""
+};
+
+char	*g_utility_cmd[] =
+{
+	"alias",
+	""
+};
+
 int	is_builtin_cmd(char **av)
 {
-	(void)av;
+	if (ft_strarrchr(av[0], g_builtin_cmd) >= 0)
+		return (1);
 	return (0);
 }
 
 int	is_special_builtin_cmd(char **av)
 {
-	(void)av;
+	if (ft_strarrchr(av[0], g_special_builtin_cmd) >= 0)
+		return (1);
 	return (0);
 }
 
 int	is_utility_cmd(char **av)
 {
-	(void)av;
+	if (ft_strarrchr(av[0], g_utility_cmd) >= 0)
+		return (1);
 	return (0);
 }
 int	run_builtin_cmd(char **av)
 {
-	(void)av;
+	if (!ft_strcmp(av[0], "exit"))
+		termcaps_reset_term_and_exit();
 	return (0);
 }
 
