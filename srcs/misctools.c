@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 18:15:42 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 15:06:08 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/17 15:25:12 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int		termcaps_clearlineandbuff(t_read_input *s)
 {
 	ft_putstr_fd(g_termcaps.returnhome, 0);
 	ft_putstr_fd(g_termcaps.deleteline, 0);
-	s->cursorpos = 0;
+	if (s && s->cursorpos)
+		s->cursorpos = 0;
 	ft_buf_destroy(&(s->buffer));
 	if (ft_buf_init(&(s->buffer)) == -1)
 		return (-1);
@@ -44,7 +45,8 @@ int		termcaps_clearline(t_read_input *s)
 {
 	ft_putstr_fd(g_termcaps.returnhome, 0);
 	ft_putstr_fd(g_termcaps.deleteline, 0);
-	s->cursorpos = 0;
+	if (s && s->cursorpos)
+		s->cursorpos = 0;
 	prompt(NULL);
 	return (0);
 }

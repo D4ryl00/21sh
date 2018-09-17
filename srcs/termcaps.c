@@ -6,12 +6,14 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 10:16:11 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 14:59:54 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/17 15:42:21 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+
+t_termcaps	g_termcaps;
 
 void	termcaps_echo(char c)
 {

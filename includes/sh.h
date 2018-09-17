@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/17 15:46:48 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/17 16:34:29 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct					s_command_history
 typedef struct					s_read_input
 {
 	char						c[4];
+	char						*tmpline;
 	t_buf						buffer;
 	int							cursorpos;
 	int							charsinline;
@@ -78,6 +79,7 @@ typedef struct					s_termcaps
 ** It's linked with g_op_token.
 ** PLEASE DO NOT CHANGE THAT!
 */
+
 enum							e_token
 {
 	AND_IF,
@@ -96,6 +98,7 @@ enum							e_token
 	NAME,
 	NEWLINE
 };
+
 typedef struct					s_token
 {
 	enum e_token				type;
@@ -197,10 +200,10 @@ typedef struct					s_ast_program
 extern char						*g_errors[];
 extern t_command_history		*g_first_cmd_history;
 extern t_list					*g_env;
-t_termcaps				g_termcaps;
 extern char						*g_builtin_cmd[];
 extern char						*g_special_builtin_cmd[];
 extern char						*g_utility_cmd[];
+extern t_termcaps				g_termcaps;
 
 /*
 ** Prototypes
@@ -255,6 +258,7 @@ void							termcaps_reset_term_and_exit(void);
 void							input_is_backspace(int *cursorpos,
 								t_buf *buffer);
 void							input_is_up(t_read_input *s);
+void							input_is_down(t_read_input *s);
 int								open_history_file(char write);
 void							close_history_file(int fd);
 void							fill_command_hist(void);

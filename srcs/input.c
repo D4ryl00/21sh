@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 15:10:20 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/17 15:50:56 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	set_t_read_input(t_read_input *s)
 	s->c[3] = 1;
 	s->cursorpos = 0;
 	s->historynb = 0;
+	s->tmpline = NULL;
 }
 
 int			read_input(t_input *input)
@@ -46,7 +47,6 @@ int			read_input(t_input *input)
 		return (-1);
 	if (s.cursorpos)
 		add_to_command_hist(input->str);
-	
 	input->save = &(input->str[0]);
 	ft_buf_destroy(&(s.buffer));
 	return (s.c[3]);

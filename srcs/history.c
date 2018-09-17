@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 11:49:18 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 15:11:02 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/17 16:11:34 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	save_current_hist(t_read_input *s)
 	if (g_first_cmd_history == NULL)
 		return ;
 	current_element = g_first_cmd_history;
-	if (s->historynb == 0)
+	if (s->historynb < 1)
 		return ;
 		//return (add_to_command_hist(s->buffer.buf));
 	while (++i < s->historynb && current_element->next)
