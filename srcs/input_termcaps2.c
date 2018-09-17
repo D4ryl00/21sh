@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 13:00:53 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 16:15:18 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/17 16:23:32 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	input_is_down(t_read_input *s)
 
 	i = 0;
 	termcaps_clearline(s);
-	if (s->historynb == 1 || s->historynb == 0)
+	if (s->historynb == 1)
 		return (recall_tmpline(s));
 	if (g_first_cmd_history)
 	{

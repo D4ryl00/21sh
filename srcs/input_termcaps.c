@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 15:35:46 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/17 16:27:59 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static void	input_is_del(int *cursorpos, t_buf *buffer)
 		return ;
 	ft_buf_delete_char(buffer, *(cursorpos));
 	ft_putstr_fd(g_termcaps.delete, 0);
+	if (g_termcaps.writtenchars)
+		g_termcaps.writtenchars--;
 }
 
 void		input_is_backspace(int *cursorpos, t_buf *buffer)
@@ -44,6 +46,8 @@ void		input_is_backspace(int *cursorpos, t_buf *buffer)
 	input_is_left(cursorpos);
 	ft_buf_delete_char(buffer, *(cursorpos));
 	ft_putstr_fd(g_termcaps.delete, 0);
+	if (g_termcaps.writtenchars)
+		g_termcaps.writtenchars--;
 }
 
 void		input_is_special_char(t_read_input *s)
@@ -60,7 +64,7 @@ void		input_is_special_char(t_read_input *s)
 		return (input_is_backspace(&(s->cursorpos), &(s->buffer)));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 65)
 		return (input_is_up(s));
-	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 66)
+	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 66 && s->historynb)
 		return (input_is_down(s));
 /*	ft_putnbr(s->c[0]);
 	ft_putchar(' ');
