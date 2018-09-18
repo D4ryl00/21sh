@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_termcaps2.c                                  :+:      :+:    :+:   */
+/*   input_upanddown.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 13:00:53 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 16:23:32 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/18 13:28:33 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,12 @@ void	input_is_up(t_read_input *s)
 			s->tmpline = ft_buf_flush(&(s->buffer));
 		else
 			save_current_hist(s);
-		s->historynb++;
 		current_element = g_first_cmd_history;
-		while (++i < s->historynb && current_element->next)
+		while (++i < (s->historynb + 1) && current_element->next)
 			current_element = current_element->next;
 		i = -1;
+		if (current_element && (current_element->next))
+			s->historynb++;
 		ft_buf_destroy(&(s->buffer));
 		ft_buf_init(&(s->buffer));
 		while (current_element->command[++i])
