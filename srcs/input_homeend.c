@@ -1,35 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   input_homeend.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/09 13:48:23 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 16:44:56 by amordret         ###   ########.fr       */
+/*   Created: 2018/09/18 11:23:11 by amordret          #+#    #+#             */
+/*   Updated: 2018/09/18 11:29:02 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 
-static void	sh_print_prompt(void)
+void	input_is_end(t_read_input *s)
 {
-	char	*pwd;
-
-	if (!(((pwd = getenv("PWD")) == NULL)))
+	while (s->cursorpos < g_termcaps.writtenchars)
 	{
-		ft_putstr(PROMPT1);
-		ft_putstr(pwd);
+		ft_putstr_fd(g_termcaps.cursorright, 0);
+		s->cursorpos++;
 	}
-	ft_putstr(PROMPT2);
-	ft_putstr(PROMPT3);
-	g_termcaps.writtenchars = 0;
 }
 
-void		prompt(char *promptstring)
+void	input_is_home(t_read_input *s)
 {
-	if (promptstring)
-		ft_putstr(promptstring);
-	else
-		sh_print_prompt();
+	while (s->cursorpos > 0)
+	{
+		ft_putstr_fd(g_termcaps.cursorleft, 0);
+		s->cursorpos--;
+	}
 }
