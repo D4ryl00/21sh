@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 11:49:18 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 16:11:34 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/18 13:44:25 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,26 @@ void	add_to_command_hist(char *line)
 	g_first_cmd_history = new_element;
 }
 
+static void	savehisttofile2(int fd, t_command_history *c, t_command_history *p)
+{
+	int	i;
+
+	i = 0;
+	c = g_first_cmd_history;
+		while (c->next && ++i < MAX_HISTORY)
+		{
+			p = c;
+			c = c->next;
+		}
+		ft_putendl_fd(c->command, fd);
+		free(c->command);
+		free(c);
+		if (p)
+			p->next = NULL;
+		if (c == g_first_cmd_history)
+			g_first_cmd_history = NULL;
+}
+
 void	save_hist_to_file(void)
 {
 	int					fd;
@@ -30,24 +50,11 @@ void	save_hist_to_file(void)
 	t_command_history	*previous_element;
 
 	previous_element = NULL;
+	current_element = NULL;
 	if ((fd = open_history_file(1)) < 1)
 		return ;
 	while (g_first_cmd_history)
-	{
-		current_element = g_first_cmd_history;
-		while (current_element->next)
-		{
-			previous_element = current_element;
-			current_element = current_element->next;
-		}
-		ft_putendl_fd(current_element->command, fd);
-		free(current_element->command);
-		free(current_element);
-		if (previous_element)
-			previous_element->next = NULL;
-		if (current_element == g_first_cmd_history)
-			g_first_cmd_history = NULL;
-	}
+		savehisttofile2(fd, current_element, previous_element);
 	close_history_file(fd);
 }
 

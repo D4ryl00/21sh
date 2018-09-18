@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/18 11:29:49 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/18 13:40:39 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 # define ERR_READ       "\nread() error. Check ~/.21sh. History wont work \n"
 # define ERR_CLOSE		"\nclose() error :S. crap...\n"
 # define ERR_COM_HIST	"\nError while fetching command history -> Wont work \n"
+
+# define MAX_HISTORY	5
 
 typedef struct termios			t_termios;
 
