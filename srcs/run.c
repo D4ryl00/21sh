@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/17 16:31:24 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/18 13:14:38 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,24 @@ int	run_utility_cmd(char **av)
 	return (0);
 }
 
+int	run_direct_path(char **av)
+{
+	int	status;
+
+	status = 127;
+	if (!access(av[0], F_OK))
+	{
+		status = 126;
+		if (!access(av[0], X_OK))
+			status = run(av[0], av);
+		else
+			ft_perror(EACCES, av[0]);
+	}
+	else
+		ft_perror(ENOCMD, av[0]);
+	return (status);
+}
+
 int	cmd_search_and_run(char **av)
 {
 	if (!ft_strchr(av[0], '/'))
@@ -86,19 +104,8 @@ int	cmd_search_and_run(char **av)
 		else
 			run_cmd_path(av);
 	}
-	/*if (!access(name, F_OK))
-	{
-		if (!access(name, X_OK))
-		{
-			execve(name, args, NULL);
-			ft_strarrdel(args);
-			args = NULL;
-		}
-		else
-			return_perror(EACCES, name);
-	}
 	else
-		return_perror(ENOCMD, name);*/
+		run_direct_path(av);
 	return (0);
 }
 

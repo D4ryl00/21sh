@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 15:45:25 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/17 01:02:58 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/18 11:53:45 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 ** For each dirs entry, test if the path 'dirs[i]/filename' exist
 ** and return the path.
 */
+
 static char	*get_path_exec(char *filename, char **dirs)
 {
 	char	*path;
@@ -42,6 +43,7 @@ static char	*get_path_exec(char *filename, char **dirs)
 ** Find where is the command name in the PATH of the env
 ** and run the command.
 */
+
 int		run_cmd_path(char **av)
 {
 	char	**dirs;
