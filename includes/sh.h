@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/18 14:56:13 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/18 18:55:44 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,6 +267,7 @@ int								open_history_file(char write);
 void							close_history_file(int fd);
 void							fill_command_hist(void);
 void							save_hist_to_file(void);
+void							free_minilibx(t_command_history *lasthistory);
 int								termcaps_clearline(t_read_input *s);
 int								termcaps_clearlineandbuff(t_read_input *s);
 void							add_to_command_hist(char *line);

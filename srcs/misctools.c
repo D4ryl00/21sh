@@ -6,11 +6,26 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 18:15:42 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 15:25:12 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/18 15:47:32 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
+
+void	free_minilibx(t_command_history *lasthistory)
+{
+	t_command_history	*next_element;
+
+	if (lasthistory && lasthistory->command)
+		while (lasthistory)
+		{
+			next_element = lasthistory->next;
+			lasthistory->next = NULL;
+			free(lasthistory->command);
+			free(lasthistory);
+			lasthistory = next_element;
+		}
+}
 
 void	term_putchar(char c)
 {

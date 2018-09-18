@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 11:49:18 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/18 13:44:25 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:08:33 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,19 @@ static void	savehisttofile2(int fd, t_command_history *c, t_command_history *p)
 
 	i = 0;
 	c = g_first_cmd_history;
-		while (c->next && ++i < MAX_HISTORY)
-		{
-			p = c;
-			c = c->next;
-		}
-		ft_putendl_fd(c->command, fd);
-		free(c->command);
-		free(c);
-		if (p)
-			p->next = NULL;
-		if (c == g_first_cmd_history)
-			g_first_cmd_history = NULL;
+	while (c->next && ++i < MAX_HISTORY)
+	{
+		p = c;
+		c = c->next;
+	}
+	//REMETTRE ICI IF I == MAXHISTORY ALORS MINILIBX... FUCKING GIT
+	ft_putendl_fd(c->command, fd);
+	free(c->command);
+	free(c);
+	if (p)
+		p->next = NULL;
+	if (c == g_first_cmd_history)
+		g_first_cmd_history = NULL;
 }
 
 void	save_hist_to_file(void)
