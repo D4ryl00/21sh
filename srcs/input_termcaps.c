@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 16:27:59 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/18 10:46:48 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ void		input_is_special_char(t_read_input *s)
 		return (input_is_up(s));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 66 && s->historynb)
 		return (input_is_down(s));
-/*	ft_putnbr(s->c[0]);
+	ft_putnbr(s->c[0]);
 	ft_putchar(' ');
 	ft_putnbr(s->c[1]);
 	ft_putchar(' ');
-	ft_putnbr(s->c[2]);*/
+	ft_putnbr(s->c[2]);
 	s->c[0] = 0;
 }
