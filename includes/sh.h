@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/18 13:40:39 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/18 14:56:13 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,4 +287,6 @@ int								run(char *path, char **av);
 int								run_cmd_path(char **av);
 char							*p_to_equ_char(char *str);
 int								env_select_key(t_list *node, void *data);
+void							cmd_ast_get_redirs(t_ast_io_redirect **input
+		, t_ast_io_redirect **output, t_ast_simple_command *sc);
 #endif
