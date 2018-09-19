@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/09/18 15:01:58 by rbarbero         ###   ########.fr        #
+#    Updated: 2018/09/19 10:42:50 by amordret         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRCS = main.c error.c free.c eval.c tokens.c termcaps.c prompt.c input.c \
 	   get_token_substitution.c get_token_word.c get_token_operator.c \
 	   get_token_various.c classify_token.c ast.c ast_free.c ast_run.c \
 	   env_tools.c run.c run_path.c history_file.c input_homeend.c \
-	   ast_cmd_tools.c
+	   ast_cmd_tools.c history2.c
 SRCS_DIR = srcs/
 LIB_DIR = libft
 

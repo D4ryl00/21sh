@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 13:00:53 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/18 13:28:33 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/19 10:53:47 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	input_is_up(t_read_input *s)
 		while (++i < (s->historynb + 1) && current_element->next)
 			current_element = current_element->next;
 		i = -1;
-		if (current_element && (current_element->next))
+		if (current_element)
 			s->historynb++;
 		ft_buf_destroy(&(s->buffer));
 		ft_buf_init(&(s->buffer));
