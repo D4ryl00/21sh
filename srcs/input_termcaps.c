@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/19 11:28:11 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/19 14:53:02 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,10 @@ void		input_is_special_char(t_read_input *s)
 		return (input_is_end(s));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 72)
 		return (input_is_home(s));
+	if (s->c[0] == 27 && (s->c[1] == 102 || s->c[1] == 27))
+		return (input_is_nextword(s));
+	ft_putnbr(s->c[0]);
+	ft_putnbr(s->c[1]);
+	ft_putnbr(s->c[2]);
 	s->c[0] = 0;
 }
