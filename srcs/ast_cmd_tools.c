@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/19 19:07:28 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/19 21:56:56 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,30 @@ char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 	return (args);
 }
 
+static int output_redirect(t_ast_cmd_suffix *suffix, int mode)
+{
+	int	fd;
+	int	io_number;
+
+	if ((fd = open(suffix->io_redirect->io_file->filename->word, mode, 0644)) == -1)
+		return (return_perror(EOPEN, NULL));
+	else
+	{
+		if (suffix->io_redirect->io_number[0])
+			io_number = ft_atoi(suffix->io_redirect->io_number);
+		else
+			io_number = 1;
+		if (dup2(fd, io_number) == -1)
+		{
+			close(fd);
+			return (return_perror(EDUP, NULL));
+		}
+		close(fd);
+	}
+	return (0);
+}
+
+
 /*
 ** Scan a simple_command and get input and output redirections if they exist.
 ** Set the address of the structures in the args.
@@ -89,56 +113,36 @@ char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 int	cmd_ast_eval_redirs(t_ast_simple_command *sc)
 {
 	t_ast_cmd_suffix	*suffix;
-	t_ast_io_file		*file;
-	t_ast_io_here		*here;
-	int					fd;
-	int					io_number;
 
 	suffix = sc->cmd_suffix;
 	while (suffix)
 	{
 		if (suffix->io_redirect)
 		{
-			if ((file = suffix->io_redirect->io_file))
+			if (suffix->io_redirect->io_file)
 			{
-				if (file->op->c == '>')
+				if (suffix->io_redirect->io_file->op->c == '>'
+					|| suffix->io_redirect->io_file->op->e == CLOBBER)
 				{
-					if ((fd = open(file->filename->word, O_CREAT|O_WRONLY, 0644)) == -1)
-						ft_perror(EOPEN, NULL);
-					else
-					{
-						if (suffix->io_redirect->io_number[0])
-							io_number = ft_atoi(suffix->io_redirect->io_number);
-						else
-							io_number = 1;
-						if (dup2(fd, io_number) == -1)
-						{
-							close(fd);
-							return (return_perror(EDUP, NULL));
-						}
-						close(fd);
-					}
+					if (output_redirect(suffix, O_CREAT|O_WRONLY) == -1)
+						return (-1);
+				}
+				else if (suffix->io_redirect->io_file->op->e == DGREAT)
+				{
+					if (output_redirect(suffix, O_CREAT|O_WRONLY|O_APPEND) == -1)
+						return (-1);
+				}
+				else if (suffix->io_redirect->io_file->op->e == DGREAT)
+				{
+					if (output_redirect(suffix, O_CREAT|O_WRONLY|O_APPEND) == -1)
+						return (-1);
 				}
 			}
-			else if ((here = suffix->io_redirect->io_here))
+			else if (suffix->io_redirect->io_here)
 			{
 			}
 		}
 		suffix = suffix->cmd_suffix;
 	}
 	return (0);
-}
-
-void	cmd_ast_undo_redirs(t_list *backup)
-{
-	t_io_redir_done	*rdone;
-
-	while (backup)
-	{
-		rdone = backup->content;
-		if (dup2(rdone->dup.target, rdone->dup.source) == -1)
-			ft_perror(EDUP, NULL);
-		close(rdone->open);
-		backup = backup->next;
-	}
 }
