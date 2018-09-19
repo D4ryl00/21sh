@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/18 18:50:14 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/19 01:59:07 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 /*
 ** For a simple_command, return the command name for execve
 */
+
 char	*ast_get_cmd_name(t_ast_simple_command *sc)
 {
 	if (sc && sc->cmd_name && sc->cmd_name->word)
@@ -58,23 +59,28 @@ t_ast_filename	*ast_filename(t_list *tokens)
 t_ast_io_file	*ast_io_file(t_list *tokens)
 {
 	t_ast_io_file	*file;
+	t_token			*token;
 
 	file = NULL;
 	if (tokens)
 	{
-		if (!(file = (t_ast_io_file *)malloc(sizeof(t_ast_io_file))))
+		if (!(file = (t_ast_io_file *)malloc(sizeof(t_ast_io_file)))
+				|| !(file->op = (t_ast_io_op *)malloc(sizeof(t_ast_io_op))))
 			exit_perror(ENOMEM, NULL);
-		file->operator[0] = '\0';
 		file->filename = NULL;
-		if (!ft_strcmp(((t_token *)tokens->content)->content, "<") ||
-				!ft_strcmp(((t_token *)tokens->content)->content, "<&") ||
-				!ft_strcmp(((t_token *)tokens->content)->content, ">") ||
-				!ft_strcmp(((t_token *)tokens->content)->content, ">&") ||
-				!ft_strcmp(((t_token *)tokens->content)->content, ">>") ||
-				!ft_strcmp(((t_token *)tokens->content)->content, "<>") ||
-				!ft_strcmp(((t_token *)tokens->content)->content, ">|"))
+		token = (t_token *)tokens->content;
+		if ((token->type == LESSAND) || (token->type == GREATAND)
+				|| (token->type == DGREAT) || (token->type == LESSGREAT)
+				|| (token->type == CLOBBER))
 		{
-			ft_strncpy(file->operator, ((t_token *)tokens->content)->content, 3);
+			file->op->c = '\0';
+			file->op->e = token->type;
+			file->filename = ast_filename(tokens->next);
+		}
+		else if (!ft_strcmp(token->content, "<")
+				|| !ft_strcmp(token->content, ">"))
+		{
+			file->op->c = token->content[0];
 			file->filename = ast_filename(tokens->next);
 		}
 		if (!(file->filename))

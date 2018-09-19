@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 01:37:49 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/18 18:54:24 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/19 02:30:01 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 static int	run_simple_command(t_ast_simple_command *sc)
 {
-	t_ast_io_redirect	*input;
-	t_ast_io_redirect	*output;
+	int		status;
+	t_list	*backup;
 
-	input = NULL;
-	output = NULL;
-	//cmd_ast_get_redirs(&input, &output, sc);
-	return (cmd_search_and_run(ast_construct_cmd_args(sc)));
+	backup = cmd_ast_eval_redirs(sc);
+	status = cmd_search_and_run(ast_construct_cmd_args(sc));
+	cmd_ast_undo_redirs(backup);
+	return (status);
 }
 
 static int	run_command(t_ast_command *command)

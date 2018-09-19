@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/18 18:55:44 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/19 02:45:13 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ enum							e_errno
 	EBUFF,
 	EFORK,
 	EWAIT,
+	EOPEN,
+	EDUP,
 	EOTHER
 };
 
@@ -126,6 +128,18 @@ typedef struct					s_input
 	char						*str;
 	char						*save;
 }								t_input;
+
+typedef struct					s_dup
+{
+	int							source;
+	int							target;
+}								t_dup;
+
+typedef struct					s_io_redir_done
+{
+	int							open;
+	t_dup						dup;
+}								t_io_redir_done;
 
 /*
 ** Structures for the AST
@@ -141,9 +155,15 @@ typedef struct					s_ast_filename
 	char						*word;
 }								t_ast_filename;
 
+typedef struct					s_ast_io_op
+{
+	char						c;
+	enum e_token				e;
+}								t_ast_io_op;
+
 typedef struct					s_ast_io_file
 {
-	char						operator[3];
+	t_ast_io_op					*op;
 	t_ast_filename				*filename;
 }								t_ast_io_file;
 
@@ -154,7 +174,7 @@ typedef struct					s_ast_here_end
 
 typedef struct					s_ast_io_here
 {
-	char						operator[3];
+	enum e_token				*op;
 	t_ast_here_end				*here_end;
 }								t_ast_io_here;
 
@@ -288,6 +308,6 @@ int								run(char *path, char **av);
 int								run_cmd_path(char **av);
 char							*p_to_equ_char(char *str);
 int								env_select_key(t_list *node, void *data);
-void							cmd_ast_get_redirs(t_ast_io_redirect **input
-		, t_ast_io_redirect **output, t_ast_simple_command *sc);
+t_list							*cmd_ast_eval_redirs(t_ast_simple_command *sc);
+void							cmd_ast_undo_redirs(t_list 	*backup);
 #endif

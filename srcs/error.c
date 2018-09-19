@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 22:09:25 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/17 15:09:43 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/19 02:45:01 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ char			*g_errors[] =
 	"Buffer error, irrecoverable, exiting...",
 	"Fork error",
 	"Wait error",
+	"Open error",
+	"Dup error",
 	""
 };
 
