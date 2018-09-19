@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 15:45:25 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/18 11:53:45 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/19 18:48:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static char	*get_path_exec(char *filename, char **dirs)
 ** and run the command.
 */
 
-int		run_cmd_path(char **av)
+int		run_cmd_path(char **av, t_ast_simple_command *sc)
 {
 	char	**dirs;
 	char	*path;
@@ -60,7 +60,7 @@ int		run_cmd_path(char **av)
 		{
 			status = 126;
 			if (!access(path, X_OK))
-				status = run(path, av);
+				status = run(path, av, sc);
 			else
 				ft_perror(EACCES, av[0]);
 			free(path);

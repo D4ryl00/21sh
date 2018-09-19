@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/19 10:42:00 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/19 19:06:26 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,18 +297,24 @@ int								classify_token(t_list *tokens);
 t_ast_program					*make_ast(t_list *tokens);
 void							free_ast_program(t_ast_program *program);
 void							free_ast_command(t_ast_command *command);
-void							free_ast_simple_command(t_ast_simple_command *sc);
+void							free_ast_simple_command
+(t_ast_simple_command *sc);
 void							free_ast_cmd_suffix(t_ast_cmd_suffix *suffix);
-void							free_ast_io_redirect(t_ast_io_redirect *redirect);
+void							free_ast_io_redirect
+(t_ast_io_redirect *redirect);
 void							free_ast_io_file(t_ast_io_file *file);
 int								run_program(t_ast_program *program);
 char							*ast_get_cmd_name(t_ast_simple_command *sc);
-char							**ast_construct_cmd_args(t_ast_simple_command *sc);
-int								cmd_search_and_run(char **av);
-int								run(char *path, char **av);
-int								run_cmd_path(char **av);
+char							**ast_construct_cmd_args
+(t_ast_simple_command *sc);
+int								cmd_search_and_run(char ** av
+, t_ast_simple_command *sc);
+int								run(char *path, char **av
+, t_ast_simple_command *sc);
+int								run_cmd_path(char **av
+, t_ast_simple_command *sc);
 char							*p_to_equ_char(char *str);
 int								env_select_key(t_list *node, void *data);
-t_list							*cmd_ast_eval_redirs(t_ast_simple_command *sc);
+int								cmd_ast_eval_redirs(t_ast_simple_command *sc);
 void							cmd_ast_undo_redirs(t_list 	*backup);
 #endif

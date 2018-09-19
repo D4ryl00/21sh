@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/19 03:23:13 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/19 19:07:28 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,24 +86,17 @@ char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 ** Set the address of the structures in the args.
 */
 
-t_list	*cmd_ast_eval_redirs(t_ast_simple_command *sc)
+int	cmd_ast_eval_redirs(t_ast_simple_command *sc)
 {
-	t_list				*backup;
-	t_list				*node;
-	t_io_redir_done		rdone;
 	t_ast_cmd_suffix	*suffix;
 	t_ast_io_file		*file;
 	t_ast_io_here		*here;
 	int					fd;
-	int					word;
+	int					io_number;
 
-	backup = NULL;
 	suffix = sc->cmd_suffix;
 	while (suffix)
 	{
-		rdone.open = -1;
-		rdone.dup.source = -1;
-		rdone.dup.target = -1;
 		if (suffix->io_redirect)
 		{
 			if ((file = suffix->io_redirect->io_file))
@@ -114,30 +107,16 @@ t_list	*cmd_ast_eval_redirs(t_ast_simple_command *sc)
 						ft_perror(EOPEN, NULL);
 					else
 					{
-						rdone.open = fd;
 						if (suffix->io_redirect->io_number[0])
-						{
-							word = ft_atoi(suffix->io_redirect->io_number);
-							rdone.dup.source = word;
-							rdone.dup.target = dup(word);
-							if (dup2(fd, word) == -1)
-								ft_perror(EDUP, NULL);
-						}
+							io_number = ft_atoi(suffix->io_redirect->io_number);
 						else
+							io_number = 1;
+						if (dup2(fd, io_number) == -1)
 						{
-							rdone.dup.source = 1;
-							rdone.dup.target = dup(1);
-							if (dup2(fd, 1) == -1)
-								ft_perror(EDUP, NULL);
-						}
-						if (rdone.dup.target == -1)
 							close(fd);
-						else
-						{
-							if (!(node = ft_lstnew(&rdone, sizeof(t_io_redir_done))))
-								exit_perror(ENOMEM, NULL);
-							ft_lstadd(&backup, node);
+							return (return_perror(EDUP, NULL));
 						}
+						close(fd);
 					}
 				}
 			}
@@ -147,7 +126,7 @@ t_list	*cmd_ast_eval_redirs(t_ast_simple_command *sc)
 		}
 		suffix = suffix->cmd_suffix;
 	}
-	return (backup);
+	return (0);
 }
 
 void	cmd_ast_undo_redirs(t_list *backup)

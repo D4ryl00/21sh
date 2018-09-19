@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/18 13:14:38 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/19 18:52:28 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	run_utility_cmd(char **av)
 	return (0);
 }
 
-int	run_direct_path(char **av)
+int	run_direct_path(char **av, t_ast_simple_command *sc)
 {
 	int	status;
 
@@ -82,7 +82,7 @@ int	run_direct_path(char **av)
 	{
 		status = 126;
 		if (!access(av[0], X_OK))
-			status = run(av[0], av);
+			status = run(av[0], av, sc);
 		else
 			ft_perror(EACCES, av[0]);
 	}
@@ -91,7 +91,7 @@ int	run_direct_path(char **av)
 	return (status);
 }
 
-int	cmd_search_and_run(char **av)
+int	cmd_search_and_run(char ** av, t_ast_simple_command *sc)
 {
 	if (!ft_strchr(av[0], '/'))
 	{
@@ -102,14 +102,14 @@ int	cmd_search_and_run(char **av)
 		else if (is_utility_cmd(av))
 			run_utility_cmd(av);
 		else
-			run_cmd_path(av);
+			run_cmd_path(av, sc);
 	}
 	else
-		run_direct_path(av);
+		run_direct_path(av, sc);
 	return (0);
 }
 
-int	run(char *path, char **av)
+int	run(char *path, char **av, t_ast_simple_command *sc)
 {
 	pid_t	pid;
 	int		status;
@@ -130,6 +130,7 @@ int	run(char *path, char **av)
 		if (!(env = ft_lsttoarrstr(g_env)))
 			exit_perror(ENOMEM, NULL);
 		termcaps_reset_term();
+		cmd_ast_eval_redirs(sc);
 		execve(path, av, env);
 		return (0);
 	}
