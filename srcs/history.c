@@ -6,13 +6,13 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 11:49:18 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/19 11:18:54 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/19 11:26:26 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 
-void	add_to_command_hist(char *line)
+void		add_to_command_hist(char *line)
 {
 	t_command_history	*new_element;
 
@@ -45,7 +45,7 @@ static void	savehisttofile2(int fd, t_command_history *c, t_command_history *p)
 		g_first_cmd_history = NULL;
 }
 
-void	save_hist_to_file(void)
+void		save_hist_to_file(void)
 {
 	int					fd;
 	t_command_history	*current_element;
@@ -60,7 +60,7 @@ void	save_hist_to_file(void)
 	close_history_file(fd);
 }
 
-void	save_current_hist(t_read_input *s)
+void		save_current_hist(t_read_input *s)
 {
 	int					i;
 	t_command_history	*current_element;
@@ -71,7 +71,6 @@ void	save_current_hist(t_read_input *s)
 	current_element = g_first_cmd_history;
 	if (s->historynb < 1)
 		return ;
-		//return (add_to_command_hist(s->buffer.buf));
 	while (++i < s->historynb && current_element->next)
 		current_element = current_element->next;
 	if (current_element->command)
@@ -79,18 +78,15 @@ void	save_current_hist(t_read_input *s)
 	current_element->command = ft_strdup(((s->buffer).buf));
 }
 
-void	fill_command_hist(void)
+void		fill_command_hist(void)
 {
 	char	*line;
 	int		fd;
 
 	line = NULL;
 	fd = 0;
-
 	if (g_first_cmd_history)
 		return ;
-	//if ((g_first_cmd_history = malloc(sizeof(t_command_history*))) == NULL)
-	//	return (term_putstr(ERR_COM_HIST));
 	g_first_cmd_history = NULL;
 	fd = open_history_file(0);
 	while (get_next_line(fd, &line))

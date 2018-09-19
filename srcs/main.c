@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/19 11:19:15 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/19 11:30:29 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int		main(int argc, char **argv, char **environ)
 
 	(void)argc;
 	(void)argv;
-
 	g_env = ft_strarrtolist(environ);
 	program = NULL;
 	ft_set_term();

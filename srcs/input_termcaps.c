@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/19 10:48:59 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/19 11:28:11 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,14 @@ void		input_is_special_char(t_read_input *s)
 		return (input_is_del(&(s->cursorpos), &(s->buffer)));
 	if (s->c[0] == 127)
 		return (input_is_backspace(&(s->cursorpos), &(s->buffer)));
-	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 65 && !(max_history_reached(s)))
+	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 65 &&
+	!(max_history_reached(s)))
 		return (input_is_up(s));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 66 && s->historynb)
 		return (input_is_down(s));
-	if (s->c[0] == 27 && s->c [1] == 91 && s->c[2] == 70)
+	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 70)
 		return (input_is_end(s));
-	if (s->c[0] == 27 && s->c [1] == 91 && s->c[2] == 72)
+	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 72)
 		return (input_is_home(s));
-	/*ft_putnbr(s->c[0]);
-	ft_putchar(' ');
-	ft_putnbr(s->c[1]);
-	ft_putchar(' ');
-	ft_putnbr(s->c[2]);*/
 	s->c[0] = 0;
 }

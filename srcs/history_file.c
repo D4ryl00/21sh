@@ -6,13 +6,13 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 11:22:17 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/17 15:11:35 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/19 11:25:34 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 
-int	open_history_file(char write)
+int		open_history_file(char write)
 {
 	char	*historyfilepath;
 	int		fd;
@@ -27,12 +27,6 @@ int	open_history_file(char write)
 		O_RDWR | O_CREAT, S_IRWXG | S_IRWXO | S_IRWXU)) < 1)
 			term_putstr(ERR_READ);
 	}
-	/*if (write == 0)
-	{
-		if ((fd = open(historyfilepath,
-		O_RDONLY | O_APPEND )) < 1)
-			(termcaps_echoandputstr(ERR_READ));
-	}*/
 	free(historyfilepath);
 	return (fd);
 }
