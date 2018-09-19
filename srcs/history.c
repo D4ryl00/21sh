@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 11:49:18 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/18 17:08:33 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/19 11:18:54 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static void	savehisttofile2(int fd, t_command_history *c, t_command_history *p)
 		p = c;
 		c = c->next;
 	}
-	//REMETTRE ICI IF I == MAXHISTORY ALORS MINILIBX... FUCKING GIT
+	if (i == MAX_HISTORY)
+		free_minilibx(c->next);
 	ft_putendl_fd(c->command, fd);
 	free(c->command);
 	free(c);
@@ -88,8 +89,8 @@ void	fill_command_hist(void)
 
 	if (g_first_cmd_history)
 		return ;
-	if ((g_first_cmd_history = malloc(sizeof(t_command_history*))) == NULL)
-		return (term_putstr(ERR_COM_HIST));
+	//if ((g_first_cmd_history = malloc(sizeof(t_command_history*))) == NULL)
+	//	return (term_putstr(ERR_COM_HIST));
 	g_first_cmd_history = NULL;
 	fd = open_history_file(0);
 	while (get_next_line(fd, &line))

@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/19 10:37:30 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/19 10:51:18 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/19 11:18:17 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,19 @@ int	max_history_reached(t_read_input *s)
 		return (0);
 	else
 		return (1);
+}
+
+void	free_minilibx(t_command_history *lasthistory)
+{
+	t_command_history	*next_element;
+
+	if (lasthistory && lasthistory->command)
+		while (lasthistory)
+		{
+			next_element = lasthistory->next;
+			lasthistory->next = NULL;
+			free(lasthistory->command);
+			free(lasthistory);
+			lasthistory = next_element;
+		}
 }
