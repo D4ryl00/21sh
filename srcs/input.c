@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/20 13:06:08 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/20 13:51:51 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,24 @@ static void	set_t_read_input(t_read_input *s)
 	s->tmpline = NULL;
 }
 
-static void	write_input(t_read_input *s)
+/*static void	write_input(t_read_input *s)
 {
-	term_putchar(s->c[0]);
-	if ((s->c[3] > 1 && s->c[1] != 27 && s->c[1] != 0 &&
+	
+	if ((s->c[3] > 1 && s->c[0] != '\n' && s->c[1] != 27 && s->c[1] != 0 &&
 	ft_isprint(s->c[1]) == 1) || s->c[1] == '\n')
 	{
 		term_putchar(s->c[1]);
-		s->cursorpos += (ft_buf_insert_char(&(s->buffer), s->c[1], s->cursorpos) + 1);
+		if (s->c[1] != '\n')
+			s->cursorpos += (ft_buf_insert_char(&(s->buffer), s->c[1], s->cursorpos) + 1);
 	}
-	if ((s->c[3] > 2 && s->c[2] != 27 && s->c[2] != 0 &&
+	if ((s->c[3] > 2 && s->c[1] != '\n' && s->c[2] != 27 && s->c[2] != 0 &&
 	ft_isprint(s->c[2]) == 1) || s->c[2] == '\n')
 	{
 		term_putchar(s->c[2]);
-		s->cursorpos += (ft_buf_insert_char(&(s->buffer), s->c[2], s->cursorpos) + 1);
+		if (s->c[2] != '\n')
+			s->cursorpos += (ft_buf_insert_char(&(s->buffer), s->c[2], s->cursorpos) + 1);
 	}
-}
+}*/
 
 int			read_input(t_input *input)
 {
@@ -47,13 +49,13 @@ int			read_input(t_input *input)
 		return (-1);
 	while (s.c[3] && s.c[0] != '\n')
 	{
-		s.c[3] = read(0, &(s.c), 3);
+		s.c[3] = read(0, &(s.c), 1);
 		if (s.c[0] != 27 && ft_isprint(s.c[0]) == 1 && (s.cursorpos +=
 		ft_buf_insert_char(&(s.buffer), s.c[0], s.cursorpos) + 1) == -1)
 			return (-1);
 		if ((s.c[0] != 27 && s.c[0] != 0 && ft_isprint(s.c[0]) == 1) ||
 		s.c[0] == '\n')
-			write_input(&s);
+			term_putchar(s.c[0]);
 		else
 			input_is_special_char(&s);
 	}
