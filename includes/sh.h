@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/20 11:42:59 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/20 14:12:18 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,7 +296,6 @@ int								termcaps_clearline(t_read_input *s);
 int								termcaps_clearlineandbuff(t_read_input *s);
 void							add_to_command_hist(char *line);
 void							save_current_hist(t_read_input *s);
-int								classify_token(t_list *tokens);
 t_ast_program					*make_ast(t_list *tokens);
 void							free_ast_program(t_ast_program *program);
 void							free_ast_command(t_ast_command *command);

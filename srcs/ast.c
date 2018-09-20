@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/19 01:59:07 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/20 15:32:41 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,10 @@ t_ast_cmd_suffix		*ast_cmd_suffix(t_list *tokens)
 				free_ast_io_redirect(suffix->io_redirect);
 				suffix->io_redirect = NULL;
 			}*/
-			suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next);
+			if (suffix->io_redirect->io_number[0])
+				suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next->next->next);
+			else
+				suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next->next);
 		}
 		else if (!suffix->io_redirect && ((t_token *)tokens->content)->type == TOKEN)
 		{

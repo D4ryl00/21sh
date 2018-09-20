@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/20 12:10:47 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/20 14:37:10 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 ** The order is important. It's linked with e_token.
 ** PLEASE DO NOT CHANGE THAT!
 */
+
 char			*g_op_token [] =
 {
 	"&&",
@@ -41,13 +42,13 @@ t_ast_program*eval(t_input *input)
 
 	if (!(tokens = get_tokens(input)))
 	{
-		//free(input);
+		free(input->save);
 		return (NULL);
 	}
-	/*if (classify_token(tokens) == -1)
-		return (NULL);*/
-	//free(input);
+	free(input->save);
+	input->save = NULL;
 	program = make_ast(tokens);
+	ft_lstdel(&tokens, token_free);
 	run_program(program);
 	/*while (tokens)
 	{
