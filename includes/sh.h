@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/19 19:12:41 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/20 11:42:59 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,35 +239,37 @@ void							prompt(char *promptstring);
 t_ast_program					*eval(t_input *input);
 t_list							*get_tokens(t_input *input);
 int								sq_case(t_buf *buffer, t_input *input
-		, unsigned char f_params[2]);
+	, unsigned char f_params[2]);
 int								bs_case(t_buf *buffer, t_input *input
-		, unsigned char f_params[2]);
+	, unsigned char f_params[2]);
 int								dq_case(t_buf *buffer, t_input *input
-		, unsigned char f_params[2]);
+	, unsigned char f_params[2]);
 int								dollar_case(t_buf *buffer, t_input *input
-		, unsigned char f_params[2]);
+	, unsigned char f_params[2]);
 int								get_token_expansion(t_buf *buffer
-		, t_input *input, unsigned char f_params[2]);
+	, t_input *input, unsigned char f_params[2]);
 int								get_token_arithmetic(t_buf *buffer
-		, t_input *input, unsigned char f_params[2]);
+	, t_input *input, unsigned char f_params[2]);
 int								substitution_case(t_buf *buffer, t_input *input
-		, unsigned char f_params[2], char close);
+	, unsigned char f_params[2], char close);
 int								bq_input(t_buf *buffer, t_input *input
-		, unsigned char f_params[2]);
+	, unsigned char f_params[2]);
 int								word_add_char_case(t_buf *buffer
-		, t_input *input);
+	, t_input *input);
 int								word_start_case(t_buf *buffer, t_input *input
-		, unsigned char f_params[2]);
+	, unsigned char f_params[2]);
 int								 is_operator(t_buf *buffer, char c
-		, unsigned char f_params[2]);
+	, unsigned char f_params[2]);
 int								operator_case(t_list **tokens, t_buf *buffer
-		, t_input *input, unsigned char f_params[2]);
+	, t_input *input, unsigned char f_params[2]);
 int								operator_start_case(t_list **tokens
-		, t_buf *buffer, t_input *input, unsigned char f_params[2]);
-int								insert_token(t_list **tokens, char *token);
+	, t_buf *buffer, t_input *input, unsigned char f_params[2]);
+int								insert_token(t_list **tokens, char *token
+	, enum e_token type);
 int								comment_input(t_input *input);
 int								delimiter_case(t_list **tokens, t_buf *buffer
-		, t_input *input, unsigned char f_params[2]);
+	, t_input *input, unsigned char f_params[2]);
+enum e_token					token_get_op_type(char *str);
 void							token_free(void *content, size_t size);
 void							ft_set_term(void);
 int								read_input(t_input *input);
@@ -278,7 +280,7 @@ void							term_putstr(char *s);
 void							input_is_special_char(t_read_input *readstruct);
 void							termcaps_reset_term_and_exit(void);
 void							input_is_backspace(int *cursorpos,
-								t_buf *buffer);
+	t_buf *buffer);
 void							input_is_up(t_read_input *s);
 void							input_is_down(t_read_input *s);
 void							input_is_end(t_read_input *s);
@@ -299,21 +301,21 @@ t_ast_program					*make_ast(t_list *tokens);
 void							free_ast_program(t_ast_program *program);
 void							free_ast_command(t_ast_command *command);
 void							free_ast_simple_command
-(t_ast_simple_command *sc);
+	(t_ast_simple_command *sc);
 void							free_ast_cmd_suffix(t_ast_cmd_suffix *suffix);
 void							free_ast_io_redirect
-(t_ast_io_redirect *redirect);
+	(t_ast_io_redirect *redirect);
 void							free_ast_io_file(t_ast_io_file *file);
 int								run_program(t_ast_program *program);
 char							*ast_get_cmd_name(t_ast_simple_command *sc);
 char							**ast_construct_cmd_args
-(t_ast_simple_command *sc);
+	(t_ast_simple_command *sc);
 int								cmd_search_and_run(char ** av
-, t_ast_simple_command *sc);
+	, t_ast_simple_command *sc);
 int								run(char *path, char **av
-, t_ast_simple_command *sc);
+	, t_ast_simple_command *sc);
 int								run_cmd_path(char **av
-, t_ast_simple_command *sc);
+	, t_ast_simple_command *sc);
 char							*p_to_equ_char(char *str);
 int								env_select_key(t_list *node, void *data);
 int								cmd_ast_eval_redirs(t_ast_simple_command *sc);

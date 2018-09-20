@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/19 21:56:56 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/20 06:45:36 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,19 +81,25 @@ char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 	return (args);
 }
 
-static int output_redirect(t_ast_cmd_suffix *suffix, int mode)
+/*
+** Redirection [n]> or [n]>> into a file,
+** where [n] is an optional fd (default 1).
+*/
+
+static int	filename_redirect(t_ast_cmd_suffix *suffix, char op, int mode)
 {
 	int	fd;
 	int	io_number;
 
-	if ((fd = open(suffix->io_redirect->io_file->filename->word, mode, 0644)) == -1)
+	if ((fd = open(suffix->io_redirect->io_file->filename->word
+		, mode, 0644)) == -1)
 		return (return_perror(EOPEN, NULL));
 	else
 	{
 		if (suffix->io_redirect->io_number[0])
 			io_number = ft_atoi(suffix->io_redirect->io_number);
 		else
-			io_number = 1;
+			io_number = op == '>' ? 1 : 0;
 		if (dup2(fd, io_number) == -1)
 		{
 			close(fd);
@@ -101,6 +107,32 @@ static int output_redirect(t_ast_cmd_suffix *suffix, int mode)
 		}
 		close(fd);
 	}
+	return (0);
+}
+
+/*
+** Redirection [n]>& or [n]<& into an other fd,
+** where [n] is an optional fd (default 1 for >& and 0 for <&)
+*/
+
+static int	fd_redirect(t_ast_cmd_suffix *suffix, char op)
+{
+	int	io_number;
+
+	if (ft_isstrdigit(suffix->io_redirect->io_file->filename->word))
+	{
+		if (suffix->io_redirect->io_number[0])
+			io_number = ft_atoi(suffix->io_redirect->io_number);
+		else
+			io_number = op == '>' ? 1 : 0;
+		if (dup2(ft_atoi(suffix->io_redirect->io_file->filename->word)
+		, io_number) == -1)
+			return (return_perror(EDUP, NULL));
+	}
+	else if (op == '>')
+		return (filename_redirect(suffix, '>', O_CREAT|O_WRONLY));
+	else
+		return (filename_redirect(suffix, '<', O_CREAT|O_RDONLY));
 	return (0);
 }
 
@@ -124,17 +156,28 @@ int	cmd_ast_eval_redirs(t_ast_simple_command *sc)
 				if (suffix->io_redirect->io_file->op->c == '>'
 					|| suffix->io_redirect->io_file->op->e == CLOBBER)
 				{
-					if (output_redirect(suffix, O_CREAT|O_WRONLY) == -1)
+					if (filename_redirect(suffix, '>', O_CREAT|O_WRONLY) == -1)
 						return (-1);
 				}
 				else if (suffix->io_redirect->io_file->op->e == DGREAT)
 				{
-					if (output_redirect(suffix, O_CREAT|O_WRONLY|O_APPEND) == -1)
+					if (filename_redirect(suffix, '>'
+					, O_CREAT|O_WRONLY|O_APPEND) == -1)
 						return (-1);
 				}
-				else if (suffix->io_redirect->io_file->op->e == DGREAT)
+				else if (suffix->io_redirect->io_file->op->c == '<')
 				{
-					if (output_redirect(suffix, O_CREAT|O_WRONLY|O_APPEND) == -1)
+					if (filename_redirect(suffix, '<', O_RDONLY) == -1)
+						return (-1);
+				}
+				else if (suffix->io_redirect->io_file->op->e == GREATAND)
+				{
+					if (fd_redirect(suffix, '>') == -1)
+						return (-1);
+				}
+				else if (suffix->io_redirect->io_file->op->e == LESSAND)
+				{
+					if (fd_redirect(suffix, '<') == -1)
 						return (-1);
 				}
 			}

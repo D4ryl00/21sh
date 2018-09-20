@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/07/30 18:34:22 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/20 11:54:25 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int				is_operator(t_buf *buffer, char c, unsigned char f_params[2])
 	return (0);
 }
 
-int				insert_token(t_list **tokens, char *token)
+int				insert_token(t_list **tokens, char *token, enum e_token type)
 {
 	t_list	*tmp;
 
@@ -47,7 +47,7 @@ int				insert_token(t_list **tokens, char *token)
 	if (!(tmp->content = (t_token *)malloc(sizeof(t_token))))
 		return (return_perror(ENOMEM, NULL));
 	((t_token *)tmp->content)->content = token;
-	((t_token *)tmp->content)->type = TOKEN;
+	((t_token *)tmp->content)->type = type;
 	tmp->content_size = sizeof(t_token);
 	tmp->next = NULL;
 	ft_lstaddback(tokens, tmp);
@@ -57,7 +57,8 @@ int				insert_token(t_list **tokens, char *token)
 static int		get_token_loop(t_list **tokens, t_input *input
 		, t_buf *buffer, unsigned char f_params[2])
 {
-	int	ret;
+	int		ret;
+	char	*word;
 
 	while (*(input->str))
 	{
@@ -86,9 +87,12 @@ static int		get_token_loop(t_list **tokens, t_input *input
 		if (ret == -1)
 			return (return_perror(ENOMEM, NULL));
 	}
-	if ((f_params[0] || f_params[1]) && insert_token(tokens
-				, ft_buf_flush(buffer)) == -1)
+	if (f_params[0] || f_params[1])
+	{
+		word = ft_buf_flush(buffer);
+		if (insert_token(tokens, word, token_get_op_type(word)) == -1)
 			return (return_perror(ENOMEM, NULL));
+	}
 	return (0);
 }
 
