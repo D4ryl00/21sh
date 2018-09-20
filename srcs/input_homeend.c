@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 11:23:11 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/19 14:53:33 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/20 16:09:15 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,24 @@ void	input_is_home(t_read_input *s)
 	{
 		ft_putstr_fd(g_termcaps.cursorleft, 0);
 		s->cursorpos--;
+	}
+}
+
+void	input_is_prevword(t_read_input *s)
+{
+	int	i;
+
+	i = s->cursorpos;
+	while (i > 0 && s->buffer.buf && s->buffer.buf[i] != ' ')
+	{
+		ft_putstr_fd(g_termcaps.cursorleft, 0);
+		(s->cursorpos)--;
+		i--;
+	}
+	if (i > 0)
+	{
+		ft_putstr_fd(g_termcaps.cursorleft, 0);
+		(s->cursorpos)--;
 	}
 }
 
