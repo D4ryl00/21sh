@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/20 16:03:22 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/24 12:44:38 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void		input_is_backspace(int *cursorpos, t_buf *buffer)
 
 void		input_is_special_char(t_read_input *s)
 {
+	if (s->c[0] == 127)
+		return (input_is_backspace(&(s->cursorpos), &(s->buffer)));
 	s->c[3] = read(0, &(s->c[1]), 2);
 	if (s->c[0] == 3)
 		termcaps_reset_term_and_exit();
@@ -61,8 +63,6 @@ void		input_is_special_char(t_read_input *s)
 		return (input_is_right(&(s->cursorpos)));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 51)
 		return (input_is_del(&(s->cursorpos), &(s->buffer)));
-	if (s->c[0] == 127)
-		return (input_is_backspace(&(s->cursorpos), &(s->buffer)));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 65 &&
 	!(max_history_reached(s)))
 		return (input_is_up(s));
@@ -72,12 +72,17 @@ void		input_is_special_char(t_read_input *s)
 		return (input_is_end(s));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 72)
 		return (input_is_home(s));
-	if (s->c[0] == 27 && (s->c[1] == 102 /*|| s->c[1] == 27*/))
+	s->c[3] = read(0, &(s->c[1]), 2);
+	/*if (s->c[0] == 27 && (s->c[1] == 102 || s->c[1] == 27))
 		return (input_is_nextword(s));
-	if (s->c[0] == 27 && (s->c[1] == 98 /*|| s->c[1] == 27*/))
-		return (input_is_prevword(s));
+	if (s->c[0] == 27 && (s->c[1] == 98 || s->c[1] == 27))
+		return (input_is_prevword(s));*/
 	ft_putnbr(s->c[0]);
 	ft_putnbr(s->c[1]);
 	ft_putnbr(s->c[2]);
 	s->c[0] = 0;
+	s->c[1] = 0;
+	s->c[2] = 0;
+	s->c[3] = 0;
+	//s->c[0] = 0;
 }
