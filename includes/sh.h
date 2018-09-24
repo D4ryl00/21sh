@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/20 16:09:35 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/24 14:27:59 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,6 +285,7 @@ void							input_is_up(t_read_input *s);
 void							input_is_down(t_read_input *s);
 void							input_is_end(t_read_input *s);
 void							input_is_home(t_read_input *s);
+void							input_is_nextorprevword(t_read_input *s);
 void							input_is_nextword(t_read_input *s);
 void							input_is_prevword(t_read_input *s);
 int								open_history_file(char write);
