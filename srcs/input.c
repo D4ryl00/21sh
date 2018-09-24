@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/24 14:33:00 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/24 15:32:31 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int			read_input(t_input *input)
 		if ((s.c[0] != 27 && s.c[0] != 0 && ft_isprint(s.c[0]) == 1) ||
 		s.c[0] == '\n')
 			term_putchar(s.c[0]);
-		else
+		else if (s.c[0] == 127 || s.c[0] == 27 || s.c[0] == 3)
 			input_is_special_char(&s);
 	}
 	if (ft_buf_add_char(&(s.buffer), '\n') == -1 ||

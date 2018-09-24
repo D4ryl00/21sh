@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/24 14:52:40 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/24 15:19:14 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ void		input_is_special_char(t_read_input *s)
 {
 	if (s->c[0] == 127)
 		return (input_is_backspace(&(s->cursorpos), &(s->buffer)));
-	s->c[3] = read(0, &(s->c[1]), 2);
 	if (s->c[0] == 3)
 		termcaps_reset_term_and_exit();
+	s->c[3] = read(0, &(s->c[1]), 2);
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 68)
 		return (input_is_left(&(s->cursorpos)));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 67)
@@ -74,14 +74,4 @@ void		input_is_special_char(t_read_input *s)
 		return (input_is_home(s));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 49)
 		return (input_is_nextorprevword(s));
-	/*if (s->c[0] == 27 && (s->c[1] == 98 || s->c[1] == 27))
-		return (input_is_prevword(s));*/
-	ft_putnbr(s->c[0]);
-	ft_putnbr(s->c[1]);
-	ft_putnbr(s->c[2]);
-	s->c[0] = 0;
-	s->c[1] = 0;
-	s->c[2] = 0;
-	s->c[3] = 0;
-	//s->c[0] = 0;
 }
