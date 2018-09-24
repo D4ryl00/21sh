@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 11:23:11 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/24 14:33:29 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/24 15:02:55 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ void	input_is_nextorprevword(t_read_input *s)
 	char	c;
 
 	c = 0;
-	if (s->c[1] == 98)
-		return (input_is_prevword(s));
-	if (s->c[1] == 102)
-		return (input_is_nextword(s));
+
+	read(0, &c, 1);
+	read(0, &c, 1);
+	c = 0;
 	read(0, &c, 1);
 	if (c == 'D' || c == 'd')
 		return (input_is_prevword(s));
