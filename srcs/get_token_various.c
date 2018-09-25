@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 14:24:53 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/20 11:48:43 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/25 02:01:06 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 int	comment_input(t_input *input)
 {
 	while (*(input->str) && *(input->str) != '\n')
-		(input->str)++;
-	if (*(input->str))
 		(input->str)++;
 	return (0);
 }

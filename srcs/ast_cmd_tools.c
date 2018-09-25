@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/20 06:45:36 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/21 23:43:16 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,30 @@ static int	fd_redirect(t_ast_cmd_suffix *suffix, char op)
 	return (0);
 }
 
+/*
+** For here documents, call the newprompt function until catch the keyword
+*/
+
+int	here_redirect(t_ast_cmd_suffix *suffix)
+{
+	char	*key;
+	t_input	*input;
+	int		status;
+	t_buf	here;
+
+	input = NULL;
+	if (ft_buf_init(&here) == -1)
+		exit_perror(ENOMEM, NULL);
+	key = suffix->io_redirect->io_file->filename->word;
+	while ((status = newprompt(input, "> ") != -1)
+			&& ft_strcmp(input->str, key))
+	{
+	}
+	if (status == -1)
+		exit_perror(ENOMEM, NULL);
+	//ft_buf_destroy(&buffer);
+	return (0);
+}
 
 /*
 ** Scan a simple_command and get input and output redirections if they exist.
@@ -178,6 +202,11 @@ int	cmd_ast_eval_redirs(t_ast_simple_command *sc)
 				else if (suffix->io_redirect->io_file->op->e == LESSAND)
 				{
 					if (fd_redirect(suffix, '<') == -1)
+						return (-1);
+				}
+				else if (suffix->io_redirect->io_file->op->e == DLESS)
+				{
+					if (here_redirect(suffix) == -1)
 						return (-1);
 				}
 			}

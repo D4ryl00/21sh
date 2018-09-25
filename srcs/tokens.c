@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/20 11:54:25 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/25 02:44:04 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,8 @@ static int		get_token_loop(t_list **tokens, t_input *input
 		, t_buf *buffer, unsigned char f_params[2])
 {
 	int		ret;
-	char	*word;
 
-	while (*(input->str))
+	while (*(input->str) && *(input->str) != '\n')
 	{
 		if (f_params[1])
 			ret = operator_case(tokens, buffer, input, f_params);
@@ -87,12 +86,6 @@ static int		get_token_loop(t_list **tokens, t_input *input
 		if (ret == -1)
 			return (return_perror(ENOMEM, NULL));
 	}
-	if (f_params[0] || f_params[1])
-	{
-		word = ft_buf_flush(buffer);
-		if (insert_token(tokens, word, token_get_op_type(word)) == -1)
-			return (return_perror(ENOMEM, NULL));
-	}
 	return (0);
 }
 
@@ -107,6 +100,7 @@ t_list	*get_tokens(t_input *input)
 	t_list			*tokens;
 	unsigned char	f_params[2];
 	t_buf			buffer;
+	char			*word;
 
 	tokens = NULL;
 	if (ft_buf_init(&buffer) == -1)
@@ -117,6 +111,18 @@ t_list	*get_tokens(t_input *input)
 	{
 		ft_lstdel(&tokens, token_free);
 		tokens = NULL;
+	}
+	if (f_params[0] || f_params[1])
+	{
+		word = ft_buf_flush(&buffer);
+		if (insert_token(&tokens, word, token_get_op_type(word)) == -1)
+			exit_perror(ENOMEM, NULL);
+	}
+	if (*input->str)
+	{
+		word = ft_strdup("\n");
+		if (insert_token(&tokens, word, NEWLINE) == -1)
+			exit_perror(ENOMEM, NULL);
 	}
 	ft_buf_destroy(&buffer);
 	return (tokens);
