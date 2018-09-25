@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/21 23:43:16 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/25 15:21:48 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,10 +150,12 @@ int	here_redirect(t_ast_cmd_suffix *suffix)
 	input = NULL;
 	if (ft_buf_init(&here) == -1)
 		exit_perror(ENOMEM, NULL);
-	key = suffix->io_redirect->io_file->filename->word;
+	key = suffix->io_redirect->io_here->here_end->word;
 	while ((status = newprompt(input, "> ") != -1)
 			&& ft_strcmp(input->str, key))
 	{
+		/*if (ft_buf_add_str(&buffer, input->str) == -1)
+			exit_perror(ENOMEM, NULL);*/
 	}
 	if (status == -1)
 		exit_perror(ENOMEM, NULL);
@@ -204,14 +206,14 @@ int	cmd_ast_eval_redirs(t_ast_simple_command *sc)
 					if (fd_redirect(suffix, '<') == -1)
 						return (-1);
 				}
-				else if (suffix->io_redirect->io_file->op->e == DLESS)
+			}
+			else if (suffix->io_redirect->io_here)
+			{
+				if (suffix->io_redirect->io_here->op == DLESS)
 				{
 					if (here_redirect(suffix) == -1)
 						return (-1);
 				}
-			}
-			else if (suffix->io_redirect->io_here)
-			{
 			}
 		}
 		suffix = suffix->cmd_suffix;

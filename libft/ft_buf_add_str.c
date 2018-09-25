@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_run.c                                          :+:      :+:    :+:   */
+/*   ft_buf_add_str.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/16 01:37:49 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/25 15:33:18 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/09/25 14:47:13 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/09/25 14:53:30 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh.h"
 #include "libft.h"
 
-static int	run_simple_command(t_ast_simple_command *sc)
+int	ft_buf_add_str(t_buf *buffer, char *str)
 {
-	return (cmd_search_and_run(ast_construct_cmd_args(sc), sc));
-}
+	int	data_len;
 
-static int	run_command(t_ast_command *command)
-{
-	return (run_simple_command(command->simple_command));
-}
-
-int	run_program(t_ast_program *program)
-{
-	if (program)
-		return (run_command(program->command));
+	data_len = ft_strlen(str);
+	if (buffer->i + data_len >= buffer->size)
+	{
+		if (ft_buf_extend(buffer) == -1)
+			return (-1);
+	}
+	ft_strcpy(&(buffer->buf[buffer->i]), str);
+	buffer->i += data_len;
 	return (0);
 }

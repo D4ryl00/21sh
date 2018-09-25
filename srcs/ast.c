@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/20 15:32:41 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/25 15:48:32 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,46 @@ t_ast_io_file	*ast_io_file(t_list *tokens)
 	return (file);
 }
 
+t_ast_here_end		*ast_here_end(t_list *tokens)
+{
+	t_ast_here_end	*here_end;
+
+	here_end = NULL;
+	if (tokens && ((t_token *)tokens->content)->type == TOKEN)
+	{
+		if (!(here_end = (t_ast_here_end *)malloc(sizeof(t_ast_here_end))))
+			exit_perror(ENOMEM, NULL);
+		if (!(here_end->word = ft_strdup(((t_token *)tokens->content)->content)))
+			exit_perror(ENOMEM, NULL);
+	}
+	return (here_end);
+}
+
+t_ast_io_here		*ast_io_here(t_list *tokens)
+{
+	t_ast_io_here	*here;
+
+	here = NULL;
+	if (tokens)
+	{
+		if (!(here = (t_ast_io_here *)malloc(sizeof(t_ast_io_here))))
+			exit_perror(ENOMEM, NULL);
+		here->here_end = NULL;
+		if ((((t_token *)tokens->content)->type == DLESS)
+				|| (((t_token *)tokens->content)->type == DLESSDASH))
+		{
+			here->op = ((t_token *)tokens->content)->type;
+			here->here_end = ast_here_end(tokens->next);
+		}
+		if (!(here->here_end))
+		{
+			free_ast_io_here(here);
+			here = NULL;
+		}
+	}
+	return (here);
+}
+
 t_ast_io_redirect	*ast_io_redirect(t_list *tokens)
 {
 	t_ast_io_redirect	*redirect;
@@ -109,7 +149,8 @@ t_ast_io_redirect	*ast_io_redirect(t_list *tokens)
 			ft_strncpy(redirect->io_number, ((t_token *)tokens->content)->content, 3);
 			tokens = tokens->next;
 		}
-		if (!(redirect->io_file = ast_io_file(tokens)))
+		if (!(redirect->io_file = ast_io_file(tokens))
+				&& !(redirect->io_here = ast_io_here(tokens)))
 		{
 			free_ast_io_redirect(redirect);
 			redirect = NULL;
@@ -222,7 +263,10 @@ t_ast_simple_command	*ast_simple_command(t_list *tokens)
 		if ((sc->cmd_name = ast_cmd_name(tokens)))
 			sc->cmd_suffix = ast_cmd_suffix(tokens->next);
 		else
+		{
 			free_ast_simple_command(sc);
+			sc = NULL;
+		}
 	}
 	return (sc);
 }
@@ -274,7 +318,7 @@ t_ast_program	*make_ast(t_list *tokens)
 	if (tokens)
 	{
 		if (!(program = ast_program(tokens)))
-			ft_printf("21sh: parse error near `%s\n'", tokens->content);
+			ft_printf("21sh: parse error near `%s\n'", ((t_token *)tokens->content)->content);
 	}
 	return (program);
 }

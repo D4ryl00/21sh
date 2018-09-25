@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/13 00:06:28 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/20 16:45:15 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/25 14:11:33 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,6 @@ void	free_ast_io_here(t_ast_io_here *io_here)
 {
 	if (io_here)
 	{
-		if (io_here->op)
-		{
-			free(io_here->op);
-			io_here->op = NULL;
-		}
 		if (io_here->here_end)
 		{
 			free_ast_here_end(io_here->here_end);

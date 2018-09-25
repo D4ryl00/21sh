@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/25 11:14:59 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/25 14:30:40 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ typedef struct					s_ast_here_end
 
 typedef struct					s_ast_io_here
 {
-	enum e_token				*op;
+	enum e_token				op;
 	t_ast_here_end				*here_end;
 }								t_ast_io_here;
 
@@ -321,4 +321,5 @@ char							*p_to_equ_char(char *str);
 int								env_select_key(t_list *node, void *data);
 int								cmd_ast_eval_redirs(t_ast_simple_command *sc);
 void							cmd_ast_undo_redirs(t_list 	*backup);
+void							free_ast_io_here(t_ast_io_here *io_here);
 #endif
