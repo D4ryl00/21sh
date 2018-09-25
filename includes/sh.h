@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/24 14:27:59 by amordret         ###   ########.fr       */
+/*   Updated: 2018/09/25 11:14:59 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,7 @@ int								operator_case(t_list **tokens, t_buf *buffer
 	, t_input *input, unsigned char f_params[2]);
 int								operator_start_case(t_list **tokens
 	, t_buf *buffer, t_input *input, unsigned char f_params[2]);
-int								insert_token(t_list **tokens, char *token
+void							insert_token(t_list **tokens, char *token
 	, enum e_token type);
 int								comment_input(t_input *input);
 int								delimiter_case(t_list **tokens, t_buf *buffer

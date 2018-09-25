@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/25 02:44:04 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/25 11:26:40 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,19 @@ int				is_operator(t_buf *buffer, char c, unsigned char f_params[2])
 	return (0);
 }
 
-int				insert_token(t_list **tokens, char *token, enum e_token type)
+void			insert_token(t_list **tokens, char *token, enum e_token type)
 {
 	t_list	*tmp;
 
-	if (!token || !(tmp = (t_list *)malloc(sizeof(t_list))))
-		return (return_perror(ENOMEM, NULL));
+	if (!(tmp = (t_list *)malloc(sizeof(t_list))))
+		exit_perror(ENOMEM, NULL);
 	if (!(tmp->content = (t_token *)malloc(sizeof(t_token))))
-		return (return_perror(ENOMEM, NULL));
+		exit_perror(ENOMEM, NULL);
 	((t_token *)tmp->content)->content = token;
 	((t_token *)tmp->content)->type = type;
 	tmp->content_size = sizeof(t_token);
 	tmp->next = NULL;
 	ft_lstaddback(tokens, tmp);
-	return (0);
 }
 
 static int		get_token_loop(t_list **tokens, t_input *input
@@ -114,15 +113,15 @@ t_list	*get_tokens(t_input *input)
 	}
 	if (f_params[0] || f_params[1])
 	{
-		word = ft_buf_flush(&buffer);
-		if (insert_token(&tokens, word, token_get_op_type(word)) == -1)
+		if (!(word = ft_buf_flush(&buffer)))
 			exit_perror(ENOMEM, NULL);
+		insert_token(&tokens, word, token_get_op_type(word));
 	}
 	if (*input->str)
 	{
-		word = ft_strdup("\n");
-		if (insert_token(&tokens, word, NEWLINE) == -1)
+		if (!(word = ft_strdup("\n")))
 			exit_perror(ENOMEM, NULL);
+		insert_token(&tokens, word, NEWLINE);
 	}
 	ft_buf_destroy(&buffer);
 	return (tokens);
