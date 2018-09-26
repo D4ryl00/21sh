@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/25 14:30:40 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/27 00:13:49 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # define ERR_COM_HIST	"\nError while fetching command history -> Wont work \n"
 
 # define MAX_HISTORY	1000
+# define IO_NUMBER_SIZE	4
 
 typedef struct termios			t_termios;
 
@@ -120,6 +121,7 @@ enum							e_errno
 	EWAIT,
 	EOPEN,
 	EDUP,
+	EPIPE,
 	EOTHER
 };
 
@@ -180,7 +182,7 @@ typedef struct					s_ast_io_here
 
 typedef struct					s_ast_io_redirect
 {
-	char						io_number[3];
+	char						io_number[IO_NUMBER_SIZE];
 	t_ast_io_file				*io_file;
 	t_ast_io_here				*io_here;
 }								t_ast_io_redirect;
@@ -320,6 +322,5 @@ int								run_cmd_path(char **av
 char							*p_to_equ_char(char *str);
 int								env_select_key(t_list *node, void *data);
 int								cmd_ast_eval_redirs(t_ast_simple_command *sc);
-void							cmd_ast_undo_redirs(t_list 	*backup);
 void							free_ast_io_here(t_ast_io_here *io_here);
 #endif

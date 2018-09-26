@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/25 15:48:32 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/27 00:18:02 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,8 @@ t_ast_io_redirect	*ast_io_redirect(t_list *tokens)
 		redirect->io_here = NULL;
 		if (((t_token *)tokens->content)->type == IO_NUMBER)
 		{
-			ft_strncpy(redirect->io_number, ((t_token *)tokens->content)->content, 3);
+			ft_strncpy(redirect->io_number, ((t_token *)tokens->content)->content, IO_NUMBER_SIZE);
+			redirect->io_number[3] = '\0';
 			tokens = tokens->next;
 		}
 		if (!(redirect->io_file = ast_io_file(tokens))
