@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/27 00:40:59 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/27 02:21:34 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,22 +136,23 @@ int	here_redirect(t_ast_cmd_suffix *suffix, int io_number)
 	t_input	input;
 	int		status;
 	int		fd_pipe[2];
+	int		len;
 
 	io_number = io_number == -1 ? 0 : io_number;
 	if (pipe(fd_pipe) == -1)
 		return_perror(EPIPE, NULL);
-	while ((status = newprompt(&input, "> ") != -1) && ft_strncmp(input.str
-				, suffix->io_redirect->io_here->here_end->word
-				, ft_strlen(input.str) - 1))
+	if (dup2(fd_pipe[0], io_number) == -1)
+		return_perror(EDUP, NULL);
+	while ((status = newprompt(&input, "> ") != -1)
+			&& (((len = ft_strlen(input.str)) == 1) || ft_strncmp(input.str
+				, suffix->io_redirect->io_here->here_end->word, len - 1)))
 	{
-		write(fd_pipe[1], input.str, ft_strlen(input.str));
-		close(fd_pipe[1]);
-		if (dup2(fd_pipe[0], io_number) == -1)
-			return_perror(EDUP, NULL);
+		write(fd_pipe[1], input.str, len);
 		free(input.save);
 		input.save = NULL;
 		input.str = NULL;
 	}
+	close(fd_pipe[1]);
 	if (status == -1)
 		exit_perror(ENOMEM, NULL);
 	if (input.save)
@@ -170,11 +171,11 @@ int	cmd_ast_eval_redirs(t_ast_simple_command *sc)
 	int					io_number;
 
 	suffix = sc->cmd_suffix;
-	io_number = -1;
 	while (suffix)
 	{
 		if (suffix->io_redirect)
 		{
+			io_number = -1;
 			if (suffix->io_redirect->io_number[0])
 			{
 				if (ft_isstrdigit(suffix->io_redirect->io_number))
