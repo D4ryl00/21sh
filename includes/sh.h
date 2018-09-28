@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/27 00:13:49 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/28 00:13:36 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,11 @@ typedef struct					s_ast_cmd_name
 	char						*word;
 }								t_ast_cmd_name;
 
+typedef struct					s_ast_cmd_word
+{
+	char						*word;
+}								t_ast_cmd_word;
+
 typedef struct					s_ast_filename
 {
 	char						*word;
@@ -200,8 +205,17 @@ typedef struct					s_ast_cmd_suffix
 	struct s_ast_cmd_suffix		*cmd_suffix;
 }								t_ast_cmd_suffix;
 
+typedef struct					s_ast_cmd_prefix
+{
+	t_ast_io_redirect			*io_redirect;
+	char						*assignment_word;
+	struct s_ast_cmd_prefix		*cmd_prefix;
+}								t_ast_cmd_prefix;
+
 typedef struct					s_ast_simple_command
 {
+	t_ast_cmd_prefix			*cmd_prefix;
+	t_ast_cmd_word				*cmd_word;
 	t_ast_cmd_name				*cmd_name;
 	t_ast_cmd_suffix			*cmd_suffix;
 }								t_ast_simple_command;
@@ -323,4 +337,5 @@ char							*p_to_equ_char(char *str);
 int								env_select_key(t_list *node, void *data);
 int								cmd_ast_eval_redirs(t_ast_simple_command *sc);
 void							free_ast_io_here(t_ast_io_here *io_here);
+void							free_ast_cmd_prefix(t_ast_cmd_prefix * prefix);
 #endif

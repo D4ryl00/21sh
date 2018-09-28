@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/13 00:06:28 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/25 14:11:33 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/28 00:12:55 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,29 @@ void	free_ast_cmd_suffix(t_ast_cmd_suffix * suffix)
 	}
 }
 
+void	free_ast_cmd_prefix(t_ast_cmd_prefix * prefix)
+{
+	if (prefix)
+	{
+		if (prefix->io_redirect)
+		{
+			free_ast_io_redirect(prefix->io_redirect);
+			prefix->io_redirect = NULL;
+		}
+		if (prefix->assignment_word)
+		{
+			free(prefix->assignment_word);
+			prefix->assignment_word = NULL;
+		}
+		if (prefix->cmd_prefix)
+		{
+			free_ast_cmd_prefix(prefix->cmd_prefix);
+			prefix->cmd_prefix = NULL;
+		}
+		free(prefix);
+	}
+}
+
 void	free_ast_cmd_name(t_ast_cmd_name *cmd_name)
 {
 	if (cmd_name)
@@ -120,6 +143,11 @@ void	free_ast_simple_command(t_ast_simple_command *sc)
 {
 	if (sc)
 	{
+		if (sc->cmd_prefix)
+		{
+			free_ast_cmd_prefix(sc->cmd_prefix);
+			sc->cmd_prefix = NULL;
+		}
 		if (sc->cmd_name)
 		{
 			free_ast_cmd_name(sc->cmd_name);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast.c                                              :+:      :+:    :+:   */
+/*   ast_make.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/27 00:18:02 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/28 03:25:33 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,21 @@ t_ast_cmd_name			*ast_cmd_name(t_list *tokens)
 			exit_perror(ENOMEM, NULL);
 	}
 	return (name);
+}
+
+t_ast_cmd_word			*ast_cmd_word(t_list *tokens)
+{
+	t_ast_cmd_word	*word;
+
+	word = NULL;
+	if (tokens && ((t_token *)tokens->content)->type == TOKEN)
+	{
+		if (!(word = (t_ast_cmd_word *)malloc(sizeof(t_ast_cmd_word))))
+			exit_perror(ENOMEM, NULL);
+		if (!(word->word = ft_strdup(((t_token *)tokens->content)->content)))
+			exit_perror(ENOMEM, NULL);
+	}
+	return (word);
 }
 
 t_ast_filename	*ast_filename(t_list *tokens)
@@ -160,51 +175,6 @@ t_ast_io_redirect	*ast_io_redirect(t_list *tokens)
 	return (redirect);
 }
 
-struct s_ast_cmd_suffix	*ast_cmd_suffix_r(t_list *tokens)
-{
-	struct s_ast_cmd_suffix	*suffix;
-
-	suffix = NULL;
-	if (tokens)
-	{
-		if (!(suffix = (struct s_ast_cmd_suffix *)
-					malloc(sizeof(struct s_ast_cmd_suffix))))
-			exit_perror(ENOMEM, NULL);
-		suffix->io_redirect = NULL;
-		suffix->word = NULL;
-		suffix->cmd_suffix = NULL;
-		if ((suffix->io_redirect = ast_io_redirect(tokens)))
-		{
-			/*if (!(suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next)))
-			{
-				free_ast_io_redirect(suffix->io_redirect);
-				suffix->io_redirect = NULL;
-			}*/
-			if (suffix->io_redirect->io_number[0])
-				suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next->next->next);
-			else
-				suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next->next);
-		}
-		else if (!suffix->io_redirect && ((t_token *)tokens->content)->type == TOKEN)
-		{
-			if (!(suffix->word = ft_strdup(((t_token *)tokens->content)->content)))
-				exit_perror(ENOMEM, NULL);
-			/*if (!(suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next)))
-			{
-				free(suffix->word);
-				suffix->word = NULL;
-			}*/
-			suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next);
-		}
-		if (!(suffix->io_redirect) && !(suffix->word))
-		{
-			free_ast_cmd_suffix(suffix);
-			suffix = NULL;
-		}
-	}
-	return (suffix);
-}
-
 t_ast_cmd_suffix		*ast_cmd_suffix(t_list *tokens)
 {
 	t_ast_cmd_suffix	*suffix;
@@ -220,34 +190,94 @@ t_ast_cmd_suffix		*ast_cmd_suffix(t_list *tokens)
 		suffix->cmd_suffix = NULL;
 		if ((suffix->io_redirect = ast_io_redirect(tokens)))
 		{
-			/*if (!(suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next)))
-			{
-				free_ast_io_redirect(suffix->io_redirect);
-				suffix->io_redirect = NULL;
-			}*/
 			if (suffix->io_redirect->io_number[0])
-				suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next->next->next);
+				suffix->cmd_suffix = ast_cmd_suffix(tokens->next->next->next);
 			else
-				suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next->next);
+				suffix->cmd_suffix = ast_cmd_suffix(tokens->next->next);
 		}
-		else if (!suffix->io_redirect && ((t_token *)tokens->content)->type == TOKEN)
+		else if (((t_token *)tokens->content)->type == TOKEN)
 		{
-			if (!(suffix->word = ft_strdup(((t_token *)tokens->content)->content)))
+			if (!(suffix->word = ft_strdup(((t_token *)tokens->content)
+							->content)))
 				exit_perror(ENOMEM, NULL);
-			/*if (!(suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next)))
-			{
-				free(suffix->word);
-				suffix->word = NULL;
-			}*/
-			suffix->cmd_suffix = ast_cmd_suffix_r(tokens->next);
+			suffix->cmd_suffix = ast_cmd_suffix(tokens->next);
 		}
-		if (!(suffix->io_redirect) && !(suffix->word))
+		else
 		{
 			free_ast_cmd_suffix(suffix);
 			suffix = NULL;
 		}
 	}
 	return (suffix);
+}
+
+int						is_valid_name(char *str)
+{
+	if (!*str || ft_isdigit(*str))
+		return (0);
+	while (*str)
+	{
+		if (*str != '_' && !ft_isalnum(*str))
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
+int						is_assignment_word(char *str)
+{
+	char	*equal;
+	char	*name;
+
+	if ((equal = ft_strchr(str, '=')))
+	{
+		if (*str == '=')
+			return (0);
+		if (!(name = ft_strndup(str, equal - str)))
+			exit_perror(ENOMEM, NULL);
+		if (is_valid_name(name))
+			return (1);
+	}
+	return (0);
+}
+
+t_ast_cmd_prefix		*ast_cmd_prefix(t_list	**tokens)
+{
+	t_ast_cmd_prefix	*prefix;
+
+	prefix = NULL;
+	if (*tokens)
+	{
+		if (!(prefix = (struct s_ast_cmd_prefix *)
+					malloc(sizeof(struct s_ast_cmd_prefix))))
+			exit_perror(ENOMEM, NULL);
+		prefix->io_redirect = NULL;
+		prefix->assignment_word = NULL;
+		prefix->cmd_prefix = NULL;
+		if ((prefix->io_redirect = ast_io_redirect(*tokens)))
+		{
+			if (prefix->io_redirect->io_number[0])
+				*tokens = (*tokens)->next->next->next;
+			else
+				*tokens = (*tokens)->next->next;
+			prefix->cmd_prefix = ast_cmd_prefix(tokens);
+		}
+		else if (is_assignment_word(((t_token *)(*tokens)->content)->content))
+		{
+			if (!(prefix->assignment_word =
+						ft_strdup(((t_token *)(*tokens)->content)
+							->content)))
+				exit_perror(ENOMEM, NULL);
+			*tokens = (*tokens)->next;
+			prefix->cmd_prefix = ast_cmd_prefix(tokens);
+		}
+		else
+		{
+			free_ast_cmd_prefix(prefix);
+			prefix = NULL;
+		}
+	}
+	return (prefix);
 }
 
 t_ast_simple_command	*ast_simple_command(t_list *tokens)
@@ -257,11 +287,19 @@ t_ast_simple_command	*ast_simple_command(t_list *tokens)
 	sc = NULL;
 	if (tokens)
 	{
-		if (!(sc = (t_ast_simple_command *)malloc(sizeof(t_ast_simple_command))))
+		if (!(sc = (t_ast_simple_command *)malloc(sizeof
+						(t_ast_simple_command))))
 			exit_perror(ENOMEM, NULL);
+		sc->cmd_prefix = NULL;
+		sc->cmd_word = NULL;
 		sc->cmd_name = NULL;
 		sc->cmd_suffix = NULL;
-		if ((sc->cmd_name = ast_cmd_name(tokens)))
+		if ((sc->cmd_prefix = ast_cmd_prefix(&tokens)))
+		{
+			if ((sc->cmd_word = ast_cmd_word(tokens)))
+				sc->cmd_suffix = ast_cmd_suffix(tokens->next);
+		}
+		else if ((sc->cmd_name = ast_cmd_name(tokens)))
 			sc->cmd_suffix = ast_cmd_suffix(tokens->next);
 		else
 		{
