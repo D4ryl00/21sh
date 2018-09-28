@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/28 01:06:44 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/28 14:41:57 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,10 @@ int	here_redirect(t_ast_io_redirect *io_redirect, int io_number)
 	io_number = io_number == -1 ? 0 : io_number;
 	if (pipe(fd_pipe) == -1)
 		return_perror(EPIPE, NULL);
+	if ((fd_pipe[0] == io_number) && ((fd_pipe[0] = dup(fd_pipe[0])) == -1))
+		return_perror(EDUP, NULL);
+	if ((fd_pipe[1] == io_number) && ((fd_pipe[1] = dup(fd_pipe[1])) == -1))
+		return_perror(EDUP, NULL);
 	if (dup2(fd_pipe[0], io_number) == -1)
 		return_perror(EDUP, NULL);
 	while ((status = newprompt(&input, "> ") != -1)
@@ -154,6 +158,7 @@ int	here_redirect(t_ast_io_redirect *io_redirect, int io_number)
 		input.save = NULL;
 		input.str = NULL;
 	}
+	close(fd_pipe[0]);
 	close(fd_pipe[1]);
 	if (status == -1)
 		exit_perror(ENOMEM, NULL);

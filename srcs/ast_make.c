@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/28 03:25:33 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/28 13:55:53 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 
 char	*ast_get_cmd_name(t_ast_simple_command *sc)
 {
+	if (sc && sc->cmd_word && sc->cmd_word->word)
+		return (sc->cmd_word->word);
 	if (sc && sc->cmd_name && sc->cmd_name->word)
 		return (sc->cmd_name->word);
 	else
