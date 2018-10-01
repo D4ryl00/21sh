@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/19 18:52:28 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/02 01:25:47 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	run_utility_cmd(char **av)
 	return (0);
 }
 
-int	run_direct_path(char **av, t_ast_simple_command *sc)
+int	run_direct_path(char **av, t_pipe_env *pipe_env)
 {
 	int	status;
 
@@ -82,7 +82,7 @@ int	run_direct_path(char **av, t_ast_simple_command *sc)
 	{
 		status = 126;
 		if (!access(av[0], X_OK))
-			status = run(av[0], av, sc);
+			status = run(av[0], av, pipe_env);
 		else
 			ft_perror(EACCES, av[0]);
 	}
@@ -91,7 +91,7 @@ int	run_direct_path(char **av, t_ast_simple_command *sc)
 	return (status);
 }
 
-int	cmd_search_and_run(char ** av, t_ast_simple_command *sc)
+int	cmd_search_and_run(char ** av, t_pipe_env *pipe_env)
 {
 	if (!ft_strchr(av[0], '/'))
 	{
@@ -102,14 +102,14 @@ int	cmd_search_and_run(char ** av, t_ast_simple_command *sc)
 		else if (is_utility_cmd(av))
 			run_utility_cmd(av);
 		else
-			run_cmd_path(av, sc);
+			run_cmd_path(av, pipe_env);
 	}
 	else
-		run_direct_path(av, sc);
+		run_direct_path(av, pipe_env);
 	return (0);
 }
 
-int	run(char *path, char **av, t_ast_simple_command *sc)
+int	run(char *path, char **av, t_pipe_env *pipe_env)
 {
 	pid_t	pid;
 	int		status;
@@ -130,7 +130,13 @@ int	run(char *path, char **av, t_ast_simple_command *sc)
 		if (!(env = ft_lsttoarrstr(g_env)))
 			exit_perror(ENOMEM, NULL);
 		termcaps_reset_term();
-		cmd_ast_eval_redirs(sc);
+		if ((pipe_env->input.rd != -1)
+				&& (dup2(pipe_env->input.rd, pipe_env->input.wr) == -1))
+			return (return_perror(EDUP, NULL));
+		if ((pipe_env->output.rd != -1)
+				&& (dup2(pipe_env->output.wr, pipe_env->output.rd) == -1))
+			return (return_perror(EDUP, NULL));
+		cmd_ast_eval_redirs(pipe_env->sc);
 		execve(path, av, env);
 		return (0);
 	}

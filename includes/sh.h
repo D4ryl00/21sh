@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/01 17:53:37 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/02 01:22:36 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,24 +123,6 @@ enum							e_errno
 	EPIPE,
 	EOTHER
 };
-
-typedef struct					s_input
-{
-	char						*str;
-	char						*save;
-}								t_input;
-
-typedef struct					s_dup
-{
-	int							source;
-	int							target;
-}								t_dup;
-
-typedef struct					s_io_redir_done
-{
-	int							open;
-	t_dup						dup;
-}								t_io_redir_done;
 
 /*
 ** Structures for the AST
@@ -303,6 +285,25 @@ extern t_termcaps				g_termcaps;
 extern char						*g_op_token[];
 extern char						*g_control_operator[];
 
+typedef struct					s_input
+{
+	char						*str;
+	char						*save;
+}								t_input;
+
+typedef struct					s_pipe
+{
+	int							rd;
+	int							wr;
+}								t_pipe;
+
+typedef struct					s_pipe_env
+{
+	t_ast_simple_command		*sc;
+	t_pipe						input;
+	t_pipe						output;
+}								t_pipe_env;
+
 /*
 ** Prototypes
 */
@@ -388,11 +389,10 @@ char							*ast_get_cmd_name(t_ast_simple_command *sc);
 char							**ast_construct_cmd_args
 	(t_ast_simple_command *sc);
 int								cmd_search_and_run(char ** av
-	, t_ast_simple_command *sc);
+		, t_pipe_env *pipe_env);
 int								run(char *path, char **av
-	, t_ast_simple_command *sc);
-int								run_cmd_path(char **av
-	, t_ast_simple_command *sc);
+	, t_pipe_env *pipe_env);
+int								run_cmd_path(char **av, t_pipe_env *pipe_env);
 char							*p_to_equ_char(char *str);
 int								env_select_key(t_list *node, void *data);
 int								cmd_ast_eval_redirs(t_ast_simple_command *sc);
