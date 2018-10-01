@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/01 02:21:40 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/01 16:42:58 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ typedef struct					s_ast_command
 
 typedef struct					s_ast_newline_list
 {
-	char						NEWLINE;
+	char						nl;
 	struct s_ast_newline_list	*newline_list;
 }								t_ast_newline_list;
 
@@ -253,6 +253,7 @@ typedef struct					s_ast_pipeline
 
 typedef struct					s_ast_and_or
 {
+	enum e_token				op;
 	t_ast_pipeline				*pipeline;
 	t_ast_linebreak				*linebreak;
 	struct s_ast_and_or			*and_or;
@@ -382,7 +383,7 @@ void							free_ast_cmd_suffix(t_ast_cmd_suffix *suffix);
 void							free_ast_io_redirect
 	(t_ast_io_redirect *redirect);
 void							free_ast_io_file(t_ast_io_file *file);
-int								run_program(t_ast_program *program);
+int								eval_program(t_ast_program *program);
 char							*ast_get_cmd_name(t_ast_simple_command *sc);
 char							**ast_construct_cmd_args
 	(t_ast_simple_command *sc);

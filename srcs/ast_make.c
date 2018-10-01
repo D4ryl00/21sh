@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/01 14:45:06 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/01 16:43:49 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -368,11 +368,11 @@ t_ast_newline_list	*ast_newline_list(t_list **tokens)
 		if (!(nl_list = (t_ast_newline_list *)malloc(
 						sizeof(t_ast_newline_list))))
 			exit_perror(ENOMEM, NULL);
-		nl_list->NEWLINE = '\0';
+		nl_list->nl = '\0';
 		nl_list->newline_list = NULL;
 		if (((t_token *)(*tokens)->content)->content[0] == '\n')
 		{
-			nl_list->NEWLINE = '\n';
+			nl_list->nl = '\n';
 			*tokens = (*tokens)->next;
 			nl_list->newline_list = ast_newline_list(tokens);
 		}
@@ -472,11 +472,13 @@ t_ast_and_or	*ast_and_or(t_list **tokens)
 		and_or->pipeline = NULL;
 		and_or->linebreak = NULL;
 		and_or->and_or = NULL;
+		and_or->op = TOKEN;
 		if ((and_or->pipeline = ast_pipeline(tokens)))
 		{
 			if ((((t_token *)(*tokens)->content)->type == AND_IF)
 					|| (((t_token *)(*tokens)->content)->type == OR_IF))
 			{
+				and_or->op = ((t_token *)(*tokens)->content)->type;
 				*tokens = (*tokens)->next;
 				and_or->linebreak = ast_linebreak(tokens);
 				and_or->and_or = ast_and_or(tokens);
