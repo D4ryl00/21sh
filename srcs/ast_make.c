@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/01 02:21:04 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/01 14:45:06 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,77 +28,83 @@ char	*ast_get_cmd_name(t_ast_simple_command *sc)
 		return (NULL);
 }
 
-t_ast_cmd_name			*ast_cmd_name(t_list *tokens)
+t_ast_cmd_name			*ast_cmd_name(t_list **tokens)
 {
 	t_ast_cmd_name	*name;
 
 	name = NULL;
-	if (tokens && ((t_token *)tokens->content)->type == TOKEN)
+	if (*tokens && ((t_token *)(*tokens)->content)->type == TOKEN)
 	{
 		if (!(name = (t_ast_cmd_name *)malloc(sizeof(t_ast_cmd_name))))
 			exit_perror(ENOMEM, NULL);
-		if (!(name->word = ft_strdup(((t_token *)tokens->content)->content)))
+		if (!(name->word = ft_strdup(((t_token *)(*tokens)->content)->content)))
 			exit_perror(ENOMEM, NULL);
+		*tokens = (*tokens)->next;
 	}
 	return (name);
 }
 
-t_ast_cmd_word			*ast_cmd_word(t_list *tokens)
+t_ast_cmd_word			*ast_cmd_word(t_list **tokens)
 {
 	t_ast_cmd_word	*word;
 
 	word = NULL;
-	if (tokens && ((t_token *)tokens->content)->type == TOKEN)
+	if (*tokens && ((t_token *)(*tokens)->content)->type == TOKEN)
 	{
 		if (!(word = (t_ast_cmd_word *)malloc(sizeof(t_ast_cmd_word))))
 			exit_perror(ENOMEM, NULL);
-		if (!(word->word = ft_strdup(((t_token *)tokens->content)->content)))
+		if (!(word->word = ft_strdup(((t_token *)(*tokens)->content)->content)))
 			exit_perror(ENOMEM, NULL);
+		*tokens = (*tokens)->next;
 	}
 	return (word);
 }
 
-t_ast_filename	*ast_filename(t_list *tokens)
+t_ast_filename	*ast_filename(t_list **tokens)
 {
 	t_ast_filename	*filename;
 
 	filename = NULL;
-	if (tokens && ((t_token *)tokens->content)->type == TOKEN)
+	if (*tokens && ((t_token *)(*tokens)->content)->type == TOKEN)
 	{
 		if (!(filename = (t_ast_filename *)malloc(sizeof(t_ast_filename))))
 			exit_perror(ENOMEM, NULL);
-		if (!(filename->word = ft_strdup(((t_token *)tokens->content)->content)))
+		if (!(filename->word = ft_strdup(((t_token *)(*tokens)->content)
+						->content)))
 			exit_perror(ENOMEM, NULL);
+		*tokens = (*tokens)->next;
 	}
 	return (filename);
 }
 
-t_ast_io_file	*ast_io_file(t_list *tokens)
+t_ast_io_file	*ast_io_file(t_list **tokens)
 {
 	t_ast_io_file	*file;
 	t_token			*token;
 
 	file = NULL;
-	if (tokens)
+	if (*tokens)
 	{
 		if (!(file = (t_ast_io_file *)malloc(sizeof(t_ast_io_file)))
 				|| !(file->op = (t_ast_io_op *)malloc(sizeof(t_ast_io_op))))
 			exit_perror(ENOMEM, NULL);
 		file->filename = NULL;
-		token = (t_token *)tokens->content;
+		token = (t_token *)(*tokens)->content;
 		if ((token->type == LESSAND) || (token->type == GREATAND)
 				|| (token->type == DGREAT) || (token->type == LESSGREAT)
 				|| (token->type == CLOBBER))
 		{
 			file->op->c = '\0';
 			file->op->e = token->type;
-			file->filename = ast_filename(tokens->next);
+			*tokens = (*tokens)->next;
+			file->filename = ast_filename(tokens);
 		}
 		else if (!ft_strcmp(token->content, "<")
 				|| !ft_strcmp(token->content, ">"))
 		{
 			file->op->c = token->content[0];
-			file->filename = ast_filename(tokens->next);
+			*tokens = (*tokens)->next;
+			file->filename = ast_filename(tokens);
 		}
 		if (!(file->filename))
 		{
@@ -109,36 +115,38 @@ t_ast_io_file	*ast_io_file(t_list *tokens)
 	return (file);
 }
 
-t_ast_here_end		*ast_here_end(t_list *tokens)
+t_ast_here_end		*ast_here_end(t_list **tokens)
 {
 	t_ast_here_end	*here_end;
 
 	here_end = NULL;
-	if (tokens && ((t_token *)tokens->content)->type == TOKEN)
+	if (*tokens && ((t_token *)(*tokens)->content)->type == TOKEN)
 	{
 		if (!(here_end = (t_ast_here_end *)malloc(sizeof(t_ast_here_end))))
 			exit_perror(ENOMEM, NULL);
-		if (!(here_end->word = ft_strdup(((t_token *)tokens->content)->content)))
+		if (!(here_end->word = ft_strdup(((t_token *)(*tokens)->content)->content)))
 			exit_perror(ENOMEM, NULL);
+		*tokens = (*tokens)->next;
 	}
 	return (here_end);
 }
 
-t_ast_io_here		*ast_io_here(t_list *tokens)
+t_ast_io_here		*ast_io_here(t_list **tokens)
 {
 	t_ast_io_here	*here;
 
 	here = NULL;
-	if (tokens)
+	if (*tokens)
 	{
 		if (!(here = (t_ast_io_here *)malloc(sizeof(t_ast_io_here))))
 			exit_perror(ENOMEM, NULL);
 		here->here_end = NULL;
-		if ((((t_token *)tokens->content)->type == DLESS)
-				|| (((t_token *)tokens->content)->type == DLESSDASH))
+		if ((((t_token *)(*tokens)->content)->type == DLESS)
+				|| (((t_token *)(*tokens)->content)->type == DLESSDASH))
 		{
-			here->op = ((t_token *)tokens->content)->type;
-			here->here_end = ast_here_end(tokens->next);
+			here->op = ((t_token *)(*tokens)->content)->type;
+			*tokens = (*tokens)->next;
+			here->here_end = ast_here_end(tokens);
 		}
 		if (!(here->here_end))
 		{
@@ -149,23 +157,25 @@ t_ast_io_here		*ast_io_here(t_list *tokens)
 	return (here);
 }
 
-t_ast_io_redirect	*ast_io_redirect(t_list *tokens)
+t_ast_io_redirect	*ast_io_redirect(t_list **tokens)
 {
 	t_ast_io_redirect	*redirect;
 
 	redirect = NULL;
-	if (tokens)
+	if (*tokens)
 	{
-		if (!(redirect = (t_ast_io_redirect *)malloc(sizeof(t_ast_io_redirect))))
+		if (!(redirect = (t_ast_io_redirect *)malloc(
+						sizeof(t_ast_io_redirect))))
 			exit_perror(ENOMEM, NULL);
 		redirect->io_number[0] = '\0';
 		redirect->io_file = NULL;
 		redirect->io_here = NULL;
-		if (((t_token *)tokens->content)->type == IO_NUMBER)
+		if (((t_token *)(*tokens)->content)->type == IO_NUMBER)
 		{
-			ft_strncpy(redirect->io_number, ((t_token *)tokens->content)->content, IO_NUMBER_SIZE);
+			ft_strncpy(redirect->io_number, ((t_token *)(*tokens)->content)
+					->content, IO_NUMBER_SIZE);
 			redirect->io_number[3] = '\0';
-			tokens = tokens->next;
+			*tokens = (*tokens)->next;
 		}
 		if (!(redirect->io_file = ast_io_file(tokens))
 				&& !(redirect->io_here = ast_io_here(tokens)))
@@ -177,12 +187,12 @@ t_ast_io_redirect	*ast_io_redirect(t_list *tokens)
 	return (redirect);
 }
 
-t_ast_cmd_suffix		*ast_cmd_suffix(t_list *tokens)
+t_ast_cmd_suffix		*ast_cmd_suffix(t_list **tokens)
 {
 	t_ast_cmd_suffix	*suffix;
 
 	suffix = NULL;
-	if (tokens)
+	if (*tokens)
 	{
 		if (!(suffix = (struct s_ast_cmd_suffix *)
 					malloc(sizeof(struct s_ast_cmd_suffix))))
@@ -190,21 +200,19 @@ t_ast_cmd_suffix		*ast_cmd_suffix(t_list *tokens)
 		suffix->io_redirect = NULL;
 		suffix->word = NULL;
 		suffix->cmd_suffix = NULL;
-		if ((suffix->io_redirect = ast_io_redirect(tokens)))
+		if (!(suffix->io_redirect = ast_io_redirect(tokens)))
 		{
-			if (suffix->io_redirect->io_number[0])
-				suffix->cmd_suffix = ast_cmd_suffix(tokens->next->next->next);
-			else
-				suffix->cmd_suffix = ast_cmd_suffix(tokens->next->next);
+			if (((t_token *)(*tokens)->content)->type == TOKEN)
+			{
+				if (!(suffix->word = ft_strdup(((t_token *)(*tokens)->content)
+								->content)))
+					exit_perror(ENOMEM, NULL);
+				*tokens = (*tokens)->next;
+			}
 		}
-		else if (((t_token *)tokens->content)->type == TOKEN)
-		{
-			if (!(suffix->word = ft_strdup(((t_token *)tokens->content)
-							->content)))
-				exit_perror(ENOMEM, NULL);
-			suffix->cmd_suffix = ast_cmd_suffix(tokens->next);
-		}
-		else
+		if (suffix->io_redirect || suffix->word)
+			suffix->cmd_suffix = ast_cmd_suffix(tokens);
+		if (!suffix->io_redirect && !suffix->word)
 		{
 			free_ast_cmd_suffix(suffix);
 			suffix = NULL;
@@ -256,24 +264,20 @@ t_ast_cmd_prefix		*ast_cmd_prefix(t_list	**tokens)
 		prefix->io_redirect = NULL;
 		prefix->assignment_word = NULL;
 		prefix->cmd_prefix = NULL;
-		if ((prefix->io_redirect = ast_io_redirect(*tokens)))
+		if (!(prefix->io_redirect = ast_io_redirect(tokens)))
 		{
-			if (prefix->io_redirect->io_number[0])
-				*tokens = (*tokens)->next->next->next;
-			else
-				*tokens = (*tokens)->next->next;
-			prefix->cmd_prefix = ast_cmd_prefix(tokens);
+			if (is_assignment_word(((t_token *)(*tokens)->content)->content))
+			{
+				if (!(prefix->assignment_word =
+							ft_strdup(((t_token *)(*tokens)->content)
+								->content)))
+					exit_perror(ENOMEM, NULL);
+				*tokens = (*tokens)->next;
+			}
 		}
-		else if (is_assignment_word(((t_token *)(*tokens)->content)->content))
-		{
-			if (!(prefix->assignment_word =
-						ft_strdup(((t_token *)(*tokens)->content)
-							->content)))
-				exit_perror(ENOMEM, NULL);
-			*tokens = (*tokens)->next;
+		if (prefix->io_redirect || prefix->assignment_word)
 			prefix->cmd_prefix = ast_cmd_prefix(tokens);
-		}
-		else
+		if (!prefix->io_redirect && !prefix->assignment_word)
 		{
 			free_ast_cmd_prefix(prefix);
 			prefix = NULL;
@@ -282,12 +286,12 @@ t_ast_cmd_prefix		*ast_cmd_prefix(t_list	**tokens)
 	return (prefix);
 }
 
-t_ast_simple_command	*ast_simple_command(t_list *tokens)
+t_ast_simple_command	*ast_simple_command(t_list **tokens)
 {
 	t_ast_simple_command	*sc;
 
 	sc = NULL;
-	if (tokens)
+	if (*tokens)
 	{
 		if (!(sc = (t_ast_simple_command *)malloc(sizeof
 						(t_ast_simple_command))))
@@ -296,13 +300,13 @@ t_ast_simple_command	*ast_simple_command(t_list *tokens)
 		sc->cmd_word = NULL;
 		sc->cmd_name = NULL;
 		sc->cmd_suffix = NULL;
-		if ((sc->cmd_prefix = ast_cmd_prefix(&tokens)))
+		if ((sc->cmd_prefix = ast_cmd_prefix(tokens)))
 		{
 			if ((sc->cmd_word = ast_cmd_word(tokens)))
-				sc->cmd_suffix = ast_cmd_suffix(tokens->next);
+				sc->cmd_suffix = ast_cmd_suffix(tokens);
 		}
 		else if ((sc->cmd_name = ast_cmd_name(tokens)))
-			sc->cmd_suffix = ast_cmd_suffix(tokens->next);
+			sc->cmd_suffix = ast_cmd_suffix(tokens);
 		else
 		{
 			free_ast_simple_command(sc);
@@ -323,7 +327,7 @@ t_ast_command			*ast_command(t_list **tokens)
 			exit_perror(ENOMEM, NULL);
 		command->simple_command = NULL;
 		command->redirect_list = NULL;
-		if (!(command->simple_command = ast_simple_command(*tokens)))
+		if (!(command->simple_command = ast_simple_command(tokens)))
 		{
 			free_ast_command(command);
 			command = NULL;
@@ -345,7 +349,6 @@ t_ast_separator_op	*ast_separator_op(t_list **tokens)
 		s_op->c = ((t_token *)(*tokens)->content)->content[0];
 		if ((s_op->c != '&') && (s_op->c != ';'))
 		{
-			ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
 			free_ast_separator_op(s_op);
 			s_op = NULL;
 		}
