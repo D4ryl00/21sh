@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/28 13:55:53 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/01 02:21:04 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,24 +312,256 @@ t_ast_simple_command	*ast_simple_command(t_list *tokens)
 	return (sc);
 }
 
-t_ast_command			*ast_command(t_list *tokens)
+t_ast_command			*ast_command(t_list **tokens)
 {
 	t_ast_command	*command;
 
 	command = NULL;
-	if (tokens)
+	if (*tokens)
 	{
 		if (!(command = (t_ast_command *)malloc(sizeof(t_ast_command))))
 			exit_perror(ENOMEM, NULL);
 		command->simple_command = NULL;
 		command->redirect_list = NULL;
-		if (!(command->simple_command = ast_simple_command(tokens)))
+		if (!(command->simple_command = ast_simple_command(*tokens)))
 		{
 			free_ast_command(command);
 			command = NULL;
 		}
 	}
 	return (command);
+}
+
+t_ast_separator_op	*ast_separator_op(t_list **tokens)
+{
+	t_ast_separator_op	*s_op;
+
+	s_op = NULL;
+	if (*tokens)
+	{
+		if (!(s_op = (t_ast_separator_op *)malloc( sizeof(t_ast_separator_op))))
+			exit_perror(ENOMEM, NULL);
+		s_op->c = '\0';
+		s_op->c = ((t_token *)(*tokens)->content)->content[0];
+		if ((s_op->c != '&') && (s_op->c != ';'))
+		{
+			ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
+			free_ast_separator_op(s_op);
+			s_op = NULL;
+		}
+		else
+			*tokens = (*tokens)->next;
+	}
+	return (s_op);
+}
+
+t_ast_newline_list	*ast_newline_list(t_list **tokens)
+{
+	t_ast_newline_list	*nl_list;
+
+	nl_list = NULL;
+	if (*tokens)
+	{
+		if (!(nl_list = (t_ast_newline_list *)malloc(
+						sizeof(t_ast_newline_list))))
+			exit_perror(ENOMEM, NULL);
+		nl_list->NEWLINE = '\0';
+		nl_list->newline_list = NULL;
+		if (((t_token *)(*tokens)->content)->content[0] == '\n')
+		{
+			nl_list->NEWLINE = '\n';
+			*tokens = (*tokens)->next;
+			nl_list->newline_list = ast_newline_list(tokens);
+		}
+		else
+		{
+			free_ast_newline_list(nl_list);
+			nl_list = NULL;
+		}
+	}
+	return (nl_list);
+}
+
+t_ast_linebreak	*ast_linebreak(t_list **tokens)
+{
+	t_ast_linebreak	*linebreak;
+
+	linebreak = NULL;
+	if (*tokens)
+	{
+		if (!(linebreak = (t_ast_linebreak *)malloc(sizeof(t_ast_linebreak))))
+			exit_perror(ENOMEM, NULL);
+		linebreak->newline_list = NULL;
+		if (!(linebreak->newline_list = ast_newline_list(tokens)))
+		{
+			free_ast_linebreak(linebreak);
+			linebreak = NULL;
+		}
+	}
+	return (linebreak);
+}
+
+t_ast_pipe_sequence	*ast_pipe_sequence(t_list **tokens)
+{
+	t_ast_pipe_sequence	*ps;
+
+	ps = NULL;
+	if (*tokens)
+	{
+		if (!(ps = (t_ast_pipe_sequence *)malloc(sizeof(t_ast_pipe_sequence))))
+			exit_perror(ENOMEM, NULL);
+		ps->command = NULL;
+		ps->linebreak = NULL;
+		ps->pipe_sequence = NULL;
+		if ((ps->command = ast_command(tokens)))
+		{
+			if (!ft_strcmp(((t_token *)(*tokens)->content)->content, "|"))
+			{
+				*tokens = (*tokens)->next;
+				ps->linebreak = ast_linebreak(tokens);
+				ps->pipe_sequence = ast_pipe_sequence(tokens);
+			}
+		}
+		else
+		{
+			free_ast_pipe_sequence(ps);
+			ps = NULL;
+		}
+	}
+	return (ps);
+}
+
+t_ast_pipeline	*ast_pipeline(t_list **tokens)
+{
+	t_ast_pipeline	*pipeline;
+
+	pipeline = NULL;
+	if (*tokens)
+	{
+		if (!(pipeline = (t_ast_pipeline *)malloc(sizeof(t_ast_pipeline))))
+			exit_perror(ENOMEM, NULL);
+		pipeline->pipe_sequence = NULL;
+		if (!ft_strcmp(((t_token *)(*tokens)->content)->content, "!"))
+		{
+			pipeline->bang = '!';
+			*tokens = (*tokens)->next;
+		}
+		else
+			pipeline->bang = '\0';
+		if (!(pipeline->pipe_sequence = ast_pipe_sequence(tokens)))
+		{
+			free_ast_pipeline(pipeline);
+			pipeline = NULL;
+		}
+	}
+	return (pipeline);
+}
+
+t_ast_and_or	*ast_and_or(t_list **tokens)
+{
+	t_ast_and_or	*and_or;
+
+	and_or = NULL;
+	if (*tokens)
+	{
+		if (!(and_or = (t_ast_and_or *)malloc(sizeof(t_ast_and_or))))
+			exit_perror(ENOMEM, NULL);
+		and_or->pipeline = NULL;
+		and_or->linebreak = NULL;
+		and_or->and_or = NULL;
+		if ((and_or->pipeline = ast_pipeline(tokens)))
+		{
+			if ((((t_token *)(*tokens)->content)->type == AND_IF)
+					|| (((t_token *)(*tokens)->content)->type == OR_IF))
+			{
+				*tokens = (*tokens)->next;
+				and_or->linebreak = ast_linebreak(tokens);
+				and_or->and_or = ast_and_or(tokens);
+			}
+		}
+		else
+		{
+			free_ast_and_or(and_or);
+			and_or = NULL;
+		}
+	}
+	return (and_or);
+}
+
+t_ast_list	*ast_list(t_list **tokens)
+{
+	t_ast_list	*list;
+
+	list = NULL;
+	if (*tokens)
+	{
+		if (!(list = (t_ast_list *)malloc( sizeof(t_ast_list))))
+			exit_perror(ENOMEM, NULL);
+		list->and_or = NULL;
+		list->separator_op = NULL;
+		list->list = NULL;
+		if ((list->and_or = ast_and_or(tokens)))
+		{
+			if ((list->separator_op = ast_separator_op(tokens)))
+				list->list = ast_list(tokens);
+		}
+		else
+		{
+			free_ast_list(list);
+			list = NULL;
+		}
+	}
+	return (list);
+}
+
+t_ast_complete_command	*ast_complete_command(t_list **tokens)
+{
+	t_ast_complete_command	*cc;
+
+	cc = NULL;
+	if (*tokens)
+	{
+		if (!(cc = (t_ast_complete_command *)malloc(
+						sizeof(t_ast_complete_command))))
+			exit_perror(ENOMEM, NULL);
+		cc->list = NULL;
+		cc->separator_op = NULL;
+		if ((cc->list = ast_list(tokens)))
+			cc->separator_op = ast_separator_op(tokens);
+		else
+		{
+			free_ast_complete_command(cc);
+			cc = NULL;
+		}
+	}
+	return (cc);
+}
+
+t_ast_complete_commands	*ast_complete_commands(t_list **tokens)
+{
+	t_ast_complete_commands	*cc;
+
+	cc = NULL;
+	if (*tokens)
+	{
+		if (!(cc = (t_ast_complete_commands *)malloc(
+						sizeof(t_ast_complete_commands))))
+			exit_perror(ENOMEM, NULL);
+		cc->complete_command = NULL;
+		cc->newline_list = NULL;
+		cc->complete_commands = NULL;
+		if ((cc->complete_command = ast_complete_command(tokens)))
+		{
+			if ((cc->newline_list = ast_newline_list(tokens)))
+				cc->complete_commands = ast_complete_commands(tokens);
+		}
+		else
+		{
+			free_ast_complete_commands(cc);
+			cc = NULL;
+		}
+	}
+	return (cc);
 }
 
 t_ast_program	*ast_program(t_list *tokens)
@@ -341,8 +573,13 @@ t_ast_program	*ast_program(t_list *tokens)
 	{
 		if (!(program = (t_ast_program *)malloc(sizeof(t_ast_program))))
 			exit_perror(ENOMEM, NULL);
-		// ici tester les différentes solutions, et si aucune, alors free
-		if (!(program->command = ast_command(tokens)))
+		program->linebreak = NULL;
+		program->complete_commands = NULL;
+		program->post_linebreak = NULL;
+		program->linebreak = ast_linebreak(&tokens);
+		if ((program->complete_commands = ast_complete_commands(&tokens)))
+			program->post_linebreak = ast_linebreak(&tokens);
+		if (!program->linebreak && !program->complete_commands)
 		{
 			free_ast_program(program);
 			program = NULL;

@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/28 00:13:36 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/01 02:21:40 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ enum							e_errno
 	ENOENT,
 	EACCES,
 	EBUFF,
+	ESYNT,
 	EFORK,
 	EWAIT,
 	EOPEN,
@@ -226,9 +227,67 @@ typedef struct					s_ast_command
 	t_ast_redirect_list			*redirect_list;
 }								t_ast_command;
 
+typedef struct					s_ast_newline_list
+{
+	char						NEWLINE;
+	struct s_ast_newline_list	*newline_list;
+}								t_ast_newline_list;
+
+typedef struct					s_ast_linebreak
+{
+	t_ast_newline_list			*newline_list;
+}								t_ast_linebreak;
+
+typedef struct					s_ast_pipe_sequence
+{
+	t_ast_linebreak				*linebreak;
+	t_ast_command				*command;
+	struct s_ast_pipe_sequence	*pipe_sequence;
+}								t_ast_pipe_sequence;
+
+typedef struct					s_ast_pipeline
+{
+	char						bang;
+	t_ast_pipe_sequence			*pipe_sequence;
+}								t_ast_pipeline;
+
+typedef struct					s_ast_and_or
+{
+	t_ast_pipeline				*pipeline;
+	t_ast_linebreak				*linebreak;
+	struct s_ast_and_or			*and_or;
+}								t_ast_and_or;
+
+typedef struct					s_ast_separator_op
+{
+	char						c;
+}								t_ast_separator_op;
+
+typedef struct					s_ast_list
+{
+	t_ast_and_or				*and_or;
+	t_ast_separator_op			*separator_op;
+	struct s_ast_list			*list;
+}								t_ast_list;
+
+typedef	struct					s_ast_complete_command
+{
+	t_ast_list					*list;
+	t_ast_separator_op			*separator_op;
+}								t_ast_complete_command;
+
+typedef struct					s_ast_complete_commands
+{
+	struct s_ast_complete_command	*complete_command;
+	t_ast_newline_list				*newline_list;
+	struct s_ast_complete_commands	*complete_commands;
+}								t_ast_complete_commands;
+
 typedef struct					s_ast_program
 {
-	t_ast_command				*command;
+	t_ast_linebreak				*linebreak;
+	t_ast_complete_commands		*complete_commands;
+	t_ast_linebreak				*post_linebreak;
 }								t_ast_program;
 
 /*
@@ -338,4 +397,16 @@ int								env_select_key(t_list *node, void *data);
 int								cmd_ast_eval_redirs(t_ast_simple_command *sc);
 void							free_ast_io_here(t_ast_io_here *io_here);
 void							free_ast_cmd_prefix(t_ast_cmd_prefix * prefix);
+void							free_ast_complete_commands(
+		t_ast_complete_commands *cc);
+void							free_ast_complete_command(
+		t_ast_complete_command *cc);
+void							free_ast_newline_list(
+		t_ast_newline_list* newline_list);
+void							free_ast_linebreak(t_ast_linebreak *linebreak);
+void							free_ast_separator_op(t_ast_separator_op *s_op);
+void							free_ast_list(t_ast_list *list);
+void							free_ast_and_or(t_ast_and_or *and_or);
+void							free_ast_pipe_sequence(t_ast_pipe_sequence *ps);
+void							free_ast_pipeline(t_ast_pipeline *pipeline);
 #endif
