@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/01 16:43:49 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/01 18:07:36 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,9 @@ t_ast_cmd_suffix		*ast_cmd_suffix(t_list **tokens)
 		suffix->cmd_suffix = NULL;
 		if (!(suffix->io_redirect = ast_io_redirect(tokens)))
 		{
-			if (((t_token *)(*tokens)->content)->type == TOKEN)
+			if ((((t_token *)(*tokens)->content)->type == TOKEN)
+					&& (ft_strarrchr(((t_token *)(*tokens)->content)
+						->content, g_control_operator) < 0))
 			{
 				if (!(suffix->word = ft_strdup(((t_token *)(*tokens)->content)
 								->content)))

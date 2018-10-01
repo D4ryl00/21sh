@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/01 15:22:54 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/01 17:55:28 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** PLEASE DO NOT CHANGE THAT!
 */
 
-char			*g_op_token [] =
+char			*g_op_token[] =
 {
 	"&&",
 	"||",
@@ -32,6 +32,16 @@ char			*g_op_token [] =
 	"<<-",
 	">|",
 	""
+};
+
+char			*g_control_operator[] =
+{
+	"&&",
+	"||",
+	"|",
+	")",
+	";",
+	"&"
 };
 
 t_ast_program*eval(t_input *input)

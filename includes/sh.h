@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/01 16:42:58 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/01 17:53:37 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,6 @@ typedef struct					s_token
 	enum e_token				type;
 	char						*content;
 }								t_token;
-
-extern char						*g_op_token[];
 
 enum							e_errno
 {
@@ -302,6 +300,8 @@ extern char						*g_builtin_cmd[];
 extern char						*g_special_builtin_cmd[];
 extern char						*g_utility_cmd[];
 extern t_termcaps				g_termcaps;
+extern char						*g_op_token[];
+extern char						*g_control_operator[];
 
 /*
 ** Prototypes
