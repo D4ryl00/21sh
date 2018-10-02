@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:48:23 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/25 11:53:43 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/02 09:17:19 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,13 @@ static void	sh_print_prompt(void)
 	char	*pwd;
 	
 	pwd = NULL;
-	/*if (!(((pwd = getenv("PWD")) == NULL)))
+	if (!(((pwd = getenv("PWD")) == NULL)))
 	{
 		term_putstr(PROMPT1);
 		term_putstr(pwd);
 	}
 	term_putstr(PROMPT2);
-	term_putstr(PROMPT3);*/
-	term_putstr("> ");
+	term_putstr(PROMPT3);
 	g_termcaps.writtenchars = 0;
 }
 
