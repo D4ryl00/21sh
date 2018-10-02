@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/02 16:39:24 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/02 22:50:52 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ enum							e_token
 	IO_NUMBER,
 	ASSIGNMENT_WORD,
 	NAME,
-	NEWLINE
+	NEWLINE,
+	CONTROL
 };
 
 typedef struct					s_token

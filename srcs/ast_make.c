@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/01 18:07:36 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/02 23:37:13 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,8 +203,7 @@ t_ast_cmd_suffix		*ast_cmd_suffix(t_list **tokens)
 		if (!(suffix->io_redirect = ast_io_redirect(tokens)))
 		{
 			if ((((t_token *)(*tokens)->content)->type == TOKEN)
-					&& (ft_strarrchr(((t_token *)(*tokens)->content)
-						->content, g_control_operator) < 0))
+					&& (((t_token *)(*tokens)->content)->type != CONTROL))
 			{
 				if (!(suffix->word = ft_strdup(((t_token *)(*tokens)->content)
 								->content)))
@@ -424,7 +423,12 @@ t_ast_pipe_sequence	*ast_pipe_sequence(t_list **tokens)
 			{
 				*tokens = (*tokens)->next;
 				ps->linebreak = ast_linebreak(tokens);
-				ps->pipe_sequence = ast_pipe_sequence(tokens);
+				if (!(ps->pipe_sequence = ast_pipe_sequence(tokens)))
+				{
+					ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
+					free_ast_pipe_sequence(ps);
+					ps = NULL;
+				}
 			}
 		}
 		else
@@ -483,7 +487,12 @@ t_ast_and_or	*ast_and_or(t_list **tokens)
 				and_or->op = ((t_token *)(*tokens)->content)->type;
 				*tokens = (*tokens)->next;
 				and_or->linebreak = ast_linebreak(tokens);
-				and_or->and_or = ast_and_or(tokens);
+				if ((and_or->and_or = ast_and_or(tokens)) == NULL)
+				{
+					ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
+					free_ast_and_or(and_or);
+					and_or = NULL;
+				}
 			}
 		}
 		else
@@ -602,8 +611,7 @@ t_ast_program	*make_ast(t_list *tokens)
 	program = NULL;
 	if (tokens)
 	{
-		if (!(program = ast_program(tokens)))
-			ft_printf("21sh: parse error near `%s\n'", ((t_token *)tokens->content)->content);
+		program = ast_program(tokens);
 	}
 	return (program);
 }
