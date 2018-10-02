@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/09/19 10:42:50 by amordret         ###   ########.fr        #
+#    Updated: 2018/10/01 15:12:26 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRCS = main.c error.c free.c eval.c tokens.c termcaps.c prompt.c input.c \
 	   input_termcaps.c input_upanddown.c misctools.c history.c \
 	   get_token_quote.c get_token_expansion.c get_token_arithmetic.c \
 	   get_token_substitution.c get_token_word.c get_token_operator.c \
-	   get_token_various.c classify_token.c ast.c ast_free.c ast_run.c \
+	   get_token_various.c classify_token.c ast_make.c ast_free.c ast_eval.c \
 	   env_tools.c run.c run_path.c history_file.c input_homeend.c \
 	   ast_cmd_tools.c history2.c
 SRCS_DIR = srcs/

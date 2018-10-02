@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/20 14:37:10 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/01 17:55:28 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** PLEASE DO NOT CHANGE THAT!
 */
 
-char			*g_op_token [] =
+char			*g_op_token[] =
 {
 	"&&",
 	"||",
@@ -32,6 +32,16 @@ char			*g_op_token [] =
 	"<<-",
 	">|",
 	""
+};
+
+char			*g_control_operator[] =
+{
+	"&&",
+	"||",
+	"|",
+	")",
+	";",
+	"&"
 };
 
 t_ast_program*eval(t_input *input)
@@ -47,9 +57,9 @@ t_ast_program*eval(t_input *input)
 	}
 	free(input->save);
 	input->save = NULL;
-	program = make_ast(tokens);
+	if ((program = make_ast(tokens)))
+		eval_program(program);
 	ft_lstdel(&tokens, token_free);
-	run_program(program);
 	/*while (tokens)
 	{
 		type = ((t_token *)tokens->content)->type;

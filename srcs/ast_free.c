@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/13 00:06:28 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/20 16:45:15 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/30 19:51:47 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,9 @@ void	free_ast_io_file(t_ast_io_file *file)
 	if (file)
 	{
 		if (file->filename)
-		{
 			free_ast_filename(file->filename);
-			file->filename = NULL;
-		}
 		if (file->op)
-		{
 			free(file->op);
-			file->op = NULL;
-		}
 		free(file);
 	}
 }
@@ -54,16 +48,8 @@ void	free_ast_io_here(t_ast_io_here *io_here)
 {
 	if (io_here)
 	{
-		if (io_here->op)
-		{
-			free(io_here->op);
-			io_here->op = NULL;
-		}
 		if (io_here->here_end)
-		{
 			free_ast_here_end(io_here->here_end);
-			io_here->here_end = NULL;
-		}
 		free(io_here);
 	}
 }
@@ -73,15 +59,9 @@ void	free_ast_io_redirect(t_ast_io_redirect *redirect)
 	if (redirect)
 	{
 		if (redirect->io_file)
-		{
 			free_ast_io_file(redirect->io_file);
-			redirect->io_file = NULL;
-		}
 		if (redirect->io_here)
-		{
 			free_ast_io_here(redirect->io_here);
-			redirect->io_here = NULL;
-		}
 		free(redirect);
 	}
 }
@@ -91,21 +71,26 @@ void	free_ast_cmd_suffix(t_ast_cmd_suffix * suffix)
 	if (suffix)
 	{
 		if (suffix->io_redirect)
-		{
 			free_ast_io_redirect(suffix->io_redirect);
-			suffix->io_redirect = NULL;
-		}
 		if (suffix->word)
-		{
 			free(suffix->word);
-			suffix->word = NULL;
-		}
 		if (suffix->cmd_suffix)
-		{
 			free_ast_cmd_suffix(suffix->cmd_suffix);
-			suffix->cmd_suffix = NULL;
-		}
 		free(suffix);
+	}
+}
+
+void	free_ast_cmd_prefix(t_ast_cmd_prefix * prefix)
+{
+	if (prefix)
+	{
+		if (prefix->io_redirect)
+			free_ast_io_redirect(prefix->io_redirect);
+		if (prefix->assignment_word)
+			free(prefix->assignment_word);
+		if (prefix->cmd_prefix)
+			free_ast_cmd_prefix(prefix->cmd_prefix);
+		free(prefix);
 	}
 }
 
@@ -114,10 +99,7 @@ void	free_ast_cmd_name(t_ast_cmd_name *cmd_name)
 	if (cmd_name)
 	{
 		if (cmd_name->word)
-		{
 			free(cmd_name->word);
-			cmd_name->word = NULL;
-		}
 	}
 }
 
@@ -125,16 +107,12 @@ void	free_ast_simple_command(t_ast_simple_command *sc)
 {
 	if (sc)
 	{
+		if (sc->cmd_prefix)
+			free_ast_cmd_prefix(sc->cmd_prefix);
 		if (sc->cmd_name)
-		{
 			free_ast_cmd_name(sc->cmd_name);
-			sc->cmd_name = NULL;
-		}
 		if (sc->cmd_suffix)
-		{
 			free_ast_cmd_suffix(sc->cmd_suffix);
-			sc->cmd_suffix = NULL;
-		}
 		free(sc);
 	}
 }
@@ -147,10 +125,7 @@ void	free_ast_redirect_list(t_ast_redirect_list *rl)
 		{
 		}
 		if (rl->io_redirect)
-		{
 			free_ast_io_redirect(rl->io_redirect);
-			rl->io_redirect = NULL;
-		}
 		free(rl);
 	}
 }
@@ -160,16 +135,113 @@ void	free_ast_command(t_ast_command *command)
 	if (command)
 	{
 		if (command->simple_command)
-		{
 			free_ast_simple_command(command->simple_command);
-			command->simple_command = NULL;
-		}
 		if (command->redirect_list)
-		{
 			free_ast_redirect_list(command->redirect_list);
-			command->redirect_list = NULL;
-		}
 		free(command);
+	}
+}
+
+void	free_ast_newline_list(t_ast_newline_list* newline_list)
+{
+	if (newline_list)
+	{
+		if (newline_list->newline_list)
+			free_ast_newline_list(newline_list->newline_list);
+	}
+}
+
+void	free_ast_linebreak(t_ast_linebreak *linebreak)
+{
+	if (linebreak)
+	{
+		if (linebreak->newline_list)
+			free_ast_newline_list(linebreak->newline_list);
+		free(linebreak);
+	}
+}
+
+void	free_ast_pipe_sequence(t_ast_pipe_sequence *ps)
+{
+	if (ps)
+	{
+		if (ps->linebreak)
+			free_ast_linebreak(ps->linebreak);
+		if (ps->command)
+			free_ast_command(ps->command);
+		free(ps);
+	}
+}
+
+void	free_ast_pipeline(t_ast_pipeline *pipeline)
+{
+	if (pipeline)
+	{
+		if (pipeline->pipe_sequence)
+			free_ast_pipe_sequence(pipeline->pipe_sequence);
+		free(pipeline);
+	}
+}
+
+void	free_ast_and_or(t_ast_and_or *and_or)
+{
+	if (and_or)
+	{
+		if (and_or->pipeline)
+			free_ast_pipeline(and_or->pipeline);
+		if (and_or->linebreak)
+			free_ast_linebreak(and_or->linebreak);
+		if (and_or->and_or)
+			free_ast_and_or(and_or->and_or);
+		free(and_or);
+	}
+}
+
+void	free_ast_separator_op(t_ast_separator_op *s_op)
+{
+	if (s_op)
+	{
+		free(s_op);
+	}
+}
+
+void	free_ast_list(t_ast_list *list)
+{
+	if (list)
+	{
+		if (list->and_or)
+			free_ast_and_or(list->and_or);
+		if (list->separator_op)
+			free_ast_separator_op(list->separator_op);
+		if (list->list)
+			free_ast_list(list->list);
+		free(list);
+	}
+}
+
+void	free_ast_complete_command(t_ast_complete_command* cc)
+{
+	if (cc)
+	{
+		if (cc->list)
+			free_ast_list(cc->list);
+		if (cc->separator_op)
+			free_ast_separator_op(cc->separator_op);
+		free(cc);
+	}
+}
+
+void	free_ast_complete_commands(t_ast_complete_commands *cc)
+{
+	if (cc)
+	{
+		if (cc->complete_command)
+			free_ast_complete_command(cc->complete_command);
+		if (cc->newline_list)
+			free_ast_newline_list(cc->newline_list);
+		if (cc->complete_commands)
+			free_ast_complete_commands(cc->complete_commands);
+		free(cc);
 	}
 }
 
@@ -177,11 +249,12 @@ void	free_ast_program(t_ast_program *program)
 {
 	if (program)
 	{
-		if (program->command)
-		{
-			free_ast_command(program->command);
-			program->command = NULL;
-		}
+		if (program->linebreak)
+			free_ast_linebreak(program->linebreak);
+		if (program->complete_commands)
+			free_ast_complete_commands(program->complete_commands);
+		if (program->post_linebreak)
+			free_ast_linebreak(program->post_linebreak);
 		free(program);
 	}
 }

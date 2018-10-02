@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 12:13:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/17 16:07:55 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/09/28 02:42:21 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ int				ft_buf_init(t_buf *buffer);
 char			*ft_buf_flush(t_buf *buffer);
 int				ft_buf_extend(t_buf *buffer);
 int				ft_buf_add_char(t_buf *buffer, char c);
+int				ft_buf_add_str(t_buf *buffer, char *str);
 int				ft_buf_insert_char(t_buf *buffer, char c, int index);
 int				ft_buf_delete_char(t_buf *buffer, int index);
 void			ft_buf_destroy(t_buf *buffer);
@@ -153,5 +154,6 @@ t_btree			*ft_btreenew(void const *content, size_t content_size);
 void			ft_btreedelone(t_btree **abtree, void (*del)(void *, size_t));
 void			ft_btreedel(t_btree **abtree, void (*del)(void *, size_t));
 int				ft_strarrchr(char *str, char **arr);
+char			*ft_strndup(const char *s1, unsigned int n);
 
 #endif

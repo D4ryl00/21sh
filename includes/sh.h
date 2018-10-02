@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/25 11:52:07 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/02 09:16:09 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # define ERR_COM_HIST	"\nError while fetching command history -> Wont work \n"
 
 # define MAX_HISTORY	1000
+# define IO_NUMBER_SIZE	4
 
 typedef struct termios			t_termios;
 
@@ -107,8 +108,6 @@ typedef struct					s_token
 	char						*content;
 }								t_token;
 
-extern char						*g_op_token[];
-
 enum							e_errno
 {
 	ENOMEM,
@@ -116,30 +115,14 @@ enum							e_errno
 	ENOENT,
 	EACCES,
 	EBUFF,
+	ESYNT,
 	EFORK,
 	EWAIT,
 	EOPEN,
 	EDUP,
+	EPIPE,
 	EOTHER
 };
-
-typedef struct					s_input
-{
-	char						*str;
-	char						*save;
-}								t_input;
-
-typedef struct					s_dup
-{
-	int							source;
-	int							target;
-}								t_dup;
-
-typedef struct					s_io_redir_done
-{
-	int							open;
-	t_dup						dup;
-}								t_io_redir_done;
 
 /*
 ** Structures for the AST
@@ -149,6 +132,11 @@ typedef struct					s_ast_cmd_name
 {
 	char						*word;
 }								t_ast_cmd_name;
+
+typedef struct					s_ast_cmd_word
+{
+	char						*word;
+}								t_ast_cmd_word;
 
 typedef struct					s_ast_filename
 {
@@ -174,13 +162,13 @@ typedef struct					s_ast_here_end
 
 typedef struct					s_ast_io_here
 {
-	enum e_token				*op;
+	enum e_token				op;
 	t_ast_here_end				*here_end;
 }								t_ast_io_here;
 
 typedef struct					s_ast_io_redirect
 {
-	char						io_number[3];
+	char						io_number[IO_NUMBER_SIZE];
 	t_ast_io_file				*io_file;
 	t_ast_io_here				*io_here;
 }								t_ast_io_redirect;
@@ -198,8 +186,17 @@ typedef struct					s_ast_cmd_suffix
 	struct s_ast_cmd_suffix		*cmd_suffix;
 }								t_ast_cmd_suffix;
 
+typedef struct					s_ast_cmd_prefix
+{
+	t_ast_io_redirect			*io_redirect;
+	char						*assignment_word;
+	struct s_ast_cmd_prefix		*cmd_prefix;
+}								t_ast_cmd_prefix;
+
 typedef struct					s_ast_simple_command
 {
+	t_ast_cmd_prefix			*cmd_prefix;
+	t_ast_cmd_word				*cmd_word;
 	t_ast_cmd_name				*cmd_name;
 	t_ast_cmd_suffix			*cmd_suffix;
 }								t_ast_simple_command;
@@ -210,9 +207,68 @@ typedef struct					s_ast_command
 	t_ast_redirect_list			*redirect_list;
 }								t_ast_command;
 
+typedef struct					s_ast_newline_list
+{
+	char						nl;
+	struct s_ast_newline_list	*newline_list;
+}								t_ast_newline_list;
+
+typedef struct					s_ast_linebreak
+{
+	t_ast_newline_list			*newline_list;
+}								t_ast_linebreak;
+
+typedef struct					s_ast_pipe_sequence
+{
+	t_ast_linebreak				*linebreak;
+	t_ast_command				*command;
+	struct s_ast_pipe_sequence	*pipe_sequence;
+}								t_ast_pipe_sequence;
+
+typedef struct					s_ast_pipeline
+{
+	char						bang;
+	t_ast_pipe_sequence			*pipe_sequence;
+}								t_ast_pipeline;
+
+typedef struct					s_ast_and_or
+{
+	enum e_token				op;
+	t_ast_pipeline				*pipeline;
+	t_ast_linebreak				*linebreak;
+	struct s_ast_and_or			*and_or;
+}								t_ast_and_or;
+
+typedef struct					s_ast_separator_op
+{
+	char						c;
+}								t_ast_separator_op;
+
+typedef struct					s_ast_list
+{
+	t_ast_and_or				*and_or;
+	t_ast_separator_op			*separator_op;
+	struct s_ast_list			*list;
+}								t_ast_list;
+
+typedef	struct					s_ast_complete_command
+{
+	t_ast_list					*list;
+	t_ast_separator_op			*separator_op;
+}								t_ast_complete_command;
+
+typedef struct					s_ast_complete_commands
+{
+	struct s_ast_complete_command	*complete_command;
+	t_ast_newline_list				*newline_list;
+	struct s_ast_complete_commands	*complete_commands;
+}								t_ast_complete_commands;
+
 typedef struct					s_ast_program
 {
-	t_ast_command				*command;
+	t_ast_linebreak				*linebreak;
+	t_ast_complete_commands		*complete_commands;
+	t_ast_linebreak				*post_linebreak;
 }								t_ast_program;
 
 /*
@@ -226,6 +282,27 @@ extern char						*g_builtin_cmd[];
 extern char						*g_special_builtin_cmd[];
 extern char						*g_utility_cmd[];
 extern t_termcaps				g_termcaps;
+extern char						*g_op_token[];
+extern char						*g_control_operator[];
+
+typedef struct					s_input
+{
+	char						*str;
+	char						*save;
+}								t_input;
+
+typedef struct					s_pipe
+{
+	int							rd;
+	int							wr;
+}								t_pipe;
+
+typedef struct					s_pipe_env
+{
+	t_ast_simple_command		*sc;
+	t_pipe						input;
+	t_pipe						output;
+}								t_pipe_env;
 
 /*
 ** Prototypes
@@ -307,18 +384,30 @@ void							free_ast_cmd_suffix(t_ast_cmd_suffix *suffix);
 void							free_ast_io_redirect
 	(t_ast_io_redirect *redirect);
 void							free_ast_io_file(t_ast_io_file *file);
-int								run_program(t_ast_program *program);
+int								eval_program(t_ast_program *program);
 char							*ast_get_cmd_name(t_ast_simple_command *sc);
 char							**ast_construct_cmd_args
 	(t_ast_simple_command *sc);
 int								cmd_search_and_run(char ** av
-	, t_ast_simple_command *sc);
+		, t_pipe_env *pipe_env);
 int								run(char *path, char **av
-	, t_ast_simple_command *sc);
-int								run_cmd_path(char **av
-	, t_ast_simple_command *sc);
+	, t_pipe_env *pipe_env);
+int								run_cmd_path(char **av, t_pipe_env *pipe_env);
 char							*p_to_equ_char(char *str);
 int								env_select_key(t_list *node, void *data);
 int								cmd_ast_eval_redirs(t_ast_simple_command *sc);
-void							cmd_ast_undo_redirs(t_list 	*backup);
+void							free_ast_io_here(t_ast_io_here *io_here);
+void							free_ast_cmd_prefix(t_ast_cmd_prefix * prefix);
+void							free_ast_complete_commands(
+		t_ast_complete_commands *cc);
+void							free_ast_complete_command(
+		t_ast_complete_command *cc);
+void							free_ast_newline_list(
+		t_ast_newline_list* newline_list);
+void							free_ast_linebreak(t_ast_linebreak *linebreak);
+void							free_ast_separator_op(t_ast_separator_op *s_op);
+void							free_ast_list(t_ast_list *list);
+void							free_ast_and_or(t_ast_and_or *and_or);
+void							free_ast_pipe_sequence(t_ast_pipe_sequence *ps);
+void							free_ast_pipeline(t_ast_pipeline *pipeline);
 #endif
