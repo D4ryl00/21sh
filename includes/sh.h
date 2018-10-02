@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/02 09:16:09 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/02 13:46:30 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,6 +396,7 @@ int								run_cmd_path(char **av, t_pipe_env *pipe_env);
 char							*p_to_equ_char(char *str);
 int								env_select_key(t_list *node, void *data);
 int								cmd_ast_eval_redirs(t_ast_simple_command *sc);
+int								cmd_ast_eval_pipe(t_pipe_env *pipe_env);
 void							free_ast_io_here(t_ast_io_here *io_here);
 void							free_ast_cmd_prefix(t_ast_cmd_prefix * prefix);
 void							free_ast_complete_commands(

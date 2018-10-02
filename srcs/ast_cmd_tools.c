@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/28 14:41:57 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/02 13:57:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,21 @@ char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 }
 
 /*
+**	Get fd of an opened pipe and dup them on stdin or stdout.
+*/
+
+int		cmd_ast_eval_pipe(t_pipe_env *pipe_env)
+{
+	if ((pipe_env->input.rd != -1)
+			&& (dup2(pipe_env->input.rd, pipe_env->input.wr) == -1))
+		return (return_perror(EDUP, NULL));
+	if ((pipe_env->output.rd != -1)
+			&& (dup2(pipe_env->output.wr, pipe_env->output.rd) == -1))
+		return (return_perror(EDUP, NULL));
+	return (0);
+}
+
+/*
 ** Redirection [n]> or [n]>> into a file,
 ** where [n] is an optional fd (default 1).
 */
@@ -147,8 +162,6 @@ int	here_redirect(t_ast_io_redirect *io_redirect, int io_number)
 		return_perror(EDUP, NULL);
 	if ((fd_pipe[1] == io_number) && ((fd_pipe[1] = dup(fd_pipe[1])) == -1))
 		return_perror(EDUP, NULL);
-	if (dup2(fd_pipe[0], io_number) == -1)
-		return_perror(EDUP, NULL);
 	while ((status = newprompt(&input, "> ") != -1)
 			&& (((len = ft_strlen(input.str)) == 1) || ft_strncmp(input.str
 				, io_redirect->io_here->here_end->word, len - 1)))
@@ -158,6 +171,8 @@ int	here_redirect(t_ast_io_redirect *io_redirect, int io_number)
 		input.save = NULL;
 		input.str = NULL;
 	}
+	if (dup2(fd_pipe[0], io_number) == -1)
+		return_perror(EDUP, NULL);
 	close(fd_pipe[0]);
 	close(fd_pipe[1]);
 	if (status == -1)

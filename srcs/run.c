@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/02 09:56:32 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/02 13:46:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,30 +116,23 @@ int	run(char *path, char **av, t_pipe_env *pipe_env)
 	char	**env;
 	int		ret;
 
-	if ((pid = fork()) > 0)
-	{
-		ret = wait(&status);
-		ft_set_term();
-		ft_strarrdel(av);
-		if (ret == -1)
-			return (return_perror(EWAIT, NULL));
-		return (WEXITSTATUS(status));
-	}
-	else if (!pid)
+	if (!(pid = fork()))
 	{
 		if (!(env = ft_lsttoarrstr(g_env)))
 			exit_perror(ENOMEM, NULL);
 		termcaps_reset_term();
-		if ((pipe_env->input.rd != -1)
-				&& (dup2(pipe_env->input.rd, pipe_env->input.wr) == -1))
-			return (return_perror(EDUP, NULL));
-		if ((pipe_env->output.rd != -1)
-				&& (dup2(pipe_env->output.wr, pipe_env->output.rd) == -1))
-			return (return_perror(EDUP, NULL));
-		cmd_ast_eval_redirs(pipe_env->sc);
+		if ((cmd_ast_eval_pipe(pipe_env) == -1)
+				|| (cmd_ast_eval_redirs(pipe_env->sc) == -1))
+			return (-1);
 		execve(path, av, env);
 		return (0);
 	}
-	else
+	else if (pid == -1)
 		return (return_perror(EFORK, NULL));
+	ret = wait(&status);
+	ft_set_term();
+	ft_strarrdel(av);
+	if (ret == -1)
+		return (return_perror(EWAIT, NULL));
+	return (WEXITSTATUS(status));
 }
