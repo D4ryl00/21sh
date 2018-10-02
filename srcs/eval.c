@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/01 17:55:28 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/02 16:40:42 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char			*g_control_operator[] =
 	"&"
 };
 
-t_ast_program*eval(t_input *input)
+int	eval(t_input *input)
 {
 	t_list			*tokens;
 	//enum e_token	type;
@@ -53,7 +53,7 @@ t_ast_program*eval(t_input *input)
 	if (!(tokens = get_tokens(input)))
 	{
 		free(input->save);
-		return (NULL);
+		return (-1);
 	}
 	free(input->save);
 	input->save = NULL;
@@ -69,5 +69,6 @@ t_ast_program*eval(t_input *input)
 		ft_lstdelnode(&tokens, tokens, token_free);
 	}
 	ft_putchar('\n');*/
-	return (program);
+	free_ast_program(program);
+	return (0);
 }

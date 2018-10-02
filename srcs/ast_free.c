@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/13 00:06:28 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/30 19:51:47 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/02 16:34:29 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	free_ast_filename(t_ast_filename *filename)
 {
 	if (filename)
 	{
-		free(filename->word);
+		if (filename->word)
+			free(filename->word);
 		free(filename);
 	}
 }
@@ -66,7 +67,7 @@ void	free_ast_io_redirect(t_ast_io_redirect *redirect)
 	}
 }
 
-void	free_ast_cmd_suffix(t_ast_cmd_suffix * suffix)
+void	free_ast_cmd_suffix(t_ast_cmd_suffix *suffix)
 {
 	if (suffix)
 	{
@@ -80,7 +81,7 @@ void	free_ast_cmd_suffix(t_ast_cmd_suffix * suffix)
 	}
 }
 
-void	free_ast_cmd_prefix(t_ast_cmd_prefix * prefix)
+void	free_ast_cmd_prefix(t_ast_cmd_prefix *prefix)
 {
 	if (prefix)
 	{
@@ -94,12 +95,23 @@ void	free_ast_cmd_prefix(t_ast_cmd_prefix * prefix)
 	}
 }
 
+void	free_ast_cmd_word(t_ast_cmd_word *cmd_word)
+{
+	if (cmd_word)
+	{
+		if (cmd_word->word)
+			free(cmd_word->word);
+		free(cmd_word);
+	}
+}
+
 void	free_ast_cmd_name(t_ast_cmd_name *cmd_name)
 {
 	if (cmd_name)
 	{
 		if (cmd_name->word)
 			free(cmd_name->word);
+		free(cmd_name);
 	}
 }
 
@@ -109,6 +121,8 @@ void	free_ast_simple_command(t_ast_simple_command *sc)
 	{
 		if (sc->cmd_prefix)
 			free_ast_cmd_prefix(sc->cmd_prefix);
+		if (sc->cmd_word)
+			free_ast_cmd_word(sc->cmd_word);
 		if (sc->cmd_name)
 			free_ast_cmd_name(sc->cmd_name);
 		if (sc->cmd_suffix)
@@ -148,6 +162,7 @@ void	free_ast_newline_list(t_ast_newline_list* newline_list)
 	{
 		if (newline_list->newline_list)
 			free_ast_newline_list(newline_list->newline_list);
+		free(newline_list);
 	}
 }
 
@@ -169,6 +184,8 @@ void	free_ast_pipe_sequence(t_ast_pipe_sequence *ps)
 			free_ast_linebreak(ps->linebreak);
 		if (ps->command)
 			free_ast_command(ps->command);
+		if (ps->pipe_sequence)
+			free_ast_pipe_sequence(ps->pipe_sequence);
 		free(ps);
 	}
 }

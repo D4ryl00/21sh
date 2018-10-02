@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 01:37:49 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/02 13:20:25 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/02 14:53:35 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,15 @@
 
 static int	eval_simple_command(t_ast_simple_command *sc, t_pipe_env *pipe_env)
 {
+	int		status;
+	char	**av;
+
+	status = 0;
+	av = ast_construct_cmd_args(sc);
 	pipe_env->sc = sc;
-	return (cmd_search_and_run(ast_construct_cmd_args(sc), pipe_env));
+	status = cmd_search_and_run(av, pipe_env);
+	ft_strarrdel(av);
+	return (status);
 }
 
 static int	eval_command(t_ast_command *command, t_pipe_env *pipe_env)

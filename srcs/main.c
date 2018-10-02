@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/24 15:51:12 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/02 16:39:47 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,19 @@ int		newprompt(t_input *input, char *promptstring)
 
 int		main(int argc, char **argv, char **environ)
 {
-	t_input			input;
-	t_ast_program	*program;
+	t_input	input;
+	int		status;
 
 	(void)argc;
 	(void)argv;
+	status = 0;
 	g_env = ft_strarrtolist(environ);
-	program = NULL;
 	ft_set_term();
 	fill_command_hist();
 	while (42)
 	{
 		newprompt(&input, NULL);
-		if (!(program = eval(&input)))
-			continue;
+		status = eval(&input);
 	}
 	termcaps_reset_term_and_exit();
 	return (0);

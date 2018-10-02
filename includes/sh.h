@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/02 13:46:30 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/02 16:39:24 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,7 +313,7 @@ void							exit_perror(enum e_errno num, char *str);
 int								return_perror(enum e_errno num, char *str);
 void							ft_perror(enum e_errno num, char *str);
 void							prompt(char *promptstring);
-t_ast_program					*eval(t_input *input);
+int								eval(t_input *input);
 t_list							*get_tokens(t_input *input);
 int								sq_case(t_buf *buffer, t_input *input
 	, unsigned char f_params[2]);
