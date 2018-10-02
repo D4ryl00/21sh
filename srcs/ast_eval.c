@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 01:37:49 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/02 01:41:54 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/02 13:20:25 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	eval_pipe_sequence(t_ast_pipe_sequence *ps)
 				return (return_perror(EPIPE, NULL));
 			set_pipe(&(pipe_env.output), 1, pipe_fd[1]);
 			status = eval_command(ps->command, &pipe_env);
+			if (pipe_env.input.rd != -1)
+				close(pipe_env.input.rd);
 			close(pipe_fd[1]);
 			set_pipe(&(pipe_env.output), -1, -1);
 			set_pipe(&(pipe_env.input), pipe_fd[0], 0);
