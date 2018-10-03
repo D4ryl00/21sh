@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/03 18:41:48 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/03 23:38:52 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ast_cmd_name(t_ast_cmd_name **name, t_list **tokens)
 		*tokens = (*tokens)->next;
 		return (1);
 	}
-	ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
+	ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content, 1);
 	return (-1);
 }
 
@@ -54,7 +54,7 @@ int	ast_cmd_word(t_ast_cmd_word **word, t_list **tokens)
 		*tokens = (*tokens)->next;
 		return (1);
 	}
-	ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
+	ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content, 1);
 	return (-1);
 }
 
@@ -70,7 +70,7 @@ int	ast_filename(t_ast_filename **filename, t_list **tokens)
 		*tokens = (*tokens)->next;
 		return (1);
 	}
-	ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
+	ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content, 1);
 	return (-1);
 }
 
@@ -125,7 +125,7 @@ int	ast_here_end(t_ast_here_end **here_end, t_list **tokens)
 		*tokens = (*tokens)->next;
 		return (1);
 	}
-	ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
+	ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content, 1);
 	return (-1);
 }
 
@@ -436,6 +436,9 @@ int	ast_newline_list(t_ast_newline_list **nl_list, t_list **tokens)
 
 int	ast_linebreak(t_ast_linebreak **linebreak, t_list **tokens)
 {
+	t_list	**save;
+
+	save = tokens;
 	if (*tokens)
 	{
 		if (!(*linebreak = (t_ast_linebreak *)malloc(sizeof(t_ast_linebreak))))
@@ -445,11 +448,11 @@ int	ast_linebreak(t_ast_linebreak **linebreak, t_list **tokens)
 		{
 			free_ast_linebreak(*linebreak);
 			*linebreak = NULL;
-			return (0);
 		}
-		return (1);
 	}
-	return (0);
+	if (!*tokens && get_new_tokens(tokens, save) == -1)
+		return (-1);
+	return (1);
 }
 
 int	ast_pipe_sequence(t_ast_pipe_sequence **ps, t_list **tokens)
@@ -471,7 +474,6 @@ int	ast_pipe_sequence(t_ast_pipe_sequence **ps, t_list **tokens)
 				ast_linebreak(&((*ps)->linebreak), tokens);
 				if ((status = ast_pipe_sequence(&((*ps)->pipe_sequence), tokens)) < 1)
 				{
-					ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
 					free_ast_pipe_sequence(*ps);
 					*ps = NULL;
 					return (status);
@@ -528,7 +530,7 @@ int	ast_and_or(t_ast_and_or **and_or, t_list **tokens)
 		(*and_or)->linebreak = NULL;
 		(*and_or)->and_or = NULL;
 		(*and_or)->op = TOKEN;
-		if ((status = ast_pipeline(&((*and_or)->pipeline), tokens)))
+		if ((status = ast_pipeline(&((*and_or)->pipeline), tokens)) > 0)
 		{
 			if ((((t_token *)(*tokens)->content)->type == AND_IF)
 					|| (((t_token *)(*tokens)->content)->type == OR_IF))
@@ -538,7 +540,6 @@ int	ast_and_or(t_ast_and_or **and_or, t_list **tokens)
 				ast_linebreak(&((*and_or)->linebreak), tokens);
 				if (ast_and_or(&((*and_or)->and_or), tokens) < 1)
 				{
-					ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
 					free_ast_and_or(*and_or);
 					*and_or = NULL;
 					return (-1);
