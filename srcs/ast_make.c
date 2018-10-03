@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/03 14:37:39 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/03 18:41:48 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int	ast_cmd_name(t_ast_cmd_name **name, t_list **tokens)
 		*tokens = (*tokens)->next;
 		return (1);
 	}
-	return (0);
+	ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
+	return (-1);
 }
 
 int	ast_cmd_word(t_ast_cmd_word **word, t_list **tokens)
@@ -53,7 +54,8 @@ int	ast_cmd_word(t_ast_cmd_word **word, t_list **tokens)
 		*tokens = (*tokens)->next;
 		return (1);
 	}
-	return (0);
+	ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
+	return (-1);
 }
 
 int	ast_filename(t_ast_filename **filename, t_list **tokens)
@@ -68,13 +70,16 @@ int	ast_filename(t_ast_filename **filename, t_list **tokens)
 		*tokens = (*tokens)->next;
 		return (1);
 	}
-	return (0);
+	ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
+	return (-1);
 }
 
 int	ast_io_file(t_ast_io_file **file, t_list **tokens)
 {
-	t_token			*token;
+	t_token	*token;
+	int		status;
 
+	status = 0;
 	if (*tokens)
 	{
 		if (!(*file = (t_ast_io_file *)malloc(sizeof(t_ast_io_file)))
@@ -89,20 +94,20 @@ int	ast_io_file(t_ast_io_file **file, t_list **tokens)
 			(*file)->op->c = '\0';
 			(*file)->op->e = token->type;
 			*tokens = (*tokens)->next;
-			ast_filename(&((*file)->filename), tokens);
+			status = ast_filename(&((*file)->filename), tokens);
 		}
 		else if (!ft_strcmp(token->content, "<")
 				|| !ft_strcmp(token->content, ">"))
 		{
 			(*file)->op->c = token->content[0];
 			*tokens = (*tokens)->next;
-			ast_filename(&((*file)->filename), tokens);
+			status = ast_filename(&((*file)->filename), tokens);
 		}
 		if (!((*file)->filename))
 		{
 			free_ast_io_file(*file);
 			*file = NULL;
-			return (0);
+			return (status);
 		}
 		return (1);
 	}
@@ -120,11 +125,15 @@ int	ast_here_end(t_ast_here_end **here_end, t_list **tokens)
 		*tokens = (*tokens)->next;
 		return (1);
 	}
-	return (0);
+	ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
+	return (-1);
 }
 
 int	ast_io_here(t_ast_io_here **here, t_list **tokens)
 {
+	int	status;
+
+	status = 0;
 	if (*tokens)
 	{
 		if (!(*here = (t_ast_io_here *)malloc(sizeof(t_ast_io_here))))
@@ -135,21 +144,23 @@ int	ast_io_here(t_ast_io_here **here, t_list **tokens)
 		{
 			(*here)->op = ((t_token *)(*tokens)->content)->type;
 			*tokens = (*tokens)->next;
-			ast_here_end(&((*here)->here_end), tokens);
+			status = ast_here_end(&((*here)->here_end), tokens);
 		}
-		if (!((*here)->here_end))
+		if (status < 1)
 		{
 			free_ast_io_here(*here);
 			*here = NULL;
-			return (0);
+			return (status);
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	ast_io_redirect(t_ast_io_redirect **redirect, t_list **tokens)
 {
+	int	status;
+
 	if (*tokens)
 	{
 		if (!(*redirect = (t_ast_io_redirect *)malloc(
@@ -165,20 +176,23 @@ int	ast_io_redirect(t_ast_io_redirect **redirect, t_list **tokens)
 			(*redirect)->io_number[3] = '\0';
 			*tokens = (*tokens)->next;
 		}
-		if (!(ast_io_file(&((*redirect)->io_file), tokens))
-				&& !(ast_io_here(&((*redirect)->io_here), tokens)))
+		if ((status = ast_io_file(&((*redirect)->io_file), tokens)) < 1
+				&& (status == -1
+				|| (status = ast_io_here(&((*redirect)->io_here), tokens)) < 1))
 		{
 			free_ast_io_redirect(*redirect);
 			*redirect = NULL;
-			return (0);
+			return (status);
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	ast_cmd_suffix(t_ast_cmd_suffix **suffix, t_list **tokens)
 {
+	int	status;
+
 	if (*tokens)
 	{
 		if (!(*suffix = (struct s_ast_cmd_suffix *)
@@ -187,7 +201,7 @@ int	ast_cmd_suffix(t_ast_cmd_suffix **suffix, t_list **tokens)
 		(*suffix)->io_redirect = NULL;
 		(*suffix)->word = NULL;
 		(*suffix)->cmd_suffix = NULL;
-		if (!(ast_io_redirect(&((*suffix)->io_redirect), tokens)))
+		if (!(status = ast_io_redirect(&((*suffix)->io_redirect), tokens)))
 		{
 			if ((((t_token *)(*tokens)->content)->type == TOKEN)
 					&& (((t_token *)(*tokens)->content)->type != CONTROL))
@@ -198,8 +212,21 @@ int	ast_cmd_suffix(t_ast_cmd_suffix **suffix, t_list **tokens)
 				*tokens = (*tokens)->next;
 			}
 		}
+		else if (status == -1)
+		{
+			free_ast_cmd_suffix(*suffix);
+			*suffix = NULL;
+			return (-1);
+		}
 		if ((*suffix)->io_redirect || (*suffix)->word)
-			ast_cmd_suffix(&((*suffix)->cmd_suffix), tokens);
+		{
+			if ((status = ast_cmd_suffix(&((*suffix)->cmd_suffix), tokens)) == -1)
+				{
+					free_ast_cmd_suffix(*suffix);
+					*suffix = NULL;
+					return (status);
+				}
+		}
 		if (!(*suffix)->io_redirect && !(*suffix)->word)
 		{
 			free_ast_cmd_suffix(*suffix);
@@ -208,7 +235,7 @@ int	ast_cmd_suffix(t_ast_cmd_suffix **suffix, t_list **tokens)
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int						is_valid_name(char *str)
@@ -243,6 +270,8 @@ int						is_assignment_word(char *str)
 
 int	ast_cmd_prefix(t_ast_cmd_prefix **prefix, t_list	**tokens)
 {
+	int	status;
+
 	if (*tokens)
 	{
 		if (!(*prefix = (struct s_ast_cmd_prefix *)
@@ -251,7 +280,7 @@ int	ast_cmd_prefix(t_ast_cmd_prefix **prefix, t_list	**tokens)
 		(*prefix)->io_redirect = NULL;
 		(*prefix)->assignment_word = NULL;
 		(*prefix)->cmd_prefix = NULL;
-		if (!(ast_io_redirect(&((*prefix)->io_redirect), tokens)))
+		if (!(status = ast_io_redirect(&((*prefix)->io_redirect), tokens)))
 		{
 			if (is_assignment_word(((t_token *)(*tokens)->content)->content))
 			{
@@ -262,8 +291,21 @@ int	ast_cmd_prefix(t_ast_cmd_prefix **prefix, t_list	**tokens)
 				*tokens = (*tokens)->next;
 			}
 		}
+		else if (status == -1)
+		{
+			free_ast_cmd_prefix(*prefix);
+			*prefix = NULL;
+			return (0);
+		}
 		if ((*prefix)->io_redirect || (*prefix)->assignment_word)
-			ast_cmd_prefix(&((*prefix)->cmd_prefix), tokens);
+		{
+			if ((status = ast_cmd_prefix(&((*prefix)->cmd_prefix), tokens)) == -1)
+			{
+				free_ast_cmd_prefix(*prefix);
+				*prefix = NULL;
+				return (-1);
+			}
+		}
 		if (!(*prefix)->io_redirect && !(*prefix)->assignment_word)
 		{
 			free_ast_cmd_prefix(*prefix);
@@ -272,11 +314,13 @@ int	ast_cmd_prefix(t_ast_cmd_prefix **prefix, t_list	**tokens)
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	ast_simple_command(t_ast_simple_command **sc, t_list **tokens)
 {
+	int	status;
+
 	if (*tokens)
 	{
 		if (!(*sc = (t_ast_simple_command *)malloc(sizeof
@@ -286,41 +330,63 @@ int	ast_simple_command(t_ast_simple_command **sc, t_list **tokens)
 		(*sc)->cmd_word = NULL;
 		(*sc)->cmd_name = NULL;
 		(*sc)->cmd_suffix = NULL;
-		if ((ast_cmd_prefix(&((*sc)->cmd_prefix), tokens)))
+		if ((status = ast_cmd_prefix(&((*sc)->cmd_prefix), tokens)) > 0)
 		{
-			if (ast_cmd_word(&((*sc)->cmd_word), tokens))
-				ast_cmd_suffix(&((*sc)->cmd_suffix), tokens);
+			if ((status = ast_cmd_word(&((*sc)->cmd_word), tokens)) > 0)
+			{
+				if ((status = ast_cmd_suffix(&((*sc)->cmd_suffix), tokens)) == -1)
+				{
+					free_ast_simple_command(*sc);
+					*sc = NULL;
+					return (status);
+				}
+			}
+			else if (status == -1)
+			{
+				free_ast_simple_command(*sc);
+				*sc = NULL;
+				return (status);
+			}
 		}
-		else if (ast_cmd_name(&((*sc)->cmd_name), tokens))
-			ast_cmd_suffix(&((*sc)->cmd_suffix), tokens);
+		else if (!status && (status = ast_cmd_name(&((*sc)->cmd_name), tokens)) > 0)
+		{
+			if ((status = ast_cmd_suffix(&((*sc)->cmd_suffix), tokens)) == -1)
+			{
+				free_ast_simple_command(*sc);
+				*sc = NULL;
+				return (status);
+			}
+		}
 		else
 		{
 			free_ast_simple_command(*sc);
 			*sc = NULL;
-			return (0);
+			return (status);
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	ast_command(t_ast_command **command, t_list **tokens)
 {
+	int	status;
+
 	if (*tokens)
 	{
 		if (!(*command = (t_ast_command *)malloc(sizeof(t_ast_command))))
 			exit_perror(ENOMEM, NULL);
 		(*command)->simple_command = NULL;
 		(*command)->redirect_list = NULL;
-		if (!(ast_simple_command(&((*command)->simple_command), tokens)))
+		if ((status = ast_simple_command(&((*command)->simple_command), tokens)) < 1)
 		{
 			free_ast_command(*command);
 			*command = NULL;
-			return (0);
+			return (status);
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	ast_separator_op(t_ast_separator_op **s_op, t_list **tokens)
@@ -339,7 +405,7 @@ int	ast_separator_op(t_ast_separator_op **s_op, t_list **tokens)
 		*tokens = (*tokens)->next;
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	ast_newline_list(t_ast_newline_list **nl_list, t_list **tokens)
@@ -365,7 +431,7 @@ int	ast_newline_list(t_ast_newline_list **nl_list, t_list **tokens)
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	ast_linebreak(t_ast_linebreak **linebreak, t_list **tokens)
@@ -383,11 +449,13 @@ int	ast_linebreak(t_ast_linebreak **linebreak, t_list **tokens)
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	ast_pipe_sequence(t_ast_pipe_sequence **ps, t_list **tokens)
 {
+	int	status;
+
 	if (*tokens)
 	{
 		if (!(*ps = (t_ast_pipe_sequence *)malloc(sizeof(t_ast_pipe_sequence))))
@@ -395,18 +463,18 @@ int	ast_pipe_sequence(t_ast_pipe_sequence **ps, t_list **tokens)
 		(*ps)->command = NULL;
 		(*ps)->linebreak = NULL;
 		(*ps)->pipe_sequence = NULL;
-		if (ast_command(&((*ps)->command), tokens))
+		if ((status = ast_command(&((*ps)->command), tokens)) > 0)
 		{
 			if (!ft_strcmp(((t_token *)(*tokens)->content)->content, "|"))
 			{
 				*tokens = (*tokens)->next;
 				ast_linebreak(&((*ps)->linebreak), tokens);
-				if (!ast_pipe_sequence(&((*ps)->pipe_sequence), tokens))
+				if ((status = ast_pipe_sequence(&((*ps)->pipe_sequence), tokens)) < 1)
 				{
 					ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
 					free_ast_pipe_sequence(*ps);
 					*ps = NULL;
-					return (-1);
+					return (status);
 				}
 			}
 		}
@@ -414,15 +482,17 @@ int	ast_pipe_sequence(t_ast_pipe_sequence **ps, t_list **tokens)
 		{
 			free_ast_pipe_sequence(*ps);
 			*ps = NULL;
-			return (0);
+			return (status);
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	ast_pipeline(t_ast_pipeline **pipeline, t_list **tokens)
 {
+	int	status;
+
 	if (*tokens)
 	{
 		if (!(*pipeline = (t_ast_pipeline *)malloc(sizeof(t_ast_pipeline))))
@@ -435,19 +505,21 @@ int	ast_pipeline(t_ast_pipeline **pipeline, t_list **tokens)
 		}
 		else
 			(*pipeline)->bang = '\0';
-		if (!ast_pipe_sequence(&((*pipeline)->pipe_sequence), tokens))
+		if ((status = ast_pipe_sequence(&((*pipeline)->pipe_sequence), tokens)) < 1)
 		{
 			free_ast_pipeline(*pipeline);
 			*pipeline = NULL;
-			return (0);
+			return (status);
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	ast_and_or(t_ast_and_or **and_or, t_list **tokens)
 {
+	int	status;
+
 	if (*tokens)
 	{
 		if (!(*and_or = (t_ast_and_or *)malloc(sizeof(t_ast_and_or))))
@@ -456,7 +528,7 @@ int	ast_and_or(t_ast_and_or **and_or, t_list **tokens)
 		(*and_or)->linebreak = NULL;
 		(*and_or)->and_or = NULL;
 		(*and_or)->op = TOKEN;
-		if (ast_pipeline(&((*and_or)->pipeline), tokens))
+		if ((status = ast_pipeline(&((*and_or)->pipeline), tokens)))
 		{
 			if ((((t_token *)(*tokens)->content)->type == AND_IF)
 					|| (((t_token *)(*tokens)->content)->type == OR_IF))
@@ -464,7 +536,7 @@ int	ast_and_or(t_ast_and_or **and_or, t_list **tokens)
 				(*and_or)->op = ((t_token *)(*tokens)->content)->type;
 				*tokens = (*tokens)->next;
 				ast_linebreak(&((*and_or)->linebreak), tokens);
-				if (!ast_and_or(&((*and_or)->and_or), tokens))
+				if (ast_and_or(&((*and_or)->and_or), tokens) < 1)
 				{
 					ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content);
 					free_ast_and_or(*and_or);
@@ -477,15 +549,17 @@ int	ast_and_or(t_ast_and_or **and_or, t_list **tokens)
 		{
 			free_ast_and_or(*and_or);
 			*and_or = NULL;
-			return (0);
+			return (status);
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	ast_list(t_ast_list **list, t_list **tokens)
 {
+	int	status;
+
 	if (*tokens)
 	{
 		if (!(*list = (t_ast_list *)malloc( sizeof(t_ast_list))))
@@ -493,24 +567,33 @@ int	ast_list(t_ast_list **list, t_list **tokens)
 		(*list)->and_or = NULL;
 		(*list)->separator_op = NULL;
 		(*list)->list = NULL;
-		if (ast_and_or(&((*list)->and_or), tokens))
+		if ((status = ast_and_or(&((*list)->and_or), tokens)) > 0)
 		{
 			if (ast_separator_op(&((*list)->separator_op), tokens))
-				ast_list(&((*list)->list), tokens);
+			{
+				if ((status = ast_list(&((*list)->list), tokens)) == -1)
+				{
+					free_ast_list(*list);
+					*list = NULL;
+					return (status);
+				}
+			}
 		}
 		else
 		{
 			free_ast_list(*list);
 			*list = NULL;
-			return (0);
+			return (status);
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	ast_complete_command(t_ast_complete_command **cc, t_list **tokens)
 {
+	int	status;
+
 	if (*tokens)
 	{
 		if (!(*cc = (t_ast_complete_command *)malloc(
@@ -518,21 +601,23 @@ int	ast_complete_command(t_ast_complete_command **cc, t_list **tokens)
 			exit_perror(ENOMEM, NULL);
 		(*cc)->list = NULL;
 		(*cc)->separator_op = NULL;
-		if (ast_list(&((*cc)->list), tokens))
+		if ((status = ast_list(&((*cc)->list), tokens)) > 0)
 			ast_separator_op(&((*cc)->separator_op), tokens);
 		else
 		{
 			free_ast_complete_command(*cc);
 			*cc = NULL;
-			return (0);
+			return (status);
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	ast_complete_commands(t_ast_complete_commands **cc, t_list **tokens)
 {
+	int	status;
+
 	if (*tokens)
 	{
 		if (!(*cc = (t_ast_complete_commands *)malloc(
@@ -541,24 +626,33 @@ int	ast_complete_commands(t_ast_complete_commands **cc, t_list **tokens)
 		(*cc)->complete_command = NULL;
 		(*cc)->newline_list = NULL;
 		(*cc)->complete_commands = NULL;
-		if (ast_complete_command(&((*cc)->complete_command), tokens))
+		if ((status = ast_complete_command(&((*cc)->complete_command), tokens)) > 0)
 		{
 			if (ast_newline_list(&((*cc)->newline_list), tokens))
-				ast_complete_commands(&((*cc)->complete_commands), tokens);
+			{
+				if ((status = ast_complete_commands(&((*cc)->complete_commands), tokens)) == -1)
+				{
+					free_ast_complete_commands(*cc);
+					*cc = NULL;
+					return (status);
+				}
+			}
 		}
 		else
 		{
 			free_ast_complete_commands(*cc);
 			*cc = NULL;
-			return (0);
+			return (status);
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 int	ast_program(t_ast_program **program, t_list *tokens)
 {
+	int	status;
+
 	if (tokens)
 	{
 		if (!(*program = (t_ast_program *)malloc(sizeof(t_ast_program))))
@@ -567,17 +661,17 @@ int	ast_program(t_ast_program **program, t_list *tokens)
 		(*program)->complete_commands = NULL;
 		(*program)->post_linebreak = NULL;
 		ast_linebreak(&((*program)->linebreak), &tokens);
-		if (ast_complete_commands(&((*program)->complete_commands), &tokens))
+		if ((status = ast_complete_commands(&((*program)->complete_commands), &tokens)) > 0)
 			ast_linebreak(&((*program)->post_linebreak),  &tokens);
-		if (!(*program)->linebreak && !(*program)->complete_commands)
+		if (!(*program)->linebreak && status < 1)
 		{
 			free_ast_program(*program);
 			*program = NULL;
-			return (0);
+			return (status);
 		}
 		return (1);
 	}
-	return (-1);
+	return (0);
 }
 
 t_ast_program	*make_ast(t_list *tokens)
