@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 15:45:25 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/02 01:10:20 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/03 22:58:10 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ int		run_cmd_path(char **av, t_pipe_env *pipe_env)
 			if (!access(path, X_OK))
 				status = run(path, av, pipe_env);
 			else
-				ft_perror(EACCES, av[0]);
+				ft_perror(EACCES, av[0], 0);
 			free(path);
 		}
 		else
-			ft_perror(ENOCMD, av[0]);
+			ft_perror(ENOCMD, av[0], 0);
 		ft_strarrdel(dirs);
 	}
 	return (status);

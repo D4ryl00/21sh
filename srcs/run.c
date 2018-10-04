@@ -6,7 +6,11 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2018/10/03 14:08:39 by amordret         ###   ########.fr       */
+=======
+/*   Updated: 2018/10/03 22:57:45 by rbarbero         ###   ########.fr       */
+>>>>>>> 2118ea226f8cc4354fc6fa4f35fb412a192ee23a
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +88,10 @@ int	run_direct_path(char **av, t_pipe_env *pipe_env)
 		if (!access(av[0], X_OK))
 			status = run(av[0], av, pipe_env);
 		else
-			ft_perror(EACCES, av[0]);
+			ft_perror(EACCES, av[0], 0);
 	}
 	else
-		ft_perror(ENOCMD, av[0]);
+		ft_perror(ENOCMD, av[0], 0);
 	return (status);
 }
 

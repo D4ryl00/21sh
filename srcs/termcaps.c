@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 10:16:11 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/03 14:23:17 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/04 10:30:28 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	ft_set_term(void)
 	char	*terminame;
 
 	if ((g_termcaps.fd = open(ttyname(0), O_RDWR)) == -1)
-		return (ft_perror(EDUP, NULL));
+		return (ft_perror(EDUP, NULL, 0));
 	if ((terminame = getenv("TERM")) == NULL)
 		return (ft_putstr(ERR_GETENV));
 	if ((tgetent(NULL, terminame)) < 1)

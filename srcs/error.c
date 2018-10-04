@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 22:09:25 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/01 01:11:59 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/03 22:58:45 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char			*g_errors[] =
 	"No such file or directory",
 	"Permission denied",
 	"Buffer error, irrecoverable, exiting...",
-	"Syntax error",
+	"syntax error near unexpected token",
 	"Fork error",
 	"Wait error",
 	"Open error",
@@ -52,10 +52,17 @@ int		return_perror(enum e_errno num, char *str)
 	return (-1);
 }
 
-void	ft_perror(enum e_errno num, char *str)
+/*
+** Print an error of g_error selected by e_errno.
+** suffix tell if str is print before or after the previous error.
+*/
+
+void	ft_perror(enum e_errno num, char *str, int suffix)
 {
 	termcaps_echo(1);
-	if (str)
+	if (str && suffix)
+		ft_dprintf(2, "42sh: %s: %s\n", g_errors[num], str);
+	else if (str)
 		ft_dprintf(2, "42sh: %s: %s\n", str, g_errors[num]);
 	else
 		ft_dprintf(2, "42sh: %s\n", g_errors[num]);
