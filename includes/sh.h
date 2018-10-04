@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/04 10:34:59 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/04 13:51:54 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct					s_command_history
 typedef struct					s_read_input
 {
 	char						c[4];
+	char						*promptstring;
 	char						*tmpline;
 	t_buf						buffer;
 	int							cursorpos;
@@ -354,7 +355,7 @@ int								delimiter_case(t_list **tokens, t_buf *buffer
 enum e_token					token_get_op_type(char *str);
 void							token_free(void *content, size_t size);
 void							ft_set_term(void);
-int								read_input(t_input *input);
+int								read_input(t_input *input, char *promptstring);
 void							termcaps_echo(char c);
 void							term_putchar(char c);
 void							termcaps_reset_term(void);

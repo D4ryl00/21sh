@@ -6,13 +6,13 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/04 12:05:04 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/04 13:53:11 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 
-static int	set_t_read_input(t_read_input *s)
+static int	set_t_read_input(t_read_input *s, char *promptstring)
 {
 	s->c[0] = 0;
 	s->c[1] = 0;
@@ -21,6 +21,7 @@ static int	set_t_read_input(t_read_input *s)
 	s->cursorpos = 0;
 	s->historynb = 0;
 	s->tmpline = NULL;
+	s->promptstring = promptstring;
 	return (0);
 }
 
@@ -43,12 +44,11 @@ static int	set_t_read_input(t_read_input *s)
 	}
 }*/
 
-int			read_input(t_input *input)
+int			read_input(t_input *input, char *promptstring)
 {
 	t_read_input	s;
 
-	set_t_read_input(&s);
-	if ((set_t_read_input(&s) == -1) || (ft_buf_init(&(s.buffer)) == -1))
+	if ((set_t_read_input(&s, promptstring) == -1) || (ft_buf_init(&(s.buffer)) == -1))
 		return (-1);
 	while (s.c[3] && s.c[0] != '\n')
 	{
