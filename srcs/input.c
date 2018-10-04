@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/24 15:32:31 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/04 12:05:04 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,11 @@ int			read_input(t_input *input)
 	if (ft_buf_add_char(&(s.buffer), '\n') == -1 ||
 	ft_buf_add_char(&(s.buffer), '\0') == -1 || !((input->str) = ft_buf_flush(&(s.buffer))))
 		return (-1);
-	if (s.cursorpos)
+	if (input->str && (ft_strlen(input->str)) > 1)
 		add_to_command_hist(input->str);
 	input->save = &(input->str[0]);
 	ft_buf_destroy(&(s.buffer));
+	if (s.tmpline)
+		free(s.tmpline);
 	return (s.c[3]);
 }
