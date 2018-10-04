@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:05:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/03 23:38:52 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/04 13:53:44 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -417,7 +417,7 @@ int	ast_newline_list(t_ast_newline_list **nl_list, t_list **tokens)
 			exit_perror(ENOMEM, NULL);
 		(*nl_list)->nl = '\0';
 		(*nl_list)->newline_list = NULL;
-		if (((t_token *)(*tokens)->content)->content[0] == '\n')
+		if (((t_token *)(*tokens)->content)->type == NEWLINE)
 		{
 			(*nl_list)->nl = '\n';
 			*tokens = (*tokens)->next;
@@ -436,9 +436,6 @@ int	ast_newline_list(t_ast_newline_list **nl_list, t_list **tokens)
 
 int	ast_linebreak(t_ast_linebreak **linebreak, t_list **tokens)
 {
-	t_list	**save;
-
-	save = tokens;
 	if (*tokens)
 	{
 		if (!(*linebreak = (t_ast_linebreak *)malloc(sizeof(t_ast_linebreak))))
@@ -450,15 +447,15 @@ int	ast_linebreak(t_ast_linebreak **linebreak, t_list **tokens)
 			*linebreak = NULL;
 		}
 	}
-	if (!*tokens && get_new_tokens(tokens, save) == -1)
-		return (-1);
 	return (1);
 }
 
 int	ast_pipe_sequence(t_ast_pipe_sequence **ps, t_list **tokens)
 {
-	int	status;
+	int		status;
+	t_list	*save;
 
+	save = *tokens;
 	if (*tokens)
 	{
 		if (!(*ps = (t_ast_pipe_sequence *)malloc(sizeof(t_ast_pipe_sequence))))
@@ -468,10 +465,13 @@ int	ast_pipe_sequence(t_ast_pipe_sequence **ps, t_list **tokens)
 		(*ps)->pipe_sequence = NULL;
 		if ((status = ast_command(&((*ps)->command), tokens)) > 0)
 		{
-			if (!ft_strcmp(((t_token *)(*tokens)->content)->content, "|"))
+			if (*tokens && !ft_strcmp(((t_token *)(*tokens)->content)
+						->content, "|"))
 			{
 				*tokens = (*tokens)->next;
 				ast_linebreak(&((*ps)->linebreak), tokens);
+				if (!*tokens && get_new_tokens(tokens, save) == -1)
+					return (-1);
 				if ((status = ast_pipe_sequence(&((*ps)->pipe_sequence), tokens)) < 1)
 				{
 					free_ast_pipe_sequence(*ps);
@@ -520,8 +520,10 @@ int	ast_pipeline(t_ast_pipeline **pipeline, t_list **tokens)
 
 int	ast_and_or(t_ast_and_or **and_or, t_list **tokens)
 {
-	int	status;
+	int		status;
+	t_list	*save;
 
+	save = *tokens;
 	if (*tokens)
 	{
 		if (!(*and_or = (t_ast_and_or *)malloc(sizeof(t_ast_and_or))))
@@ -538,6 +540,8 @@ int	ast_and_or(t_ast_and_or **and_or, t_list **tokens)
 				(*and_or)->op = ((t_token *)(*tokens)->content)->type;
 				*tokens = (*tokens)->next;
 				ast_linebreak(&((*and_or)->linebreak), tokens);
+				if (!*tokens && get_new_tokens(tokens, save) == -1)
+					return (-1);
 				if (ast_and_or(&((*and_or)->and_or), tokens) < 1)
 				{
 					free_ast_and_or(*and_or);
