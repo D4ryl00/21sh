@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 10:16:11 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/25 11:55:17 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/03 14:23:17 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,35 +51,37 @@ void	termcaps_reset_term_and_exit(void)
 {
 	if (tcsetattr(0, TCSANOW, &(g_termcaps.backup_termios)) < 0)
 		return (ft_putstr(ERR_TCSETATTR));
-	ft_putstr_fd(g_termcaps.leaveinsertmode, 0);
+	ft_putstr_fd(g_termcaps.leaveinsertmode, g_termcaps.fd);
 	save_hist_to_file();
 	exit(0);
 }
 
 void	termcaps_reset_term(void)
 {
-	if (tcsetattr(0, TCSANOW, &(g_termcaps.backup_termios)) < 0)
+	if (tcsetattr(g_termcaps.fd, TCSANOW, &(g_termcaps.backup_termios)) < 0)
 		return (ft_putstr(ERR_TCSETATTR));
-	ft_putstr_fd(g_termcaps.leaveinsertmode, 0);
+	ft_putstr_fd(g_termcaps.leaveinsertmode, g_termcaps.fd);
 }
 
 void	ft_set_term(void)
 {
 	char	*terminame;
 
+	if ((g_termcaps.fd = open(ttyname(0), O_RDWR)) == -1)
+		return (ft_perror(EDUP, NULL));
 	if ((terminame = getenv("TERM")) == NULL)
 		return (ft_putstr(ERR_GETENV));
 	if ((tgetent(NULL, terminame)) < 1)
 		return (ft_putstr(ERR_TGETENT));
-	if ((tcgetattr(0, &(g_termcaps.current_termios)) == -1) ||
-	(tcgetattr(0, &(g_termcaps.backup_termios)) == -1))
+	if ((tcgetattr(g_termcaps.fd, &(g_termcaps.current_termios)) == -1) ||
+	(tcgetattr(g_termcaps.fd, &(g_termcaps.backup_termios)) == -1))
 		return (ft_putstr(ERR_TCGETATTR));
 	(g_termcaps.current_termios).c_lflag &= ~(ICANON);
 	(g_termcaps.current_termios).c_lflag &= ~(ECHO);
 	(g_termcaps.current_termios).c_cc[VMIN] = 1;
 	(g_termcaps.current_termios).c_cc[VTIME] = 0;
-	if (tcsetattr(0, TCSANOW, &(g_termcaps.current_termios)) < 0)
+	if (tcsetattr(g_termcaps.fd, TCSANOW, &(g_termcaps.current_termios)) < 0)
 		return (ft_putstr(ERR_TCSETATTR));
 	termcaps_strings();
-	ft_putstr_fd(g_termcaps.enterinsertmode, 0);
+	ft_putstr_fd(g_termcaps.enterinsertmode, g_termcaps.fd);
 }

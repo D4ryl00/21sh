@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/02 22:50:52 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/03 14:05:35 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct					s_termcaps
 	char						*deleteline;
 	char						*returnhome;
 	int							writtenchars;
+	int							fd;
 }								t_termcaps;
 
 

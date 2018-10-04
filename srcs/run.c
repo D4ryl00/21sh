@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/02 14:57:52 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/03 14:08:39 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,10 @@ int	run(char *path, char **av, t_pipe_env *pipe_env)
 	{
 		if (!(env = ft_lsttoarrstr(g_env)))
 			exit_perror(ENOMEM, NULL);
-		termcaps_reset_term();
 		if ((cmd_ast_eval_pipe(pipe_env) == -1)
 				|| (cmd_ast_eval_redirs(pipe_env->sc) == -1))
 			return (-1);
+		termcaps_reset_term();
 		execve(path, av, env);
 		return (0);
 	}
