@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/24 15:19:14 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/04 10:25:04 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static void	input_is_del(int *cursorpos, t_buf *buffer)
 
 void		input_is_backspace(int *cursorpos, t_buf *buffer)
 {
+	if (*cursorpos == 0)
+		return ;
 	input_is_left(cursorpos);
 	ft_buf_delete_char(buffer, *(cursorpos));
 	ft_putstr_fd(g_termcaps.delete, 0);
