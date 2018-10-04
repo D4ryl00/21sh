@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/04 13:51:54 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/04 13:57:48 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,7 +313,7 @@ typedef struct					s_pipe_env
 
 int								newprompt(t_input *input, char *promptstring);
 int								get_new_tokens(t_list **empty_tokens
-		, t_list **start);
+		, t_list *start);
 void							exit_perror(enum e_errno num, char *str);
 int								return_perror(enum e_errno num, char *str);
 void							ft_perror(enum e_errno num, char *str
