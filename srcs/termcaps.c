@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 10:16:11 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/04 10:30:28 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/04 14:05:37 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	termcaps_strings(void)
 
 void	termcaps_reset_term_and_exit(void)
 {
-	if (tcsetattr(0, TCSANOW, &(g_termcaps.backup_termios)) < 0)
+	if (tcsetattr(g_termcaps.fd, TCSANOW, &(g_termcaps.backup_termios)) < 0)
 		return (ft_putstr(ERR_TCSETATTR));
 	ft_putstr_fd(g_termcaps.leaveinsertmode, g_termcaps.fd);
 	save_hist_to_file();
