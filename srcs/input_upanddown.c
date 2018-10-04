@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 13:00:53 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/24 12:58:56 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/04 12:04:47 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void		input_is_up(t_read_input *s)
 	i = 0;
 	if (g_first_cmd_history && termcaps_clearline(s) == 0)
 	{
-		if (!(s->historynb))
+		if (!(s->historynb) && s->buffer.i)
 			s->tmpline = ft_buf_flush(&(s->buffer));
 		else
 			save_current_hist(s);
