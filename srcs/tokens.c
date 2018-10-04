@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/03 18:10:54 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/04 14:09:45 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ t_list	*get_tokens(t_input *input)
 	}
 	if (*input->str)
 	{
-		if (!(word = ft_strdup("\\n")))
+		if (!(word = ft_strdup("newline")))
 			exit_perror(ENOMEM, NULL);
 		insert_token(&tokens, word, NEWLINE);
 	}
