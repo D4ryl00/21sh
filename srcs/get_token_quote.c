@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:48:53 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/28 18:05:05 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/04 11:45:38 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	sq_case(t_buf *buffer, t_input *input
 int	bs_case(t_buf *buffer, t_input *input
 		, unsigned char f_params[2])
 {
-	//ft_buf_add_char(buffer, *(input->str));
 	(input->str)++;
 	if (!*(input->str) || *(input->str) == '\n')
 	{
@@ -51,7 +50,7 @@ int	bs_case(t_buf *buffer, t_input *input
 		if (!newprompt(input, "> "))
 			exit_perror(ENOMEM, NULL);
 	}
-	if (*(input->str))
+	else if (*(input->str))
 	{
 		ft_buf_add_char(buffer, *(input->str));
 		(input->str)++;
