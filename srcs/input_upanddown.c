@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 13:00:53 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/04 13:56:58 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/04 14:39:11 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,12 @@ extern void	recall_tmpline(t_read_input *s)
 		term_putstr((s->tmpline));
 		s->cursorpos = ft_strlen(s->tmpline);
 		free(s->tmpline);
+		s->tmpline = NULL;
 		s->historynb--;
 	}
 	else
 	{
+		s->historynb--;
 		ft_buf_destroy(&(s->buffer));
 		ft_buf_init(&(s->buffer));
 	}
