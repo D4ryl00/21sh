@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:53:52 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 08:54:06 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/05 09:03:53 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define PARSER_H
 
 # include "sh.h"
+
+# define IO_NUMBER_SIZE	4
 
 /*
 ** Structures for the AST

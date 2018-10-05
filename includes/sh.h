@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 08:53:36 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/05 09:03:50 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@
 # define ERR_COM_HIST	"\nError while fetching command history -> Wont work \n"
 
 # define MAX_HISTORY	1000
-# define IO_NUMBER_SIZE	4
 
 typedef struct termios			t_termios;
 
@@ -134,9 +133,6 @@ enum							e_errno
 extern char						*g_errors[];
 extern t_command_history		*g_first_cmd_history;
 extern t_list					*g_env;
-extern char						*g_builtin_cmd[];
-extern char						*g_special_builtin_cmd[];
-extern char						*g_utility_cmd[];
 extern t_termcaps				g_termcaps;
 extern char						*g_op_token[];
 extern char						*g_control_operator[];

@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 08:53:26 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/05 09:03:56 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include "sh.h"
 # include "parser.h"
+
+extern char						*g_builtin_cmd[];
+extern char						*g_special_builtin_cmd[];
+extern char						*g_utility_cmd[];
 
 typedef struct					s_pipe
 {
