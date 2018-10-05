@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 09:03:50 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/05 23:33:46 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,39 +77,6 @@ typedef struct					s_termcaps
 	int							fd;
 }								t_termcaps;
 
-
-/*
-** The order of the first ten entries is important.
-** It's linked with g_op_token.
-** PLEASE DO NOT CHANGE THAT!
-*/
-
-enum							e_token
-{
-	AND_IF,
-	OR_IF,
-	DSEMI,
-	DLESS,
-	DGREAT,
-	LESSAND,
-	GREATAND,
-	LESSGREAT,
-	DLESSDASH,
-	CLOBBER,
-	TOKEN,
-	IO_NUMBER,
-	ASSIGNMENT_WORD,
-	NAME,
-	NEWLINE,
-	CONTROL
-};
-
-typedef struct					s_token
-{
-	enum e_token				type;
-	char						*content;
-}								t_token;
-
 enum							e_errno
 {
 	ENOMEM,
@@ -134,8 +101,6 @@ extern char						*g_errors[];
 extern t_command_history		*g_first_cmd_history;
 extern t_list					*g_env;
 extern t_termcaps				g_termcaps;
-extern char						*g_op_token[];
-extern char						*g_control_operator[];
 
 typedef struct					s_input
 {
@@ -155,7 +120,6 @@ int								return_perror(enum e_errno num, char *str);
 void							ft_perror(enum e_errno num, char *str
 		, int suffix);
 void							prompt(char *promptstring);
-t_list							*get_tokens(t_input *input);
 int								sq_case(t_buf *buffer, t_input *input
 	, unsigned char f_params[2]);
 int								bs_case(t_buf *buffer, t_input *input
@@ -176,14 +140,10 @@ int								word_add_char_case(t_buf *buffer
 	, t_input *input);
 int								word_start_case(t_buf *buffer, t_input *input
 	, unsigned char f_params[2]);
-int								 is_operator(t_buf *buffer, char c
-	, unsigned char f_params[2]);
 int								operator_case(t_list **tokens, t_buf *buffer
 	, t_input *input, unsigned char f_params[2]);
 int								operator_start_case(t_list **tokens
 	, t_buf *buffer, t_input *input, unsigned char f_params[2]);
-void							insert_token(t_list **tokens, char *token
-	, enum e_token type);
 int								comment_input(t_input *input);
 int								delimiter_case(t_list **tokens, t_buf *buffer
 	, t_input *input, unsigned char f_params[2]);

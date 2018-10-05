@@ -6,19 +6,22 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/10/05 15:25:40 by rbarbero         ###   ########.fr        #
+#    Updated: 2018/10/06 00:06:19 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = 21sh
 
 DIR_SRCS = srcs
-SRCS_MAIN = main.c error.c free.c eval.c tokens.c termcaps.c prompt.c input.c \
+SRCS_MAIN = main.c error.c free.c eval.c termcaps.c prompt.c input.c \
 	   input_termcaps.c input_upanddown.c misctools.c history.c \
-	   get_token_quote.c get_token_expansion.c get_token_arithmetic.c \
-	   get_token_substitution.c get_token_word.c get_token_operator.c \
+	   get_token_expansion.c get_token_arithmetic.c \
+	   get_token_substitution.c get_token_word.c \
 	   get_token_various.c classify_token.c history2.c \
 	   env_tools.c history_file.c input_homeend.c
+
+DIR_LEXER = $(DIR_SRCS)/lexer
+SRCS_LEXER = lexer.c globals.c lexer_operator.c lexer_quote.c
 
 DIR_PARSER = $(DIR_SRCS)/parser
 SRCS_PARSER = cmd_name.c cmd_word.c filename.c io_file.c here_end.c io_here.c \
@@ -33,6 +36,7 @@ SRCS_EVAL = program.c pipeline.c pipe_sequence.c command.c simple_command.c \
 			run.c redirection_core.c redirections.c
 
 SRCS = $(addprefix $(DIR_SRCS)/,$(SRCS_MAIN)) \
+	   $(addprefix $(DIR_LEXER)/, $(SRCS_LEXER)) \
 	   $(addprefix $(DIR_PARSER)/, $(SRCS_PARSER)) \
 	   $(addprefix $(DIR_EVAL)/, $(SRCS_EVAL))
 
@@ -40,7 +44,7 @@ OBJS = $(SRCS:%.c=%.o)
 
 LIB_DIR = libft
 
-HEADERS = sh.h parser.h eval.h
+HEADERS = sh.h lexer.h parser.h eval.h
 HEADERS_DIR = includes/
 LHEADERS = $(HEADERS:%.h=$(HEADERS_DIR)%.h)
 

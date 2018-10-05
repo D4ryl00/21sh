@@ -6,45 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 08:29:33 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/05 23:35:30 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 #include "libft.h"
 #include <stdlib.h>
-
-/*
-** The order is important. It's linked with e_token.
-** PLEASE DO NOT CHANGE THAT!
-*/
-
-char			*g_op_token[] =
-{
-	"&&",
-	"||",
-	";;",
-	"<<",
-	">>",
-	"<&",
-	">&",
-	"<>",
-	"<<-",
-	">|",
-	""
-};
-
-char			*g_control_operator[] =
-{
-	"&&",
-	"||",
-	"|",
-	")",
-	";",
-	"&",
-	"!",
-	""
-};
 
 /*
 ** Print a new prompt de get new tokens.
@@ -58,7 +26,7 @@ int	get_new_tokens(t_list **empty_tokens, t_list *start)
 	if (*empty_tokens)
 		ft_lstdel(empty_tokens, token_free);
 	newprompt(&input, "> ");
-	if (!(*empty_tokens = get_tokens(&input)))
+	if (!(*empty_tokens = lexer(&input)))
 	{
 		free(input.save);
 		return (-1);
@@ -80,7 +48,7 @@ int	eval(t_input *input)
 	//enum e_token	type;
 	t_ast_program	*program;
 
-	if (!(tokens = get_tokens(input)))
+	if (!(tokens = lexer(input)))
 	{
 		free(input->save);
 		return (-1);

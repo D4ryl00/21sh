@@ -1,20 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokens.c                                           :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 22:32:27 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/10/05 22:57:48 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/10/05 23:37:40 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh.h"
 #include "libft.h"
+#include "sh.h"
+#include "lexer.h"
 #include <stdlib.h>
 
-int				is_operator(t_buf *buffer, char c, unsigned char f_params[2])
+/*
+** Return true if the token is an operator (see g_op_token)
+*/
+
+int			is_operator(t_buf *buffer, char c, unsigned char f_params[2])
 {
 	int	i;
 
@@ -38,7 +43,7 @@ int				is_operator(t_buf *buffer, char c, unsigned char f_params[2])
 	return (0);
 }
 
-void			insert_token(t_list **tokens, char *token, enum e_token type)
+void		insert_token(t_list **tokens, char *token, enum e_token type)
 {
 	t_list	*tmp;
 
@@ -53,48 +58,49 @@ void			insert_token(t_list **tokens, char *token, enum e_token type)
 	ft_lstaddback(tokens, tmp);
 }
 
-static int		get_token_loop(t_list **tokens, t_input *input
+/*
+** Take each character in a buffer.
+** When a token is completed, duplicate it in a token list
+** whith its category.
+*/
+
+static void	for_each_char(t_list **tokens, t_input *input
 		, t_buf *buffer, unsigned char f_params[2])
 {
-	int		ret;
-
 	while (*(input->str))
 	{
 		if (f_params[1])
-			ret = operator_case(tokens, buffer, input, f_params);
+			operator_case(tokens, buffer, input, f_params);
 		else if (*(input->str) == '\'')
-			ret = sq_case(buffer, input, f_params);
+			sq_case(buffer, input, f_params);
 		else if (*(input->str) == '"')
-			ret = dq_case(buffer, input, f_params);
+			dq_case(buffer, input, f_params);
 		else if (*(input->str) == '\\')
-			ret = bs_case(buffer, input, f_params);
+			bs_case(buffer, input, f_params);
 		else if (*(input->str) == '$')
-			ret = dollar_case(buffer, input, f_params);
+			dollar_case(buffer, input, f_params);
 		else if (*(input->str) == '`')
-			ret = substitution_case(buffer, input, f_params, '`');
+			substitution_case(buffer, input, f_params, '`');
 		else if (is_operator(buffer, *(input->str), f_params))
-			ret = operator_start_case(tokens, buffer, input, f_params);
+			operator_start_case(tokens, buffer, input, f_params);
 		else if ((*(input->str) == ' ') || (*(input->str) == '\n'))
-			ret = delimiter_case(tokens, buffer, input, f_params);
+			delimiter_case(tokens, buffer, input, f_params);
 		else if (f_params[0])
-			ret = word_add_char_case(buffer, input);
+			word_add_char_case(buffer, input);
 		else if (*(input->str) == '#')
-			ret = comment_input(input);
+			comment_input(input);
 		else
-			ret = word_start_case(buffer, input, f_params);
-		if (ret == -1)
-			return (return_perror(ENOMEM, NULL));
+			word_start_case(buffer, input, f_params);
 	}
-	return (0);
 }
 
 /*
-** f_params[2]: flags while parsing the input
-** 1: is reading a token;
-** 2: is reading a operator token;
+** Convert string input into tokens.
+** f_params[0]:: true when reading a token;
+** f_params[1]:: true when reading a operator token;
 */
 
-t_list	*get_tokens(t_input *input)
+t_list		*lexer(t_input *input)
 {
 	t_list			*tokens;
 	unsigned char	f_params[2];
@@ -106,11 +112,7 @@ t_list	*get_tokens(t_input *input)
 		exit_perror(ENOMEM, NULL);
 	f_params[0] = 0;
 	f_params[1] = 0;
-	if (get_token_loop(&tokens, input, &buffer, f_params) == -1)
-	{
-		ft_lstdel(&tokens, token_free);
-		tokens = NULL;
-	}
+	for_each_char(&tokens, input, &buffer, f_params);
 	if (f_params[0] || f_params[1])
 	{
 		if (!(word = ft_buf_flush(&buffer)))
