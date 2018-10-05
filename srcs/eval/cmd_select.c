@@ -1,18 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   run_path.c                                         :+:      :+:    :+:   */
+/*   cmd_select.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/16 15:45:25 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/03 22:58:10 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/10/05 13:36:33 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/10/05 13:57:34 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sh.h"
 #include "libft.h"
-#include <stdlib.h>
+#include "sh.h"
 
 /*
 ** For each dirs entry, test if the path 'dirs[i]/filename' exist
@@ -44,7 +43,7 @@ static char	*get_path_exec(char *filename, char **dirs)
 ** and run the command.
 */
 
-int		run_cmd_path(char **av, t_pipe_env *pipe_env)
+static int	run_cmd_path(char **av, t_pipe_env *pipe_env)
 {
 	char	**dirs;
 	char	*path;
@@ -70,4 +69,48 @@ int		run_cmd_path(char **av, t_pipe_env *pipe_env)
 		ft_strarrdel(dirs);
 	}
 	return (status);
+}
+
+/*
+** The command path is know, so we call it directly if we can.
+*/
+
+static int	run_cmd_direct_path(char **av, t_pipe_env *pipe_env)
+{
+	int	status;
+
+	status = 127;
+	if (!access(av[0], F_OK))
+	{
+		status = 126;
+		if (!access(av[0], X_OK))
+			status = run(av[0], av, pipe_env);
+		else
+			ft_perror(EACCES, av[0], 0);
+	}
+	else
+		ft_perror(ENOCMD, av[0], 0);
+	return (status);
+}
+
+/*
+** Find the good category of the command and execute it.
+*/
+
+int			cmd_select_type(char ** av, t_pipe_env *pipe_env)
+{
+	if (!ft_strchr(av[0], '/'))
+	{
+		if (is_builtin_cmd(av))
+			return (run_builtin_cmd(av));
+		else if (is_special_builtin_cmd(av))
+			return (run_special_builtin_cmd(av));
+		else if (is_utility_cmd(av))
+			return (run_utility_cmd(av));
+		else
+			return (run_cmd_path(av, pipe_env));
+	}
+	else
+		return (run_cmd_direct_path(av, pipe_env));
+	return (-1);
 }
