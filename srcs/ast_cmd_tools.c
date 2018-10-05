@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/02 13:57:05 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/05 08:25:49 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,20 @@ static int	ast_get_cmd_args_size(t_ast_simple_command *sc)
 		suffix = suffix->cmd_suffix;
 	}
 	return (size);
+}
+
+/*
+** For a simple_command, return the command name for execve
+*/
+
+char	*ast_get_cmd_name(t_ast_simple_command *sc)
+{
+	if (sc && sc->cmd_word && sc->cmd_word->word)
+		return (sc->cmd_word->word);
+	if (sc && sc->cmd_name && sc->cmd_name->word)
+		return (sc->cmd_name->word);
+	else
+		return (NULL);
 }
 
 /*

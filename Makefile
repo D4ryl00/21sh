@@ -6,27 +6,38 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/10/01 15:12:26 by rbarbero         ###   ########.fr        #
+#    Updated: 2018/10/05 08:54:36 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = 21sh
 
-SRCS = main.c error.c free.c eval.c tokens.c termcaps.c prompt.c input.c \
+DIR_SRCS = srcs
+SRCS_MAIN = main.c error.c free.c eval.c tokens.c termcaps.c prompt.c input.c \
 	   input_termcaps.c input_upanddown.c misctools.c history.c \
 	   get_token_quote.c get_token_expansion.c get_token_arithmetic.c \
 	   get_token_substitution.c get_token_word.c get_token_operator.c \
-	   get_token_various.c classify_token.c ast_make.c ast_free.c ast_eval.c \
+	   get_token_various.c classify_token.c ast_eval.c history2.c \
 	   env_tools.c run.c run_path.c history_file.c input_homeend.c \
-	   ast_cmd_tools.c history2.c
-SRCS_DIR = srcs/
-LIB_DIR = libft
+	   ast_cmd_tools.c
 
-HEADERS = sh.h
-HEADERS_DIR = includes/
-LHEADERS = $(HEADERS:%.h=$(HEADERS_DIR)%.h)
+DIR_PARSER = $(DIR_SRCS)/parser
+SRCS_PARSER = cmd_name.c cmd_word.c filename.c io_file.c here_end.c io_here.c \
+		   io_redirect.c cmd_suffix.c cmd_prefix.c simple_command.c \
+		   command.c separator_op.c newline_list.c linebreak.c \
+		   pipe_sequence.c pipeline.c and_or.c list.c complete_command.c \
+		   complete_commands.c program.c
+
+SRCS = $(addprefix $(DIR_SRCS)/,$(SRCS_MAIN)) \
+	   $(addprefix $(DIR_PARSER)/, $(SRCS_PARSER))
 
 OBJS = $(SRCS:%.c=%.o)
+
+LIB_DIR = libft
+
+HEADERS = sh.h parser.h eval.h
+HEADERS_DIR = includes/
+LHEADERS = $(HEADERS:%.h=$(HEADERS_DIR)%.h)
 
 CC = clang
 CFLAGS = -Wall -Wextra -Werror -Fsanitize=address
@@ -44,7 +55,7 @@ $(NAME): $(OBJS) $(LIB_DIR)/libft.a
 $(LIB_DIR)/libft.a:
 	$(MAKE) -C $(LIB_DIR)
 
-$(OBJS): %.o: $(SRCS_DIR)%.c $(LHEADERS)
+$(OBJS): %.o: %.c $(LHEADERS)
 	$(CC) $(CFLAGS) -I $(HEADERS_DIR) -I $(LIB_DIR)/includes -o $@ -c $<
 
 clean:

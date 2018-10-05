@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/04 13:35:42 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/05 08:29:33 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ int	eval(t_input *input)
 	}
 	free(input->save);
 	input->save = NULL;
-	if ((program = make_ast(tokens)))
+	program = NULL;
+	if (ast_program(&program, tokens) > 0)
 		eval_program(program);
 	ft_lstdel(&tokens, token_free);
 	/*while (tokens)
