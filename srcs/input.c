@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/04 14:37:53 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/05 15:32:00 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static int	set_t_read_input(t_read_input *s, char *promptstring)
 int			read_input(t_input *input, char *promptstring)
 {
 	t_read_input	s;
+	//char			c = 0;
 
 	if ((set_t_read_input(&s, promptstring) == -1) || (ft_buf_init(&(s.buffer)) == -1))
 		return (-1);
@@ -61,11 +62,15 @@ int			read_input(t_input *input, char *promptstring)
 			term_putchar(s.c[0]);
 		else if (s.c[0] == 127 || s.c[0] == 27 || s.c[0] == 3)
 			input_is_special_char(&s);
+		if (s.c[0] == 'c')
+			ft_putnbr(get_cursorpos(s.cursorpos));
 	}
 	if (ft_buf_add_char(&(s.buffer), '\n') == -1 ||
 	ft_buf_add_char(&(s.buffer), '\0') == -1 || !((input->str) = ft_buf_flush(&(s.buffer))))
 		return (-1);
-	if (input->str && (ft_strlen(input->str)) > 1)
+	if (s.promptstring && input->str && (ft_strlen(input->str)) > 1)
+		append_line_to_prev_hist(input->str);
+	else if (input->str && (ft_strlen(input->str)) > 1)
 		add_to_command_hist(input->str);
 	input->save = &(input->str[0]);
 	ft_buf_destroy(&(s.buffer));

@@ -6,11 +6,27 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 18:15:42 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/04 13:53:41 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/05 15:58:01 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
+
+int		get_cursorpos(int cursorpos)
+{
+	struct	winsize	ws;
+
+	if ((ioctl(g_termcaps.fd, TIOCGWINSZ, &ws)) == -1)
+		return (-1);
+	return ((cursorpos + g_termcaps.promptlength) % ws.ws_col);
+}
+
+int		get_windows_width(void)
+{
+	struct	winsize	ws;
+
+	return (ioctl(g_termcaps.fd, TIOCGWINSZ, &ws));
+}
 
 void	term_putchar(char c)
 {

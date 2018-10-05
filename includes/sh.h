@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 09:03:50 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/05 16:09:16 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct					s_termcaps
 	char						*returnhome;
 	int							writtenchars;
 	int							fd;
+	int							promptlength;
 }								t_termcaps;
 
 
@@ -202,6 +203,7 @@ void							input_is_backspace(int *cursorpos,
 void							input_is_up(t_read_input *s);
 void							input_is_down(t_read_input *s);
 void							input_is_end(t_read_input *s);
+void							input_is_right(int *cursorpos);
 void							input_is_home(t_read_input *s);
 void							input_is_nextorprevword(t_read_input *s);
 void							input_is_nextword(t_read_input *s);
@@ -214,8 +216,11 @@ int								max_history_reached(t_read_input *s);
 void							free_minilibx(t_command_history *lasthistory);
 int								termcaps_clearline(t_read_input *s);
 int								termcaps_clearlineandbuff(t_read_input *s);
+int								get_cursorpos(int cursorpos);
+int								get_windows_width(void);
 void							add_to_command_hist(char *line);
 void							save_current_hist(t_read_input *s);
+void							append_line_to_prev_hist(char *line);
 char							*p_to_equ_char(char *str);
 int								env_select_key(t_list *node, void *data);
 

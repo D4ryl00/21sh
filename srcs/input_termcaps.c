@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/04 10:25:04 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/05 16:09:05 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,21 @@
 
 static void	input_is_left(int *cursorpos)
 {
-	if (*cursorpos == 0)
+	if (*cursorpos == 0 && (get_cursorpos(*cursorpos) > 1))
 		return ;
 	ft_putstr_fd(g_termcaps.cursorleft, 0);
 	(*cursorpos)--;
 }
 
-static void	input_is_right(int *cursorpos)
+void		input_is_right(int *cursorpos)
 {
 	if (*cursorpos >= g_termcaps.writtenchars)
 		return ;
-	ft_putstr_fd(g_termcaps.cursorright, 0);
 	(*cursorpos)++;
+	if (get_cursorpos(*cursorpos) == get_windows_width())
+		ft_putstr_fd(g_termcaps.cursordown, g_termcaps.fd);
+	else
+		ft_putstr_fd(g_termcaps.cursorright, 0);
 }
 
 static void	input_is_del(int *cursorpos, t_buf *buffer)

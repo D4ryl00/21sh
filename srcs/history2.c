@@ -6,11 +6,33 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/19 10:37:30 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/19 11:26:48 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/05 14:11:34 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
+
+void	append_line_to_prev_hist(char *line)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = -1;
+	j = -1;
+	if (!(line) || !(g_first_cmd_history) || !(g_first_cmd_history->command) || 
+	(tmp =
+	malloc(ft_strlen(g_first_cmd_history->command) + ft_strlen(line))) == NULL)
+		return ;
+	while (g_first_cmd_history->command[++i])
+		tmp[++j] = g_first_cmd_history->command[i];
+	tmp[++j] ='\n';
+	i = -1;
+	while (line[++i] && line[i] != '\n')
+		tmp[++j] = line[i];
+	free(g_first_cmd_history->command);
+	g_first_cmd_history->command = tmp;	
+}
 
 int		max_history_reached(t_read_input *s)
 {
