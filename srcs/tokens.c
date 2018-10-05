@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 17:09:45 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/04 14:09:45 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/05 22:32:27 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int		get_token_loop(t_list **tokens, t_input *input
 {
 	int		ret;
 
-	while (*(input->str) && *(input->str) != '\n')
+	while (*(input->str))
 	{
 		if (f_params[1])
 			ret = operator_case(tokens, buffer, input, f_params);
@@ -74,7 +74,7 @@ static int		get_token_loop(t_list **tokens, t_input *input
 			ret = substitution_case(buffer, input, f_params, '`');
 		else if (is_operator(buffer, *(input->str), f_params))
 			ret = operator_start_case(tokens, buffer, input, f_params);
-		else if (*(input->str) == ' ')
+		else if ((*(input->str) == ' ') || (*(input->str) == '\n'))
 			ret = delimiter_case(tokens, buffer, input, f_params);
 		else if (f_params[0])
 			ret = word_add_char_case(buffer, input);
@@ -116,12 +116,6 @@ t_list	*get_tokens(t_input *input)
 		if (!(word = ft_buf_flush(&buffer)))
 			exit_perror(ENOMEM, NULL);
 		insert_token(&tokens, word, token_get_op_type(word));
-	}
-	if (*input->str)
-	{
-		if (!(word = ft_strdup("newline")))
-			exit_perror(ENOMEM, NULL);
-		insert_token(&tokens, word, NEWLINE);
 	}
 	ft_buf_destroy(&buffer);
 	return (tokens);

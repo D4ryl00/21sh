@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:08:19 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 08:09:08 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/05 21:44:51 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int		ast_and_or(t_ast_and_or **and_or, t_list **tokens)
 		(*and_or)->op = TOKEN;
 		if ((status = ast_pipeline(&((*and_or)->pipeline), tokens)) > 0)
 		{
-			if ((((t_token *)(*tokens)->content)->type == AND_IF)
-					|| (((t_token *)(*tokens)->content)->type == OR_IF))
+			if (*tokens && ((((t_token *)(*tokens)->content)->type == AND_IF)
+					|| (((t_token *)(*tokens)->content)->type == OR_IF)))
 			{
 				(*and_or)->op = ((t_token *)(*tokens)->content)->type;
 				*tokens = (*tokens)->next;

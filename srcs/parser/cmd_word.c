@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 05:56:08 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 07:59:02 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/05 21:52:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int		ast_cmd_word(t_ast_cmd_word **word, t_list **tokens)
 		*tokens = (*tokens)->next;
 		return (1);
 	}
-	ft_perror(ESYNT, ((t_token *)(*tokens)->content)->content, 1);
+	ft_perror(ESYNT, *tokens ? ((t_token *)(*tokens)->content)->content : "NULL"
+			, 1);
 	return (-1);
 }
 
