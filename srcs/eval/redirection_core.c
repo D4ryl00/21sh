@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 14:06:22 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 15:29:15 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:17:27 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "eval.h"
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>

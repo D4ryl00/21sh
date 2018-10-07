@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:24:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 08:24:22 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:15:18 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "parser.h"
 
 int		ast_separator_op(t_ast_separator_op **s_op, t_list **tokens)
 {

@@ -6,12 +6,13 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 15:04:36 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:17:39 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 #include "libft.h"
+#include "eval.h"
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>

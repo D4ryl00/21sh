@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:50:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 10:23:37 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:17:07 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "eval.h"
 #include <unistd.h>
 
 static void	set_pipe(t_pipe *pipe, int rd, int wr)

@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:54:20 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 08:20:03 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:12:51 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "parser.h"
 
 static int	is_valid_name(char *str)
 {

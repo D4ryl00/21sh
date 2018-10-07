@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:08:19 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 21:44:51 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:12:33 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "parser.h"
 
 int		ast_and_or(t_ast_and_or **and_or, t_list **tokens)
 {

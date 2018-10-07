@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:36:33 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 13:57:34 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:16:38 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "eval.h"
 
 /*
 ** For each dirs entry, test if the path 'dirs[i]/filename' exist

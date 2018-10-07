@@ -6,11 +6,12 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 23:36:05 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 23:36:25 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 11:21:15 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
+#include "lexer.h"
 
 /*
 ** The order is important. It's linked with e_token.

@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:07:10 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 08:08:07 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:15:06 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "parser.h"
 
 int		ast_pipeline(t_ast_pipeline **pipeline, t_list **tokens)
 {

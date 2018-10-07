@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:41:31 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 09:44:17 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:17:22 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "eval.h"
 
 static int	eval_and_or(t_ast_and_or *and_or)
 {

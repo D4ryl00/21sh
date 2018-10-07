@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/10/06 18:26:15 by rbarbero         ###   ########.fr        #
+#    Updated: 2018/10/07 12:09:09 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,14 +15,12 @@ NAME = 21sh
 DIR_SRCS = srcs
 SRCS_MAIN = main.c error.c free.c eval.c termcaps.c prompt.c input.c \
 	   input_termcaps.c input_upanddown.c misctools.c history.c \
-	   get_token_arithmetic.c \
-	   get_token_substitution.c get_token_word.c \
-	   get_token_various.c classify_token.c history2.c \
-	   env_tools.c history_file.c input_homeend.c
+	   history2.c env_tools.c history_file.c input_homeend.c
 
 DIR_LEXER = $(DIR_SRCS)/lexer
 SRCS_LEXER = lexer.c globals.c lexer_operator.c lexer_quote.c \
-			 lexer_expansion.c
+			 lexer_expansion.c lexer_arithmetic.c lexer_substitution.c \
+			 lexer_misc.c
 
 DIR_PARSER = $(DIR_SRCS)/parser
 SRCS_PARSER = cmd_name.c cmd_word.c filename.c io_file.c here_end.c io_here.c \

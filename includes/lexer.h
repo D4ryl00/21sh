@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 22:54:56 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/06 00:05:33 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:08:10 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,22 @@ int								bs_case(t_buf *buffer, t_input *input
 		, unsigned char f_params[2]);
 int								dq_case(t_buf *buffer, t_input *input
 		, unsigned char f_params[2]);
+int								dollar_case(t_buf *buffer, t_input *input
+		, unsigned char f_params[2]);
+int								bracket_expansion(t_buf *buffer, t_input *input
+		, unsigned char f_params[2]);
+int								variable_expansion(t_buf *buffer, t_input *input
+		, unsigned char f_params[2]);
+int								arithmetic_expansion(t_buf *buffer
+		, t_input *input, unsigned char f_params[2]);
+int								substitution_case(t_buf *buffer, t_input *input
+		, unsigned char f_params[2], char close);
+int								comment_input(t_input *input);
+int								delimiter_case(t_list **tokens, t_buf *buffer
+		, t_input *input, unsigned char f_params[2]);
+int								add_char_new_token(t_buf *buffer, t_input *input
+		, unsigned char f_params[2]);
+int								add_char_to_token(t_buf *buffer
+		, t_input *input);
+enum e_token					get_op_type(char *str);
 #endif

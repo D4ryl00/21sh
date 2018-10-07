@@ -6,12 +6,15 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 23:35:30 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:21:20 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 #include "libft.h"
+#include "lexer.h"
+#include "parser.h"
+#include "eval.h"
 #include <stdlib.h>
 
 /*
@@ -19,7 +22,7 @@
 ** Connect the old token list with the new for no leaks
 */
 
-int	get_new_tokens(t_list **empty_tokens, t_list *start)
+int			get_new_tokens(t_list **empty_tokens, t_list *start)
 {
 	t_input	input;
 
@@ -42,10 +45,25 @@ int	get_new_tokens(t_list **empty_tokens, t_list *start)
 	return (0);
 }
 
-int	eval(t_input *input)
+static void	print_tokens(t_list *tokens)
+{
+	enum e_token	type;
+
+	while (tokens)
+	{
+		type = ((t_token *)tokens->content)->type;
+		ft_printf("%s(%d)", ((t_token *)tokens->content)->content
+				, ((t_token *)tokens->content)->type);
+		if (tokens->next)
+			ft_putstr(" | ");
+		tokens = tokens->next;
+	}
+	ft_putchar('\n');
+}
+
+int			eval(t_input *input)
 {
 	t_list			*tokens;
-	//enum e_token	type;
 	t_ast_program	*program;
 
 	if (!(tokens = lexer(input)))
@@ -56,18 +74,10 @@ int	eval(t_input *input)
 	free(input->save);
 	input->save = NULL;
 	program = NULL;
+	print_tokens(tokens);
 	if (ast_program(&program, tokens) > 0)
 		eval_program(program);
 	ft_lstdel(&tokens, token_free);
-	/*while (tokens)
-	{
-		type = ((t_token *)tokens->content)->type;
-		ft_printf("%s(%d)", ((t_token *)tokens->content)->content, ((t_token *)tokens->content)->type);
-		if (tokens->next)
-			ft_putstr(" | ");
-		ft_lstdelnode(&tokens, tokens, token_free);
-	}
-	ft_putchar('\n');*/
 	free_ast_program(program);
 	return (0);
 }

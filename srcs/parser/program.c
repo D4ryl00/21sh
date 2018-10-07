@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:12:56 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 08:14:00 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:15:11 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "parser.h"
 
 int		ast_program(t_ast_program **program, t_list *tokens)
 {

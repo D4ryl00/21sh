@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_cmd_tools.c                                    :+:      :+:    :+:   */
+/*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 15:24:57 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:17:33 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 #include "libft.h"
+#include "eval.h"
 
 static int	simple_redirs(t_ast_io_redirect *io_redirect, int io_number)
 {

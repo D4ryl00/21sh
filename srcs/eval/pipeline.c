@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:46:20 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 09:53:25 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:17:18 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "eval.h"
 
 int	eval_pipeline(t_ast_pipeline *pipeline)
 {

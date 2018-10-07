@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:43:38 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 07:49:11 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:14:15 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "parser.h"
 
 int		ast_io_file(t_ast_io_file **file, t_list **tokens)
 {

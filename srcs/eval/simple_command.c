@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:06:29 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 13:37:53 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:17:44 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "eval.h"
 
 /*
 ** For a simple_command, return the number of arguments of the command.

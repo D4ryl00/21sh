@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:02:48 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 08:04:19 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:14:39 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "parser.h"
 
 int		ast_newline_list(t_ast_newline_list **nl_list, t_list **tokens)
 {

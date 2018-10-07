@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:52:08 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 07:53:03 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:12:58 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "parser.h"
 
 int		ast_cmd_suffix(t_ast_cmd_suffix **suffix, t_list **tokens)
 {

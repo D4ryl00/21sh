@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:48:53 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/06 00:12:22 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 11:22:14 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "lexer.h"
 
 int			sq_case(t_buf *buffer, t_input *input
 		, unsigned char f_params[2])

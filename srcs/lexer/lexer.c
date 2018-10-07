@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 22:57:48 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 23:37:40 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/07 12:09:35 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,10 @@ int			is_operator(t_buf *buffer, char c, unsigned char f_params[2])
 	}
 	return (0);
 }
+
+/*
+** Insert a new token in a token list.
+*/
 
 void		insert_token(t_list **tokens, char *token, enum e_token type)
 {
@@ -86,11 +90,11 @@ static void	for_each_char(t_list **tokens, t_input *input
 		else if ((*(input->str) == ' ') || (*(input->str) == '\n'))
 			delimiter_case(tokens, buffer, input, f_params);
 		else if (f_params[0])
-			word_add_char_case(buffer, input);
+			add_char_to_token(buffer, input);
 		else if (*(input->str) == '#')
 			comment_input(input);
 		else
-			word_start_case(buffer, input, f_params);
+			add_char_new_token(buffer, input, f_params);
 	}
 }
 
@@ -117,7 +121,7 @@ t_list		*lexer(t_input *input)
 	{
 		if (!(word = ft_buf_flush(&buffer)))
 			exit_perror(ENOMEM, NULL);
-		insert_token(&tokens, word, token_get_op_type(word));
+		insert_token(&tokens, word, get_op_type(word));
 	}
 	ft_buf_destroy(&buffer);
 	return (tokens);
