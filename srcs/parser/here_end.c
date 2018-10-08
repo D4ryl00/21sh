@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:45:33 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/07 12:14:10 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/08 16:42:32 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int		ast_here_end(t_ast_here_end **here_end, t_list **tokens)
 	{
 		if (!(*here_end = (t_ast_here_end *)malloc(sizeof(t_ast_here_end))))
 			exit_perror(ENOMEM, NULL);
-		if (!((*here_end)->word = ft_strdup(((t_token *)(*tokens)->content)->content)))
+		if (!((*here_end)->word = ft_strdup(((t_token *)(*tokens)->content)
+						->content)))
 			exit_perror(ENOMEM, NULL);
 		*tokens = (*tokens)->next;
 		return (1);

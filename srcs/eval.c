@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/07 12:21:20 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/08 14:13:22 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int			get_new_tokens(t_list **empty_tokens, t_list *start)
 {
 	t_input	input;
 
+	input.save = NULL;
+	input.str = NULL;
 	if (*empty_tokens)
 		ft_lstdel(empty_tokens, token_free);
 	newprompt(&input, "> ");
