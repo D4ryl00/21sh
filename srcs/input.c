@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/08 12:53:27 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/08 14:29:40 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static int	set_t_read_input(t_read_input *s, char *promptstring)
 int			read_input(t_input *input, char *promptstring)
 {
 	t_read_input	s;
-	//char			c = 0;
 
 	if ((set_t_read_input(&s, promptstring) == -1) || (ft_buf_init(&(s.buffer)) == -1))
 		return (-1);

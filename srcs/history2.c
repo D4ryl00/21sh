@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/19 10:37:30 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/05 14:11:34 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/08 14:28:11 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	append_line_to_prev_hist(char *line)
 	j = -1;
 	if (!(line) || !(g_first_cmd_history) || !(g_first_cmd_history->command) || 
 	(tmp =
-	malloc(ft_strlen(g_first_cmd_history->command) + ft_strlen(line))) == NULL)
+	malloc(ft_strlen(g_first_cmd_history->command) + ft_strlen(line) + 1)) ==
+	NULL)
 		return ;
 	while (g_first_cmd_history->command[++i])
 		tmp[++j] = g_first_cmd_history->command[i];
@@ -30,6 +31,7 @@ void	append_line_to_prev_hist(char *line)
 	i = -1;
 	while (line[++i] && line[i] != '\n')
 		tmp[++j] = line[i];
+	tmp[++j] = '\0';
 	free(g_first_cmd_history->command);
 	g_first_cmd_history->command = tmp;	
 }
