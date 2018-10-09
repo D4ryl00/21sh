@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/10/07 12:09:09 by rbarbero         ###   ########.fr        #
+#    Updated: 2018/10/09 08:05:52 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,10 +34,14 @@ SRCS_EVAL = program.c pipeline.c pipe_sequence.c command.c simple_command.c \
 			builtin_cmd.c special_builtin_cmd.c utility_cmd.c cmd_select.c \
 			run.c redirection_core.c redirections.c
 
+DIR_UTILITES = $(DIR_SRCS)/utilities
+SRCS_UTILITES = cd.c
+
 SRCS = $(addprefix $(DIR_SRCS)/,$(SRCS_MAIN)) \
 	   $(addprefix $(DIR_LEXER)/, $(SRCS_LEXER)) \
 	   $(addprefix $(DIR_PARSER)/, $(SRCS_PARSER)) \
-	   $(addprefix $(DIR_EVAL)/, $(SRCS_EVAL))
+	   $(addprefix $(DIR_EVAL)/, $(SRCS_EVAL)) \
+	   $(addprefix $(DIR_UTILITES)/, $(SRCS_UTILITES)) \
 
 OBJS = $(SRCS:%.c=%.o)
 

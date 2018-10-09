@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/07 12:16:05 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 08:59:00 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <sys/ioctl.h>
+
+# define VERSION "21sh"
 
 # define PROMPT1		"\033[0;30;44m"
 # define PROMPT2		"\033[0;33m $>"
@@ -117,6 +119,7 @@ int								get_new_tokens(t_list **empty_tokens
 		, t_list *start);
 void							exit_perror(enum e_errno num, char *str);
 int								return_perror(enum e_errno num, char *str);
+int								return_print(char *str, int status);
 void							ft_perror(enum e_errno num, char *str
 		, int suffix);
 void							prompt(char *promptstring);
@@ -151,4 +154,5 @@ void							add_to_command_hist(char *line);
 void							save_current_hist(t_read_input *s);
 char							*p_to_equ_char(char *str);
 int								env_select_key(t_list *node, void *data);
+char							*get_env_value(char *str);
 #endif
