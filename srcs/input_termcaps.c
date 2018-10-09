@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/09 13:52:58 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/09 13:59:48 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	input_is_left(int *cursorpos, t_read_input *s)
 	i = 0;
 	if (*cursorpos == 0 && (get_cursorpos(*cursorpos) > 1))
 		return ;
-	if (s->buffer.buf && s->cursorpos <= s->buffer.i && s->cursorpos > 0 && (s->buffer.buf[s->cursorpos - 1] == '\n' || get_cursorpos(*cursorpos) == 1))
+	if (s->buffer.buf && s->cursorpos <= s->buffer.i && s->cursorpos > 0 && (s->buffer.buf[s->cursorpos - 1] == '\n' || get_cursorpos(*cursorpos) == 0))
 	{
 		i = s->cursorpos - 1;
 		ft_putstr_fd(g_termcaps.cursorup, g_termcaps.fd);
