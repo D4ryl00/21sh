@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:09:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/08 17:03:01 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:26:30 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 #include "sh.h"
 #include "parser.h"
 
-
-void	free_ast_list(t_ast_list *list)
+void		free_ast_list(t_ast_list *list)
 {
 	if (list)
 	{
@@ -36,10 +35,10 @@ void	free_ast_list(t_ast_list *list)
 static int	ast_list_error(t_ast_list **list, int status)
 {
 	if (list && *list)
-		{
-			free_ast_list(*list);
-			*list = NULL;
-		}
+	{
+		free_ast_list(*list);
+		*list = NULL;
+	}
 	return (status);
 }
 
@@ -47,13 +46,13 @@ static int	ast_list_error(t_ast_list **list, int status)
 ** Make a shell list (see shell grammar).
 */
 
-int		ast_list(t_ast_list **list, t_list **tokens)
+int			ast_list(t_ast_list **list, t_list **tokens)
 {
 	int	status;
 
 	if (*tokens)
 	{
-		if (!(*list = (t_ast_list *)malloc( sizeof(t_ast_list))))
+		if (!(*list = (t_ast_list *)malloc(sizeof(t_ast_list))))
 			exit_perror(ENOMEM, NULL);
 		(*list)->and_or = NULL;
 		(*list)->separator_op = NULL;

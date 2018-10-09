@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:50:39 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/08 16:57:40 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:24:33 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ static void	ast_io_redirect_init(t_ast_io_redirect *redirect)
 static int	ast_io_redirect_error(t_ast_io_redirect **redirect, int status)
 {
 	if (redirect && *redirect)
-		{
-			free_ast_io_redirect(*redirect);
-			*redirect = NULL;
-		}
+	{
+		free_ast_io_redirect(*redirect);
+		*redirect = NULL;
+	}
 	return (status);
 }
 
@@ -46,7 +46,7 @@ static int	ast_io_redirect_error(t_ast_io_redirect **redirect, int status)
 ** make io_redirect structure (see shell grammar)
 */
 
-int		ast_io_redirect(t_ast_io_redirect **redirect, t_list **tokens)
+int			ast_io_redirect(t_ast_io_redirect **redirect, t_list **tokens)
 {
 	int	status;
 
@@ -72,7 +72,7 @@ int		ast_io_redirect(t_ast_io_redirect **redirect, t_list **tokens)
 	return (0);
 }
 
-void	free_ast_io_redirect(t_ast_io_redirect *redirect)
+void		free_ast_io_redirect(t_ast_io_redirect *redirect)
 {
 	if (redirect)
 	{

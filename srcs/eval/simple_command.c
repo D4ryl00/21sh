@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:06:29 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/07 12:17:44 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:59:07 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 ** For a simple_command, return the number of arguments of the command.
 */
 
-static int		ast_get_cmd_args_size(t_ast_simple_command *sc)
+static int	ast_get_cmd_args_size(t_ast_simple_command *sc)
 {
-	int	size;
+	int					size;
 	t_ast_cmd_suffix	*suffix;
 
 	size = 0;
@@ -38,7 +38,7 @@ static int		ast_get_cmd_args_size(t_ast_simple_command *sc)
 ** For a simple_command, return the command name for execve
 */
 
-static char		*ast_get_cmd_name(t_ast_simple_command *sc)
+static char	*ast_get_cmd_name(t_ast_simple_command *sc)
 {
 	if (sc && sc->cmd_word && sc->cmd_word->word)
 		return (sc->cmd_word->word);
@@ -54,7 +54,7 @@ static char		*ast_get_cmd_name(t_ast_simple_command *sc)
 ** and terminate by a NULL pointer.
 */
 
-static 	char	**ast_construct_cmd_args(t_ast_simple_command *sc)
+static char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 {
 	char				**args;
 	int					size;
@@ -85,7 +85,7 @@ static 	char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 ** Evalutation of an simple_command (shell grammar POSIX)
 */
 
-int				eval_simple_command(t_ast_simple_command *sc
+int			eval_simple_command(t_ast_simple_command *sc
 		, t_pipe_env *pipe_env)
 {
 	int		status;

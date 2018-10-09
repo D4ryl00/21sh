@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:54:20 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/08 15:42:47 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:43:30 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,14 @@ int			ast_cmd_prefix(t_ast_cmd_prefix **prefix, t_list **tokens)
 		else if (!((*prefix)->io_redirect) && is_assignment_word(((t_token *)
 						(*tokens)->content) ->content))
 		{
-			if (!((*prefix)->assignment_word = ft_strdup(((t_token *)(*tokens)
-								->content) ->content)))
+			if (!((*prefix)->assignment_word = ft_strdup(((t_token *)(*tokens)->
+								content)->content)))
 				exit_perror(ENOMEM, NULL);
 			*tokens = (*tokens)->next;
 		}
 		if (((*prefix)->io_redirect || (*prefix)->assignment_word)
 				&& (ast_cmd_prefix(&((*prefix)->cmd_prefix), tokens) == -1))
-				return (ast_cmd_prefix_error(prefix, -1));
+			return (ast_cmd_prefix_error(prefix, -1));
 		if (!(*prefix)->io_redirect && !(*prefix)->assignment_word)
 			return (ast_cmd_prefix_error(prefix, 0));
 		return (1);

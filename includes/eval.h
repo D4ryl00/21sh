@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 15:04:53 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 05:58:34 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int								eval_command(t_ast_command *command
 		, t_pipe_env *pipe_env);
 int								eval_simple_command(t_ast_simple_command *sc
 		, t_pipe_env *pipe_env);
-int								cmd_select_type(char ** av
+int								cmd_select_type(char **av
 		, t_pipe_env *pipe_env);
 int								is_builtin_cmd(char **av);
 int								run_builtin_cmd(char **av);

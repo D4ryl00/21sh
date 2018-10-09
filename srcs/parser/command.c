@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:59:34 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/08 16:37:41 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:20:50 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int		ast_command(t_ast_command **command, t_list **tokens)
 	}
 	return (0);
 }
+
 void	free_ast_command(t_ast_command *command)
 {
 	if (command)

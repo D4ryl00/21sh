@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/07 12:17:33 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:57:54 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ static int	simple_redirs(t_ast_io_redirect *io_redirect, int io_number)
 	if (io_redirect->io_file->op->c == '>'
 		|| io_redirect->io_file->op->e == CLOBBER)
 		status = filename_redirect(io_redirect, io_number, '>'
-					, O_CREAT|O_WRONLY);
+					, O_CREAT | O_WRONLY);
 	else if (io_redirect->io_file->op->e == DGREAT)
 		status = filename_redirect(io_redirect, io_number, '>'
-		, O_CREAT|O_WRONLY|O_APPEND);
+		, O_CREAT | O_WRONLY | O_APPEND);
 	else if (io_redirect->io_file->op->c == '<')
 		status = filename_redirect(io_redirect, io_number, '<'
 					, O_RDONLY);
@@ -57,7 +57,7 @@ static int	select_redirs(t_ast_io_redirect *io_redirect)
 	if (io_redirect->io_file)
 		status = simple_redirs(io_redirect, io_number);
 	else if ((io_redirect->io_here) && (io_redirect->io_here->op == DLESS))
-			status = here_redirect(io_redirect, io_number);
+		status = here_redirect(io_redirect, io_number);
 	return (status);
 }
 
@@ -65,7 +65,7 @@ static int	select_redirs(t_ast_io_redirect *io_redirect)
 ** Scan a simple_command and get input and output redirections if they exist.
 */
 
-int	run_eval_redirs(t_ast_simple_command *sc)
+int			run_eval_redirs(t_ast_simple_command *sc)
 {
 	t_ast_cmd_prefix	*prefix;
 	t_ast_cmd_suffix	*suffix;

@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 14:06:22 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/07 12:17:27 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:56:58 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,12 @@ int			fd_redirect(t_ast_io_redirect *io_redirect, int io_number, char op)
 	}
 	else if (op == '>')
 		return (filename_redirect(io_redirect, io_number, '>'
-					, O_CREAT|O_WRONLY));
+					, O_CREAT | O_WRONLY));
 	else
+	{
 		return (filename_redirect(io_redirect, io_number, '<'
-					, O_CREAT|O_RDONLY));
+					, O_CREAT | O_RDONLY));
+	}
 	return (0);
 }
 

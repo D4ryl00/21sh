@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:36:33 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/07 12:16:38 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:53:13 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static int	run_cmd_direct_path(char **av, t_pipe_env *pipe_env)
 ** Find the good category of the command and execute it.
 */
 
-int			cmd_select_type(char ** av, t_pipe_env *pipe_env)
+int			cmd_select_type(char **av, t_pipe_env *pipe_env)
 {
 	if (!ft_strchr(av[0], '/'))
 	{

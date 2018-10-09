@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:18:00 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/16 23:29:32 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 07:00:07 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 /*
 ** return the address of the '=' character in a string
 */
+
 char	*p_to_equ_char(char *str)
 {
 	while (*str)
@@ -32,6 +33,7 @@ char	*p_to_equ_char(char *str)
 ** Return 1 (true) if the key of the string is equal to data
 ** else return 0 (false)
 */
+
 int		env_select_key(t_list *node, void *data)
 {
 	size_t	len;

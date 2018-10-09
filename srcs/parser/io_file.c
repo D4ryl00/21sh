@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:43:38 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/08 16:51:27 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:27:22 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** Free a t_ast_io_file structure.
 */
 
-void	free_ast_io_file(t_ast_io_file *file)
+void		free_ast_io_file(t_ast_io_file *file)
 {
 	if (file)
 	{

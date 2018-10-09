@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:56:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/08 17:12:34 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:51:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 #include "sh.h"
 #include "parser.h"
 
-void	free_ast_simple_command(t_ast_simple_command *sc)
+/*
+** Free ast_simple_command struct and its members.
+*/
+
+void		free_ast_simple_command(t_ast_simple_command *sc)
 {
 	if (sc)
 	{
@@ -30,6 +34,11 @@ void	free_ast_simple_command(t_ast_simple_command *sc)
 	}
 }
 
+/*
+** Call the free function for ast_simple_command struct
+** and set the pointer NULL.
+*/
+
 static int	ast_simple_command_error(t_ast_simple_command **sc, int status)
 {
 	if (sc && *sc)
@@ -40,16 +49,24 @@ static int	ast_simple_command_error(t_ast_simple_command **sc, int status)
 	return (status);
 }
 
-static void	ast_simple_command_init(t_ast_simple_command *sc)
+/*
+** Malloc and init a ast_simple_command struct with default values.
+*/
+
+static void	ast_simple_command_init(t_ast_simple_command **sc)
 {
-	if (sc)
-	{
-		sc->cmd_prefix = NULL;
-		sc->cmd_word = NULL;
-		sc->cmd_name = NULL;
-		sc->cmd_suffix = NULL;
-	}
+	if (!(*sc = (t_ast_simple_command *)malloc(
+					sizeof( t_ast_simple_command))))
+		exit_perror(ENOMEM, NULL);
+	(*sc)->cmd_prefix = NULL;
+	(*sc)->cmd_word = NULL;
+	(*sc)->cmd_name = NULL;
+	(*sc)->cmd_suffix = NULL;
 }
+
+/*
+** Make a simple_command (see shell grammar).
+*/
 
 int			ast_simple_command(t_ast_simple_command **sc, t_list **tokens)
 {
@@ -57,10 +74,7 @@ int			ast_simple_command(t_ast_simple_command **sc, t_list **tokens)
 
 	if (*tokens)
 	{
-		if (!(*sc = (t_ast_simple_command *)malloc(sizeof
-						(t_ast_simple_command))))
-			exit_perror(ENOMEM, NULL);
-		ast_simple_command_init(*sc);
+		ast_simple_command_init(sc);
 		if ((status = ast_cmd_prefix(&((*sc)->cmd_prefix), tokens)) > 0)
 		{
 			if ((status = ast_cmd_word(&((*sc)->cmd_word), tokens)) > 0)
@@ -68,7 +82,8 @@ int			ast_simple_command(t_ast_simple_command **sc, t_list **tokens)
 			if (status == -1)
 				return (ast_simple_command_error(sc, status));
 		}
-		else if (!status && (status = ast_cmd_name(&((*sc)->cmd_name), tokens)) > 0)
+		else if (!status && (status = ast_cmd_name(&((*sc)->cmd_name), tokens))
+				> 0)
 		{
 			if ((status = ast_cmd_suffix(&((*sc)->cmd_suffix), tokens)) == -1)
 				return (ast_simple_command_error(sc, status));
