@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/08 17:20:03 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/09 14:55:38 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,8 @@ void							input_is_backspace(int *cursorpos,
 void							input_is_up(t_read_input *s);
 void							input_is_down(t_read_input *s);
 void							input_is_end(t_read_input *s);
-void							input_is_right(int *cursorpos);
+void							input_is_right(int *cursorpos, t_read_input *s);
+void							input_is_left(int *cursorpos, t_read_input *s);
 void							input_is_home(t_read_input *s);
 void							input_is_nextorprevword(t_read_input *s);
 void							input_is_nextword(t_read_input *s);

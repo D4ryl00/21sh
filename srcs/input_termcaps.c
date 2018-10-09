@@ -6,13 +6,13 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/09 13:59:48 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/09 14:55:27 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 
-static void	input_is_left(int *cursorpos, t_read_input *s)
+void	input_is_left(int *cursorpos, t_read_input *s)
 {
 	int	i;
 
@@ -39,12 +39,12 @@ static void	input_is_left(int *cursorpos, t_read_input *s)
 	(*cursorpos)--;
 }
 
-void		input_is_right(int *cursorpos)
+void		input_is_right(int *cursorpos, t_read_input *s)
 {
 	if (*cursorpos >= g_termcaps.writtenchars)
 		return ;
 	(*cursorpos)++;
-	if (get_cursorpos(*cursorpos) == get_windows_width())
+	if (get_cursorpos(*cursorpos) == get_windows_width() || (s->buffer.buf && s->cursorpos <= s->buffer.i && s->cursorpos > 0 && s->buffer.buf[s->cursorpos] && s->buffer.buf[s->cursorpos - 1] == '\n'))
 		ft_putstr_fd(g_termcaps.cursordown, g_termcaps.fd);
 	else
 		ft_putstr_fd(g_termcaps.cursorright, 0);
@@ -84,7 +84,7 @@ void		input_is_special_char(t_read_input *s)
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 68)
 		return (input_is_left(&(s->cursorpos), s));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 67)
-		return (input_is_right(&(s->cursorpos)));
+		return (input_is_right(&(s->cursorpos), s));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 51)
 		return (input_is_del(&(s->cursorpos), &(s->buffer)));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 65 &&

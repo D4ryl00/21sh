@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 11:23:11 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/08 13:12:57 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/09 15:00:46 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,18 @@
 
 void	input_is_end(t_read_input *s)
 {
+	input_is_home(s);
 	while (s->cursorpos < g_termcaps.writtenchars)
-		input_is_right(&s->cursorpos);
+		input_is_right(&s->cursorpos, s);
 }
 
 void	input_is_home(t_read_input *s)
 {
-	while (s->cursorpos > 0)
+	while (s->cursorpos > 0 /*&& get_cursorpos(s->cursorpos)*/)
 	{
-		ft_putstr_fd(g_termcaps.cursorleft, 0);
-		s->cursorpos--;
+		//ft_putstr_fd(g_termcaps.cursorleft, 0);
+		//s->cursorpos--;
+		input_is_left(&(s->cursorpos), s);
 	}
 }
 
