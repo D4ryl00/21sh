@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 17:05:51 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/04/02 00:08:25 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/10 11:24:24 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ typedef struct	s_buffer
 	t_list		*seq;
 }				t_buffer;
 
-int				ft_vsdprintf(char **str, int fd, const char *format
+intmax_t		ft_vsdprintf(char **str, int fd, const char *format
 		, va_list va_args);
-int				ft_dprintf(int fd, const char *format, ...);
-int				ft_sprintf(char **str, const char *format, ...);
-int				ft_printf(const char *format, ...);
+intmax_t		ft_dprintf(int fd, const char *format, ...);
+intmax_t		ft_sprintf(char **str, const char *format, ...);
+intmax_t		ft_printf(const char *format, ...);
 void			init_convs(t_conv *convs, int nbr);
 t_seq			*init_seq(char *str, size_t len);
 t_seq			*print_conv(t_conv *conv, intmax_t n);
