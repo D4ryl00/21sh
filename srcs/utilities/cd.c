@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 07:13:07 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 14:37:09 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/10 10:23:22 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static char	*cd_select_cdpath(t_cd_params *params)
 	return (path);
 }
 
-static char	*cd_add_pwd(char *path)
+static void	cd_add_pwd(char **path)
 {
 	char	*pwd;
 	size_t	size;
@@ -99,42 +99,57 @@ static char	*cd_add_pwd(char *path)
 		exit_perror(ENOMEM, NULL);
 	size = ft_strlen(pwd);
 	if (pwd[size - 1] == '/')
-		fullpath = ft_strjoin(pwd, path);
+		fullpath = ft_strjoin(pwd, *path);
 	else
-		ft_sprintf(&fullpath, "%s/%s", pwd, path);
+		ft_sprintf(&fullpath, "%s/%s", pwd, *path);
 	if (!fullpath)
 		exit_perror(ENOMEM, NULL);
-	return (fullpath);
+	free(*path);
+	*path = fullpath;
 }
 
-static char	*cd_remove_dot_slash(char *path)
+static void	cd_remove_dot_slash(char **path)
 {
 	t_buf	buffer;
 	char	*res;
+	int		i;
 
 	if (ft_buf_init(&buffer) == -1)
 		exit_perror(ENOMEM, NULL);
-	while (*path)
+	i = 0;
+	while ((*path)[i])
 	{
-		if (*path == '.' && *(path + 1) == '/')
-			path += 2;
+		if ((*path)[i] == '.' && (*path)[i + 1] == '/')
+			i += 2;
 		else
 		{
-			ft_buf_add_char(&buffer, *path);
-			path++;
+			ft_buf_add_char(&buffer, (*path)[i]);
+			i++;
 		}
 	}
 	if (!(res = ft_buf_flush(&buffer)))
 		exit_perror(ENOMEM, NULL);
-	return (res);
+	ft_buf_destroy(&buffer);
+	free(*path);
+	*path = res;
 }
 
-static char	*cd_change_canonical(char *path)
+static void	cd_dot_dot_simplification(char **path)
 {
-	char *cano;
+	int	i;
 
-	cano = cd_remove_dot_slash(path);
-	return (cano);
+	i = -1;
+	while ((*path)[++i])
+	{
+		/*if ((*path)[i] == '.' && (*path)[i + 1] == '.' && (*path)[i + 2] == '/'
+				&& (i == 1 && (*path)[i - 1] != '/') && (*path)[i - 1] !=*/
+	}
+}
+
+static void	cd_change_canonical(char **path)
+{
+	cd_remove_dot_slash(path);
+	cd_dot_dot_simplification(path);
 }
 
 int	utility_cd(char **av)
@@ -162,8 +177,8 @@ int	utility_cd(char **av)
 	if (!(params.P))
 	{
 		if (curpath[0] != '/')
-			curpath = cd_add_pwd(curpath);
-		curpath = cd_change_canonical(curpath);
+			cd_add_pwd(&curpath);
+		cd_change_canonical(&curpath);
 	}
 	// step 10
 	return (0);

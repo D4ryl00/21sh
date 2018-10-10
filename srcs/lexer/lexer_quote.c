@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:48:53 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 06:18:03 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/10 10:36:11 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ int			sq_case(t_buf *buffer, t_input *input
 		exit_perror(ENOMEM, NULL);
 	(input->str)++;
 	while (1)
-	{
 		if (!*(input->str))
 		{
 			free(input->save);
+			input->save = NULL;
 			if (!newprompt(input, "> "))
 				exit_perror(ENOMEM, NULL);
 		}
@@ -36,7 +36,6 @@ int			sq_case(t_buf *buffer, t_input *input
 				exit_perror(ENOMEM, NULL);
 			(input->str)++;
 		}
-	}
 	if (ft_buf_add_char(buffer, *(input->str)) == -1)
 		exit_perror(ENOMEM, NULL);
 	(input->str)++;
@@ -51,6 +50,7 @@ int			bs_case(t_buf *buffer, t_input *input
 	if (!*(input->str) || *(input->str) == '\n')
 	{
 		free(input->save);
+		input->save = NULL;
 		if (!newprompt(input, "> "))
 			exit_perror(ENOMEM, NULL);
 	}
@@ -72,6 +72,7 @@ static void	dq_case_req(t_buf *buffer, t_input *input
 		if (!*(input->str))
 		{
 			free(input->save);
+			input->save = NULL;
 			if (!newprompt(input, "> "))
 				exit_perror(ENOMEM, NULL);
 		}
