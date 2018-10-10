@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:36:33 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 06:53:13 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/10 10:45:36 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static char	*get_path_exec(char *filename, char **dirs)
 	int		i;
 
 	i = -1;
+	path = NULL;
 	if (dirs)
 	{
 		while (dirs[++i])
