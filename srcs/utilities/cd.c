@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 07:13:07 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/10 10:23:22 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/10 14:51:15 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,48 +108,85 @@ static void	cd_add_pwd(char **path)
 	*path = fullpath;
 }
 
+static int	is_dot_component(char *path, int i)
+{
+	if (path[i] == '.' && (!i || path[i - 1] == '/')
+			&& (path[i + 1] == '/' || path[i + 1] == '\0'))
+		return (1);
+	return (0);
+}
+
 static void	cd_remove_dot_slash(char **path)
 {
 	t_buf	buffer;
-	char	*res;
 	int		i;
+	int		j;
 
 	if (ft_buf_init(&buffer) == -1)
 		exit_perror(ENOMEM, NULL);
 	i = 0;
 	while ((*path)[i])
 	{
-		if ((*path)[i] == '.' && (*path)[i + 1] == '/')
-			i += 2;
-		else
+		if (is_dot_component(*path, i))
 		{
-			ft_buf_add_char(&buffer, (*path)[i]);
-			i++;
+			j = i + 1;
+			while ((*path)[j] == '/')
+				j++;
+			i = j;
 		}
+		else
+			ft_buf_add_char(&buffer, (*path)[i++]);
 	}
-	if (!(res = ft_buf_flush(&buffer)))
+	free(*path);
+	if (!(*path = ft_buf_flush(&buffer)))
 		exit_perror(ENOMEM, NULL);
 	ft_buf_destroy(&buffer);
-	free(*path);
-	*path = res;
 }
 
-static void	cd_dot_dot_simplification(char **path)
+static int	is_dot_dot_component(char *path, int i)
+{
+	if (path[i] == '.' && path[i + 1] == '.' && (!i || path[i - 1] == '/')
+			&& (path[i + 2] == '/' || path[i + 2] == '\0'))
+		return (1);
+	return (0);
+}
+
+static int	has_correct_prev_component(char *path, int i)
+{
+	int	j;
+	if (i > 1 && path[i - 1] == '/')
+	{
+		j = i - 1;
+		while (j >= 0 && path[j] == '/')
+			j--;
+		if (!j)
+			return (0);
+		while (j >= 0 && path[j] != '/')
+			j--;
+		if (is_dot_dot_component(&(path[j]), 0))
+			return (0);
+		return (1);
+	}
+	return (0);
+}
+
+static void	cd_dot_dot_process(char **path)
 {
 	int	i;
 
 	i = -1;
 	while ((*path)[++i])
 	{
-		/*if ((*path)[i] == '.' && (*path)[i + 1] == '.' && (*path)[i + 2] == '/'
-				&& (i == 1 && (*path)[i - 1] != '/') && (*path)[i - 1] !=*/
+		if (is_dot_dot_component((*path) + i, i)
+				&& has_correct_prev_component(*path, i))
+			i++;
 	}
 }
 
 static void	cd_change_canonical(char **path)
 {
 	cd_remove_dot_slash(path);
-	cd_dot_dot_simplification(path);
+	cd_dot_dot_process(path);
 }
 
 int	utility_cd(char **av)
@@ -159,7 +196,7 @@ int	utility_cd(char **av)
 
 	curpath = NULL;
 	cd_init_params(&params);
-	cd_get_params(&params, av);
+	cd_get_params(&params, &(av[1]));
 	if (!params.dir && !ft_lstselect(g_env, "HOME", env_select_key))
 		return (return_print("42sh: cd: HOME not set\n", -1));
 	if (!params.dir && !(params.dir = get_env_value("HOME")))
