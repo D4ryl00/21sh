@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 14:55:38 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/10 10:20:17 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <sys/ioctl.h>
+
+# define VERSION "21sh"
 
 # define PROMPT1		"\033[0;30;44m"
 # define PROMPT2		"\033[0;33m $>"
@@ -78,39 +80,6 @@ typedef struct					s_termcaps
 	int							promptlength;
 }								t_termcaps;
 
-
-/*
-** The order of the first ten entries is important.
-** It's linked with g_op_token.
-** PLEASE DO NOT CHANGE THAT!
-*/
-
-enum							e_token
-{
-	AND_IF,
-	OR_IF,
-	DSEMI,
-	DLESS,
-	DGREAT,
-	LESSAND,
-	GREATAND,
-	LESSGREAT,
-	DLESSDASH,
-	CLOBBER,
-	TOKEN,
-	IO_NUMBER,
-	ASSIGNMENT_WORD,
-	NAME,
-	NEWLINE,
-	CONTROL
-};
-
-typedef struct					s_token
-{
-	enum e_token				type;
-	char						*content;
-}								t_token;
-
 enum							e_errno
 {
 	ENOMEM,
@@ -135,8 +104,6 @@ extern char						*g_errors[];
 extern t_command_history		*g_first_cmd_history;
 extern t_list					*g_env;
 extern t_termcaps				g_termcaps;
-extern char						*g_op_token[];
-extern char						*g_control_operator[];
 
 typedef struct					s_input
 {
@@ -153,41 +120,10 @@ int								get_new_tokens(t_list **empty_tokens
 		, t_list *start);
 void							exit_perror(enum e_errno num, char *str);
 int								return_perror(enum e_errno num, char *str);
+int								return_print(char *str, int status);
 void							ft_perror(enum e_errno num, char *str
 		, int suffix);
 void							prompt(char *promptstring);
-t_list							*get_tokens(t_input *input);
-int								sq_case(t_buf *buffer, t_input *input
-	, unsigned char f_params[2]);
-int								bs_case(t_buf *buffer, t_input *input
-	, unsigned char f_params[2]);
-int								dq_case(t_buf *buffer, t_input *input
-	, unsigned char f_params[2]);
-int								dollar_case(t_buf *buffer, t_input *input
-	, unsigned char f_params[2]);
-int								get_token_expansion(t_buf *buffer
-	, t_input *input, unsigned char f_params[2]);
-int								get_token_arithmetic(t_buf *buffer
-	, t_input *input, unsigned char f_params[2]);
-int								substitution_case(t_buf *buffer, t_input *input
-	, unsigned char f_params[2], char close);
-int								bq_input(t_buf *buffer, t_input *input
-	, unsigned char f_params[2]);
-int								word_add_char_case(t_buf *buffer
-	, t_input *input);
-int								word_start_case(t_buf *buffer, t_input *input
-	, unsigned char f_params[2]);
-int								 is_operator(t_buf *buffer, char c
-	, unsigned char f_params[2]);
-int								operator_case(t_list **tokens, t_buf *buffer
-	, t_input *input, unsigned char f_params[2]);
-int								operator_start_case(t_list **tokens
-	, t_buf *buffer, t_input *input, unsigned char f_params[2]);
-void							insert_token(t_list **tokens, char *token
-	, enum e_token type);
-int								comment_input(t_input *input);
-int								delimiter_case(t_list **tokens, t_buf *buffer
-	, t_input *input, unsigned char f_params[2]);
 enum e_token					token_get_op_type(char *str);
 void							token_free(void *content, size_t size);
 void							ft_set_term(void);
@@ -224,7 +160,5 @@ void							save_current_hist(t_read_input *s);
 void							append_line_to_prev_hist(char *line);
 char							*p_to_equ_char(char *str);
 int								env_select_key(t_list *node, void *data);
-
-# include "parser.h"
-# include "eval.h"
+char							*get_env_value(char *str);
 #endif

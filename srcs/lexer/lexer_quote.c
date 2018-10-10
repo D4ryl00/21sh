@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_token_quote.c                                  :+:      :+:    :+:   */
+/*   lexer_quote.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:48:53 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/04 11:45:38 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:18:03 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "lexer.h"
 
-int	sq_case(t_buf *buffer, t_input *input
+int			sq_case(t_buf *buffer, t_input *input
 		, unsigned char f_params[2])
 {
-	ft_buf_add_char(buffer, *(input->str));
+	if (ft_buf_add_char(buffer, *(input->str)) == -1)
+		exit_perror(ENOMEM, NULL);
 	(input->str)++;
 	while (1)
 	{
@@ -24,23 +26,25 @@ int	sq_case(t_buf *buffer, t_input *input
 		{
 			free(input->save);
 			if (!newprompt(input, "> "))
-				exit_perror(EOTHER, "syntax error");
+				exit_perror(ENOMEM, NULL);
 		}
 		else if (*(input->str) == '\'')
 			break ;
 		else
 		{
-			ft_buf_add_char(buffer, *(input->str));
+			if (ft_buf_add_char(buffer, *(input->str)) == -1)
+				exit_perror(ENOMEM, NULL);
 			(input->str)++;
 		}
 	}
-	ft_buf_add_char(buffer, *(input->str));
+	if (ft_buf_add_char(buffer, *(input->str)) == -1)
+		exit_perror(ENOMEM, NULL);
 	(input->str)++;
 	f_params[0] = 1;
 	return (0);
 }
 
-int	bs_case(t_buf *buffer, t_input *input
+int			bs_case(t_buf *buffer, t_input *input
 		, unsigned char f_params[2])
 {
 	(input->str)++;
@@ -52,25 +56,24 @@ int	bs_case(t_buf *buffer, t_input *input
 	}
 	else if (*(input->str))
 	{
-		ft_buf_add_char(buffer, *(input->str));
+		if (ft_buf_add_char(buffer, *(input->str)) == -1)
+			exit_perror(ENOMEM, NULL);
 		(input->str)++;
 		f_params[0] = 1;
 	}
 	return (0);
 }
 
-int	dq_case(t_buf *buffer, t_input *input
+static void	dq_case_req(t_buf *buffer, t_input *input
 		, unsigned char f_params[2])
 {
-	ft_buf_add_char(buffer, *(input->str));
-	(input->str)++;
 	while (1)
 	{
 		if (!*(input->str))
 		{
 			free(input->save);
 			if (!newprompt(input, "> "))
-				exit_perror(EOTHER, "syntax error");
+				exit_perror(ENOMEM, NULL);
 		}
 		if (*(input->str) == '"')
 			break ;
@@ -80,13 +83,23 @@ int	dq_case(t_buf *buffer, t_input *input
 			dollar_case(buffer, input, f_params);
 		else
 		{
-			ft_buf_add_char(buffer, *(input->str));
+			if (ft_buf_add_char(buffer, *(input->str)) == -1)
+				exit_perror(ENOMEM, NULL);
 			(input->str)++;
 		}
 	}
-	ft_buf_add_char(buffer, *(input->str));
+}
+
+int			dq_case(t_buf *buffer, t_input *input
+		, unsigned char f_params[2])
+{
+	if (ft_buf_add_char(buffer, *(input->str)) == -1)
+		exit_perror(ENOMEM, NULL);
+	(input->str)++;
+	dq_case_req(buffer, input, f_params);
+	if (ft_buf_add_char(buffer, *(input->str)) == -1)
+		exit_perror(ENOMEM, NULL);
 	(input->str)++;
 	f_params[0] = 1;
 	return (0);
 }
-

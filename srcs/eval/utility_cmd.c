@@ -1,38 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_token_various.c                                :+:      :+:    :+:   */
+/*   utility_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/18 14:24:53 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/09/25 11:17:03 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/10/05 13:29:58 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/10/09 08:07:22 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "eval.h"
+#include "utilities.h"
 
-int	comment_input(t_input *input)
+char	*g_utility_cmd[] =
 {
-	while (*(input->str) && *(input->str) != '\n')
-		(input->str)++;
+	"alias",
+	"cd",
+	""
+};
+
+int		is_utility_cmd(char **av)
+{
+	if (ft_strarrchr(av[0], g_utility_cmd) >= 0)
+		return (1);
 	return (0);
 }
 
-int	delimiter_case(t_list **tokens, t_buf *buffer, t_input *input,
-		unsigned char f_params[2])
+int		run_utility_cmd(char **av)
 {
-	char	*word;
-
-	if (f_params[0] || f_params[1])
-	{
-		if (!(word = ft_buf_flush(buffer)))
-			exit_perror(ENOMEM, NULL);
-		insert_token(tokens, word, token_get_op_type(word));
-		f_params[0] = 0;
-		f_params[1] = 0;
-	}
-	(input->str)++;
+	(void)av;
+	if (!ft_strcmp(av[0], "cd"))
+		return (utility_cd(av));
 	return (0);
 }

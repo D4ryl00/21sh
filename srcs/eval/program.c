@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:41:31 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 09:44:17 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:52:40 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "eval.h"
 
 static int	eval_and_or(t_ast_and_or *and_or)
 {
@@ -49,9 +50,9 @@ static int	eval_list(t_ast_list *list)
 
 static int	eval_complete_command(t_ast_complete_command *cc)
 {
-	int	status;
+	int				status;
 	unsigned char	async;
-	
+
 	status = 0;
 	async = 0;
 	if (cc->list)

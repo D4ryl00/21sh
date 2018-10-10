@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:07:10 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 08:08:07 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:26:55 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "parser.h"
 
 int		ast_pipeline(t_ast_pipeline **pipeline, t_list **tokens)
 {
@@ -29,7 +30,8 @@ int		ast_pipeline(t_ast_pipeline **pipeline, t_list **tokens)
 		}
 		else
 			(*pipeline)->bang = '\0';
-		if ((status = ast_pipe_sequence(&((*pipeline)->pipe_sequence), tokens)) < 1)
+		if ((status = ast_pipe_sequence(&((*pipeline)->pipe_sequence), tokens))
+				< 1)
 		{
 			free_ast_pipeline(*pipeline);
 			*pipeline = NULL;

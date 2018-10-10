@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:10:27 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 08:11:14 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:21:17 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "parser.h"
 
 int		ast_complete_command(t_ast_complete_command **cc, t_list **tokens)
 {
@@ -37,7 +38,7 @@ int		ast_complete_command(t_ast_complete_command **cc, t_list **tokens)
 	return (0);
 }
 
-void	free_ast_complete_command(t_ast_complete_command* cc)
+void	free_ast_complete_command(t_ast_complete_command *cc)
 {
 	if (cc)
 	{

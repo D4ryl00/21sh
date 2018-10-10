@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_token_word.c                                   :+:      :+:    :+:   */
+/*   special_builtin_cmd.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/18 14:08:34 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/18 14:30:48 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/10/05 13:28:35 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/10/07 12:17:49 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "eval.h"
 
-int	word_add_char_case(t_buf *buffer, t_input *input)
+char	*g_special_builtin_cmd[] =
 {
-	if (ft_buf_add_char(buffer, *(input->str)) == -1)
-		return (return_perror(ENOMEM, NULL));
-	(input->str)++;
+	"alloc",
+	""
+};
+
+int		is_special_builtin_cmd(char **av)
+{
+	if (ft_strarrchr(av[0], g_special_builtin_cmd) >= 0)
+		return (1);
 	return (0);
 }
 
-int	word_start_case(t_buf *buffer, t_input *input, unsigned char f_params[2])
+int		run_special_builtin_cmd(char **av)
 {
-	if (ft_buf_add_char(buffer, *(input->str)) == -1)
-		return (return_perror(ENOMEM, NULL));
-	f_params[0] = 1;
-	(input->str)++;
+	(void)av;
 	return (0);
 }

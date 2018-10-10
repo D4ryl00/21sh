@@ -6,12 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:59:34 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/05 08:20:47 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/09 06:20:50 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
+#include "parser.h"
 
 int		ast_command(t_ast_command **command, t_list **tokens)
 {
@@ -23,7 +24,8 @@ int		ast_command(t_ast_command **command, t_list **tokens)
 			exit_perror(ENOMEM, NULL);
 		(*command)->simple_command = NULL;
 		(*command)->redirect_list = NULL;
-		if ((status = ast_simple_command(&((*command)->simple_command), tokens)) < 1)
+		if ((status = ast_simple_command(&((*command)->simple_command)
+						, tokens)) < 1)
 		{
 			free_ast_command(*command);
 			*command = NULL;
@@ -33,6 +35,7 @@ int		ast_command(t_ast_command **command, t_list **tokens)
 	}
 	return (0);
 }
+
 void	free_ast_command(t_ast_command *command)
 {
 	if (command)
