@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/10 12:52:56 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/11 12:07:43 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,28 @@ static int	set_t_read_input(t_read_input *s, char *promptstring)
 	}
 }*/
 
+void		reprint_after(t_read_input *s)
+{
+	int	cursorposbackup;
+
+	cursorposbackup = s->cursorpos;
+	if (s->cursorpos == 1)
+		return ;
+	input_is_end(s);
+	while (s->cursorpos > cursorposbackup + 1)
+	{
+		input_is_left(&(s->cursorpos), s);
+		ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
+	}
+	while (s->buffer.buf[(s->cursorpos)])
+	{
+		term_putchar(s->buffer.buf[(s->cursorpos)]);
+		s->cursorpos++;
+	}
+	while (s->cursorpos > cursorposbackup)
+		input_is_left(&(s->cursorpos), s);
+}
+
 int			read_input(t_input *input, char *promptstring)
 {
 	t_read_input	s;
@@ -61,6 +83,7 @@ int			read_input(t_input *input, char *promptstring)
 			term_putchar(s.c[0]);
 		else if (s.c[0] == 127 || s.c[0] == 27 || s.c[0] == 3)
 			input_is_special_char(&s);
+		reprint_after(&s);
 	}
 	if (ft_buf_add_char(&(s.buffer), '\n') == -1 ||
 	ft_buf_add_char(&(s.buffer), '\0') == -1 || !((input->str) = ft_buf_flush(&(s.buffer))))

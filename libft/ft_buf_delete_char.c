@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_buf_delete_char.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 14:55:24 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/18 10:26:32 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/11 11:44:20 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	ft_buf_delete_char(t_buf *buffer, int index)
 	int	i;
 
 	data_len = 1;
+	buffer->buf[index] = '\0';
 	if (index >= buffer->i)
 		return (-1);
 	i = index - 1;
