@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 18:15:42 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/05 15:58:01 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/11 13:17:51 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@ int		get_cursorpos(int cursorpos)
 	if ((ioctl(g_termcaps.fd, TIOCGWINSZ, &ws)) == -1)
 		return (-1);
 	return ((cursorpos + g_termcaps.promptlength) % ws.ws_col);
+}
+
+int		get_real_windows_width(void)
+{
+	struct	winsize	ws;
+
+	ioctl(g_termcaps.fd, TIOCGWINSZ, &ws);
+	return (ws.ws_col);
 }
 
 int		get_windows_width(void)

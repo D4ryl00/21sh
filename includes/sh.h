@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/10 10:20:17 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/11 12:24:43 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ int								termcaps_clearline(t_read_input *s);
 int								termcaps_clearlineandbuff(t_read_input *s);
 int								get_cursorpos(int cursorpos);
 int								get_windows_width(void);
+int								get_real_windows_width(void);
 void							add_to_command_hist(char *line);
 void							save_current_hist(t_read_input *s);
 void							append_line_to_prev_hist(char *line);

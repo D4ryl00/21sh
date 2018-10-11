@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/11 12:07:43 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/11 14:32:24 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,19 @@ void		reprint_after(t_read_input *s)
 	cursorposbackup = s->cursorpos;
 	if (s->cursorpos == 1)
 		return ;
-	input_is_end(s);
-	while (s->cursorpos > cursorposbackup + 1)
+	while (s->cursorpos < g_termcaps.writtenchars)
+	{
+		input_is_right(&(s->cursorpos), s);
+		//g_termcaps.writtenchars--;
+	}
+	while (s->cursorpos > cursorposbackup)
 	{
 		input_is_left(&(s->cursorpos), s);
 		ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
 	}
 	while (s->buffer.buf[(s->cursorpos)])
 	{
-		term_putchar(s->buffer.buf[(s->cursorpos)]);
+		ft_putchar_fd(s->buffer.buf[(s->cursorpos)], g_termcaps.fd);
 		s->cursorpos++;
 	}
 	while (s->cursorpos > cursorposbackup)

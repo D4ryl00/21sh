@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/11 12:07:16 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/11 14:26:54 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void		input_is_right(int *cursorpos, t_read_input *s)
 	if (*cursorpos >= g_termcaps.writtenchars)
 		return ;
 	(*cursorpos)++;
-	if (get_cursorpos(*cursorpos) == get_windows_width() || (s->buffer.buf && s->cursorpos <= s->buffer.i && s->cursorpos > 0 && s->buffer.buf[s->cursorpos] && s->buffer.buf[s->cursorpos - 1] == '\n'))
+	if (get_cursorpos(*cursorpos) == 0 || (s->buffer.buf && s->cursorpos <= s->buffer.i && s->cursorpos > 0 && s->buffer.buf[s->cursorpos] && s->buffer.buf[s->cursorpos - 1] == '\n'))
 		ft_putstr_fd(g_termcaps.cursordown, g_termcaps.fd);
 	else
 		ft_putstr_fd(g_termcaps.cursorright, 0);
