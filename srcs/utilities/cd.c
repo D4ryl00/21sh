@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 07:13:07 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/10 14:51:15 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/15 17:40:29 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,31 +116,13 @@ static int	is_dot_component(char *path, int i)
 	return (0);
 }
 
-static void	cd_remove_dot_slash(char **path)
+static int	cd_remove_dot_slash(char *path, int i)
 {
-	t_buf	buffer;
-	int		i;
-	int		j;
+	int	len;
 
-	if (ft_buf_init(&buffer) == -1)
-		exit_perror(ENOMEM, NULL);
-	i = 0;
-	while ((*path)[i])
-	{
-		if (is_dot_component(*path, i))
-		{
-			j = i + 1;
-			while ((*path)[j] == '/')
-				j++;
-			i = j;
-		}
-		else
-			ft_buf_add_char(&buffer, (*path)[i++]);
-	}
-	free(*path);
-	if (!(*path = ft_buf_flush(&buffer)))
-		exit_perror(ENOMEM, NULL);
-	ft_buf_destroy(&buffer);
+	len = path[i + 1] == '/' ? 2 : 1;
+	ft_strmove(path + i, path + i + len);
+	return (i);
 }
 
 static int	is_dot_dot_component(char *path, int i)
@@ -151,42 +133,59 @@ static int	is_dot_dot_component(char *path, int i)
 	return (0);
 }
 
-static int	has_correct_prev_component(char *path, int i)
+static int	correct_prev_component(char *path, int i)
 {
 	int	j;
+
 	if (i > 1 && path[i - 1] == '/')
 	{
 		j = i - 1;
 		while (j >= 0 && path[j] == '/')
 			j--;
 		if (!j)
-			return (0);
+			return (-1);
 		while (j >= 0 && path[j] != '/')
 			j--;
+		if (path[j] == '/')
+			j++;
 		if (is_dot_dot_component(&(path[j]), 0))
-			return (0);
-		return (1);
+			return (-1);
+		return (j);
 	}
-	return (0);
+	return (-1);
 }
 
-static void	cd_dot_dot_process(char **path)
+static int	cd_dot_dot_process(char *path, int i)
+{
+	int	j;
+	int	len;
+
+	if ((j = correct_prev_component(path, i)) != -1)
+	{
+		len = path[i + 2] == '/' ? 3 : 2;
+		ft_strmove(path + j, path + i + len);
+		return (j);
+	}
+	return (i);
+}
+
+static void	cd_change_canonical(char *path)
 {
 	int	i;
 
-	i = -1;
-	while ((*path)[++i])
+	i = 0;
+	while (path[i])
 	{
-		if (is_dot_dot_component((*path) + i, i)
-				&& has_correct_prev_component(*path, i))
+		if (is_dot_component(path, i))
+			i = cd_remove_dot_slash(path, i);
+		else if (is_dot_dot_component(path, i))
+			i = cd_dot_dot_process(path, i);
+		else if (path[i] != '/')
+			while (path[i] && path[i] != '/')
+				i++;
+		else
 			i++;
 	}
-}
-
-static void	cd_change_canonical(char **path)
-{
-	cd_remove_dot_slash(path);
-	cd_dot_dot_process(path);
 }
 
 int	utility_cd(char **av)
@@ -215,8 +214,9 @@ int	utility_cd(char **av)
 	{
 		if (curpath[0] != '/')
 			cd_add_pwd(&curpath);
-		cd_change_canonical(&curpath);
+		cd_change_canonical(curpath);
 	}
 	// step 10
+	ft_printf("cd: %s\n", curpath);
 	return (0);
 }
