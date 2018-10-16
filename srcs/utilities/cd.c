@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 07:13:07 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/16 14:16:55 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/17 00:59:45 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,14 @@
 /*
 ** for PATH_MAX
 */
-#include <sys/syslimits.h>
+#include <limits.h>
+
+/*
+** for stat
+*/
+
+#include <sys/types.h>
+#include <sys/stat.h>
 
 static void	cd_init_params(t_cd_params *params)
 {
@@ -183,15 +190,33 @@ static int	correct_prev_component(char *path, int i)
 
 static int	cd_dot_dot_process(char *path, int i)
 {
-	int	j;
-	int	len;
+	int			j;
+	int			len;
+	char		*tmp;
+	struct stat	statbuf;
 
+	tmp = NULL;
 	len = path[i + 2] == '/' ? 3 : 2;
 	if ((j = correct_prev_component(path, i)) != -1)
 	{
+		if (!(tmp = ft_strndup(path, i - 1)))
+			exit_perror(ENOMEM, NULL);
+		if (stat(tmp, &statbuf) == -1)
+		{
+			ft_perror(ENOENT, tmp, 0);
+			free(tmp);
+			return (-1);
+		}
+		if ((statbuf.st_mode & S_IFMT) != S_IFDIR)
+		{
+			ft_perror(ENOTDIR, tmp, 0);
+			free(tmp);
+			return (-1);
+		}
 		ft_strmove(path + j, path + i + len);
 		return (j);
 	}
+	free(tmp);
 	ft_strmove(path + i, path + i + len);
 	return (i);
 }
@@ -250,6 +275,7 @@ int	utility_cd(char **av)
 {
 	char		*curpath;
 	t_cd_params	params;
+	char		*pwd;
 
 	curpath = NULL;
 	cd_init_params(&params);
@@ -272,6 +298,7 @@ int	utility_cd(char **av)
 			cd_add_pwd(&curpath);
 		if (cd_change_canonical(curpath) == -1)
 			return (0);
+		pwd = ft_strdup(curpath);
 		if (ft_strlen(curpath) + 1 >= PATH_MAX
 				&& cd_reduce_curpath(curpath, &params) == -1)
 		{
@@ -281,6 +308,10 @@ int	utility_cd(char **av)
 		}
 	}
 	// step 10
+	if (chdir(curpath) == -1)
+		return (1);
+	if (params.P)
+		pwd = getcwd(NULL, 0);
 	ft_printf("cd: %s\nPath_max: %d\n", curpath, PATH_MAX);
 	return (0);
 }

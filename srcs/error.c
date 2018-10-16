@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 22:09:25 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 08:26:33 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/17 00:54:41 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char			*g_errors[] =
 	"Not enough space/cannot allocate memory",
 	"Command not found",
 	"No such file or directory",
+	"Not a directory",
 	"Permission denied",
 	"Buffer error, irrecoverable, exiting...",
 	"syntax error near unexpected token",

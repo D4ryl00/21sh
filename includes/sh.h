@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/10 10:20:17 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/17 00:54:06 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ enum							e_errno
 	ENOMEM,
 	ENOCMD,
 	ENOENT,
+	ENOTDIR,
 	EACCES,
 	EBUFF,
 	ESYNT,
