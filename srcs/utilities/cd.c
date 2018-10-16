@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 07:13:07 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/15 17:40:29 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/16 14:16:55 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 #include "sh.h"
 #include "utilities.h"
 #include <unistd.h>
+
+/*
+** for PATH_MAX
+*/
+#include <sys/syslimits.h>
 
 static void	cd_init_params(t_cd_params *params)
 {
@@ -45,23 +50,32 @@ static void	cd_get_params(t_cd_params *params, char **av)
 	}
 }
 
-static char	*cd_test_cdpath(char *path, t_cd_params *params)
+static int	cd_test_cdpath(char **fullpath, char *path, t_cd_params *params)
 {
-	char	*fullpath;
 	size_t	size;
+	int		status;
 
-	fullpath = NULL;
 	size = ft_strlen(path);
+	status = 0;
 	if (path[size - 1] != '/')
-		ft_sprintf(&fullpath, "%s/%s", path, params->dir);
+		ft_sprintf(fullpath, "%s/%s", path, params->dir);
 	else
-		fullpath = ft_strjoin(path, params->dir);
-	if (!fullpath)
+		*fullpath = ft_strjoin(path, params->dir);
+	if (!*fullpath)
 		exit_perror(ENOMEM, NULL);
-	if (access(fullpath, F_OK) && access(fullpath, X_OK))
-			return (fullpath);
-	free(fullpath);
-	return (NULL);
+	if (access(*fullpath, F_OK) != -1)
+	{
+		if (access(*fullpath, X_OK) != -1)
+			status = 1;
+		else
+			status = -1;
+	}
+	if (status != 1)
+	{
+		free(*fullpath);
+		*fullpath = NULL;
+	}
+	return (status);
 }
 
 static char	*cd_select_cdpath(t_cd_params *params)
@@ -70,6 +84,7 @@ static char	*cd_select_cdpath(t_cd_params *params)
 	char	**arrpaths;
 	char	*path;
 	int		i;
+	int		status;
 
 	path = NULL;
 	if ((cdpath = get_env_value("CDPATH")) && cdpath[0])
@@ -78,14 +93,17 @@ static char	*cd_select_cdpath(t_cd_params *params)
 			exit_perror(ENOMEM, NULL);
 		i = -1;
 		while (arrpaths[++i])
-		{
-			if ((cdpath = cd_test_cdpath(arrpaths[i], params)))
+			if ((status = cd_test_cdpath(&path, arrpaths[i], params)) == 1
+					|| status == -1)
 				break ;
-		}
 		ft_strarrdel(arrpaths);
 	}
 	else
-		cdpath = cd_test_cdpath("./", params);
+		status = cd_test_cdpath(&path, "./", params);
+	if (!status)
+		ft_perror(ENOENT, params->dir, 0);
+	else if (status == -1)
+		ft_perror(EACCES, params->dir, 0);
 	return (path);
 }
 
@@ -106,6 +124,20 @@ static void	cd_add_pwd(char **path)
 		exit_perror(ENOMEM, NULL);
 	free(*path);
 	*path = fullpath;
+}
+
+static int	cd_remove_slash(char *path, int i)
+{
+	int	len;
+	int	j;
+
+	len = 0;
+	j = i;
+	while (path[++j] == '/')
+		len++;
+	if (len)
+		ft_strmove(path + i + 1, path + i + len + 1);
+	return (i + 1);
 }
 
 static int	is_dot_component(char *path, int i)
@@ -137,19 +169,13 @@ static int	correct_prev_component(char *path, int i)
 {
 	int	j;
 
-	if (i > 1 && path[i - 1] == '/')
+	if (i > 1)
 	{
-		j = i - 1;
-		while (j >= 0 && path[j] == '/')
-			j--;
-		if (!j)
-			return (-1);
+		j = i - 2;
 		while (j >= 0 && path[j] != '/')
 			j--;
 		if (path[j] == '/')
 			j++;
-		if (is_dot_dot_component(&(path[j]), 0))
-			return (-1);
 		return (j);
 	}
 	return (-1);
@@ -160,32 +186,64 @@ static int	cd_dot_dot_process(char *path, int i)
 	int	j;
 	int	len;
 
+	len = path[i + 2] == '/' ? 3 : 2;
 	if ((j = correct_prev_component(path, i)) != -1)
 	{
-		len = path[i + 2] == '/' ? 3 : 2;
 		ft_strmove(path + j, path + i + len);
 		return (j);
 	}
+	ft_strmove(path + i, path + i + len);
 	return (i);
 }
 
-static void	cd_change_canonical(char *path)
+static int	cd_change_canonical(char *path)
 {
 	int	i;
 
 	i = 0;
 	while (path[i])
 	{
-		if (is_dot_component(path, i))
+		if (path[i] == '/')
+			i = cd_remove_slash(path, i);
+		else if (is_dot_component(path, i))
 			i = cd_remove_dot_slash(path, i);
 		else if (is_dot_dot_component(path, i))
 			i = cd_dot_dot_process(path, i);
-		else if (path[i] != '/')
-			while (path[i] && path[i] != '/')
-				i++;
 		else
 			i++;
 	}
+	if (!*path)
+	{
+		free(path);
+		return (-1);
+	}
+	else
+		return (0);
+}
+
+static int	cd_reduce_curpath(char *path, t_cd_params *params)
+{
+	char	*pwd;
+	char	*tmp;
+	size_t	len;
+
+	if (ft_strlen(params->dir) + 1 >= PATH_MAX)
+		return (-1);
+	pwd = getcwd(NULL, 0);
+	len = ft_strlen(pwd);
+	if (pwd[len - 1] != '/')
+	{
+		if (!(tmp = ft_strjoin(pwd, "/")))
+			exit_perror(ENOMEM, NULL);
+		free(pwd);
+		pwd = tmp;
+	}
+	if (!ft_strncmp(pwd, path, len))
+		ft_strmove(path, path + len);
+	free(pwd);
+	if (ft_strlen(path) + 1 >= PATH_MAX)
+		return (-1);
+	return (0);
 }
 
 int	utility_cd(char **av)
@@ -200,12 +258,10 @@ int	utility_cd(char **av)
 		return (return_print("42sh: cd: HOME not set\n", -1));
 	if (!params.dir && !(params.dir = get_env_value("HOME")))
 		return (0);
-	if (params.dir[0] != '/')
+	if (params.dir[0] != '/' && params.dir[0] != '.')
 	{
-		if (params.dir[0] != '.')
-			curpath = cd_select_cdpath(&params);
-		else if (!(curpath = ft_strdup(params.dir)))
-			exit_perror(ENOMEM, NULL);
+		if (!(curpath = cd_select_cdpath(&params)))
+			return (1);
 	}
 	else if (!(curpath = ft_strdup(params.dir)))
 		exit_perror(ENOMEM, NULL);
@@ -214,9 +270,17 @@ int	utility_cd(char **av)
 	{
 		if (curpath[0] != '/')
 			cd_add_pwd(&curpath);
-		cd_change_canonical(curpath);
+		if (cd_change_canonical(curpath) == -1)
+			return (0);
+		if (ft_strlen(curpath) + 1 >= PATH_MAX
+				&& cd_reduce_curpath(curpath, &params) == -1)
+		{
+			ft_dprintf(2, "cd: file name too long: %s\n", curpath);
+			free(curpath);
+			return (1);
+		}
 	}
 	// step 10
-	ft_printf("cd: %s\n", curpath);
+	ft_printf("cd: %s\nPath_max: %d\n", curpath, PATH_MAX);
 	return (0);
 }
