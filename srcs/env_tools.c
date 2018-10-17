@@ -6,12 +6,29 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:18:00 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 09:20:23 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/17 18:18:00 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 #include "libft.h"
+
+/*
+** Is it a valid name for a function? (see XBD Name POSIX)
+*/
+
+int	is_valid_posix_name(char *str)
+{
+	if (!*str || ft_isdigit(*str))
+		return (0);
+	while (*str)
+	{
+		if (*str != '_' && !ft_isalnum(*str))
+			return (0);
+		str++;
+	}
+	return (1);
+}
 
 /*
 ** Return key value of g_env if exist.
