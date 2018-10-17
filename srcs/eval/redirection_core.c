@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 14:06:22 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 06:56:58 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/17 17:26:25 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static int	here_loop(t_ast_io_redirect *io_redirect, int fd_pipe[2])
 	int		len;
 
 	status = 0;
+	input.save = NULL;
 	while ((status = newprompt(&input, "> ") != -1)
 			&& (((len = ft_strlen(input.str)) == 1) || ft_strncmp(input.str
 				, io_redirect->io_here->here_end->word, len - 1)))

@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/10/17 16:52:49 by rbarbero         ###   ########.fr        #
+#    Updated: 2018/10/17 17:15:25 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,7 @@ HEADERS_DIR = includes/
 LHEADERS = $(HEADERS:%.h=$(HEADERS_DIR)%.h)
 
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -Fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
@@ -65,8 +65,6 @@ debug: all
 
 $(NAME): $(OBJS) $(LIB_DIR)/libft.a
 	$(CC) -lncurses -o $(NAME) $^
-	clear
-	echo "\033[1;31;43m"  "\n!!! \n!!!!!! \n!!!!!!!!! \n!!!!!!!!!!!!" ATRCHTUNG FLAG FSANITIZE A ENLEVER "\n\n\n\n" "\033[0m"
 
 $(LIB_DIR)/libft.a:
 	$(MAKE) -C $(LIB_DIR)
