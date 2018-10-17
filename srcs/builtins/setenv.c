@@ -1,42 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_cmd.c                                      :+:      :+:    :+:   */
+/*   setenv.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/05 13:26:50 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/17 16:46:14 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/10/17 16:47:56 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/10/17 16:53:45 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "sh.h"
-#include "eval.h"
+#include "libft.h"
 #include "builtins.h"
 
-char	*g_builtin_cmd[] =
+int	builtin_setenv(char **av)
 {
-	"setenv",
-	"unsetenv",
-	"exit",
-	""
-};
-
-int		is_builtin_cmd(char **av)
-{
-	if (ft_strarrchr(av[0], g_builtin_cmd) >= 0)
-		return (1);
-	return (0);
-}
-
-int		run_builtin_cmd(char **av)
-{
-	if (!ft_strcmp(av[0], "setenv"))
-		builtin_setenv(av);
-	else if (!ft_strcmp(av[0], "unsetenv"))
-		builtin_unsetenv(av);
-	else if (!ft_strcmp(av[0], "exit"))
-		termcaps_reset_term_and_exit();
+	(void)av;
 	return (0);
 }

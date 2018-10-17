@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/10/09 08:05:52 by rbarbero         ###   ########.fr        #
+#    Updated: 2018/10/17 16:52:49 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,17 +37,21 @@ SRCS_EVAL = program.c pipeline.c pipe_sequence.c command.c simple_command.c \
 DIR_UTILITES = $(DIR_SRCS)/utilities
 SRCS_UTILITES = cd.c
 
+DIR_BUILTINS = $(DIR_SRCS)/builtins
+SRCS_BUILTINS = setenv.c unsetenv.c
+
 SRCS = $(addprefix $(DIR_SRCS)/,$(SRCS_MAIN)) \
 	   $(addprefix $(DIR_LEXER)/, $(SRCS_LEXER)) \
 	   $(addprefix $(DIR_PARSER)/, $(SRCS_PARSER)) \
 	   $(addprefix $(DIR_EVAL)/, $(SRCS_EVAL)) \
 	   $(addprefix $(DIR_UTILITES)/, $(SRCS_UTILITES)) \
+	   $(addprefix $(DIR_BUILTINS)/, $(SRCS_BUILTINS))
 
 OBJS = $(SRCS:%.c=%.o)
 
 LIB_DIR = libft
 
-HEADERS = sh.h lexer.h parser.h eval.h
+HEADERS = sh.h lexer.h parser.h eval.h utilities.h builtins.h
 HEADERS_DIR = includes/
 LHEADERS = $(HEADERS:%.h=$(HEADERS_DIR)%.h)
 

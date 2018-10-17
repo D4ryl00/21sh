@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 07:13:07 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/17 00:59:45 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/17 16:23:02 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,33 +190,29 @@ static int	correct_prev_component(char *path, int i)
 
 static int	cd_dot_dot_process(char *path, int i)
 {
-	int			j;
+	int			prev;
 	int			len;
 	char		*tmp;
 	struct stat	statbuf;
 
 	tmp = NULL;
 	len = path[i + 2] == '/' ? 3 : 2;
-	if ((j = correct_prev_component(path, i)) != -1)
+	if ((prev = correct_prev_component(path, i)) != -1)
 	{
 		if (!(tmp = ft_strndup(path, i - 1)))
 			exit_perror(ENOMEM, NULL);
 		if (stat(tmp, &statbuf) == -1)
-		{
 			ft_perror(ENOENT, tmp, 0);
-			free(tmp);
-			return (-1);
-		}
-		if ((statbuf.st_mode & S_IFMT) != S_IFDIR)
-		{
+		else if ((statbuf.st_mode & S_IFMT) != S_IFDIR)
 			ft_perror(ENOTDIR, tmp, 0);
-			free(tmp);
-			return (-1);
+		else
+		{
+			ft_strmove(path + prev, path + i + len);
+			return (prev);
 		}
-		ft_strmove(path + j, path + i + len);
-		return (j);
+		free(tmp);
+		return (-1);
 	}
-	free(tmp);
 	ft_strmove(path + i, path + i + len);
 	return (i);
 }
@@ -280,15 +276,20 @@ int	utility_cd(char **av)
 	curpath = NULL;
 	cd_init_params(&params);
 	cd_get_params(&params, &(av[1]));
+	// step 1
 	if (!params.dir && !ft_lstselect(g_env, "HOME", env_select_key))
 		return (return_print("42sh: cd: HOME not set\n", -1));
+	// step 2
 	if (!params.dir && !(params.dir = get_env_value("HOME")))
 		return (0);
+	// step 3 and 4
 	if (params.dir[0] != '/' && params.dir[0] != '.')
 	{
+		// step 5
 		if (!(curpath = cd_select_cdpath(&params)))
 			return (1);
 	}
+	// step 6
 	else if (!(curpath = ft_strdup(params.dir)))
 		exit_perror(ENOMEM, NULL);
 	// step 7
