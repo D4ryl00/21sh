@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/10 12:52:56 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/18 18:37:02 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,32 @@ static int	set_t_read_input(t_read_input *s, char *promptstring)
 	return (0);
 }
 
-/*static void	write_input(t_read_input *s)
+void		reprint_after(t_read_input *s)
 {
-	
-	if ((s->c[3] > 1 && s->c[0] != '\n' && s->c[1] != 27 && s->c[1] != 0 &&
-	ft_isprint(s->c[1]) == 1) || s->c[1] == '\n')
+	int	cursorposbackup;
+
+	cursorposbackup = s->cursorpos;
+	if (s->cursorpos == 1)
+		return ;
+	while (s->cursorpos < g_termcaps.writtenchars)
+		input_is_right(&(s->cursorpos), s);
+	ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
+	ft_putstr_fd(g_termcaps.deletetoend, g_termcaps.fd);
+	while (s->cursorpos > cursorposbackup)
 	{
-		term_putchar(s->c[1]);
-		if (s->c[1] != '\n')
-			s->cursorpos += (ft_buf_insert_char(&(s->buffer), s->c[1], s->cursorpos) + 1);
+		input_is_left(&(s->cursorpos), s);
+		ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
 	}
-	if ((s->c[3] > 2 && s->c[1] != '\n' && s->c[2] != 27 && s->c[2] != 0 &&
-	ft_isprint(s->c[2]) == 1) || s->c[2] == '\n')
+	while (s->buffer.buf[(s->cursorpos)])
 	{
-		term_putchar(s->c[2]);
-		if (s->c[2] != '\n')
-			s->cursorpos += (ft_buf_insert_char(&(s->buffer), s->c[2], s->cursorpos) + 1);
+		ft_putchar_fd(s->buffer.buf[(s->cursorpos)], g_termcaps.fd);
+		s->cursorpos++;
+		if (get_cursorpos(s->cursorpos) == 0 /*&& get_cursorpos(cursorposbackup)*/)
+			ft_putstr_fd(g_termcaps.cursordown, g_termcaps.fd);
 	}
-}*/
+	while (s->cursorpos > cursorposbackup)
+		input_is_left(&(s->cursorpos), s);
+}
 
 int			read_input(t_input *input, char *promptstring)
 {
@@ -58,9 +66,14 @@ int			read_input(t_input *input, char *promptstring)
 			return (-1);
 		if ((s.c[0] != 27 && s.c[0] != 0 && ft_isprint(s.c[0]) == 1) ||
 		s.c[0] == '\n')
+		{
 			term_putchar(s.c[0]);
+			if (get_cursorpos(s.cursorpos) == 0)
+				ft_putstr_fd(g_termcaps.cursordown, g_termcaps.fd);
+		}	
 		else if (s.c[0] == 127 || s.c[0] == 27 || s.c[0] == 3)
 			input_is_special_char(&s);
+		reprint_after(&s);
 	}
 	if (ft_buf_add_char(&(s.buffer), '\n') == -1 ||
 	ft_buf_add_char(&(s.buffer), '\0') == -1 || !((input->str) = ft_buf_flush(&(s.buffer))))

@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/18 11:15:50 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/18 18:40:53 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct					s_termcaps
 	char						*cursorright;
 	char						*enterinsertmode;
 	char						*leaveinsertmode;
+	char						*deletetoend;
 	char						*delete;
 	char						*deleteline;
 	char						*returnhome;
@@ -156,6 +157,7 @@ int								termcaps_clearline(t_read_input *s);
 int								termcaps_clearlineandbuff(t_read_input *s);
 int								get_cursorpos(int cursorpos);
 int								get_windows_width(void);
+int								get_real_windows_width(void);
 void							add_to_command_hist(char *line);
 void							save_current_hist(t_read_input *s);
 void							append_line_to_prev_hist(char *line);
@@ -164,4 +166,7 @@ int								env_select_key(t_list *node, void *data);
 char							*env_get_value(char *str);
 void							env_del_entry(void *content, size_t size);
 int								is_valid_posix_name(char *str);
+char							*get_env_value(char *str);
+void							reprint_after(t_read_input *s);
+
 #endif
