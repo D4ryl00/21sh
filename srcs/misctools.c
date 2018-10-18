@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 18:15:42 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/11 13:17:51 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/17 16:43:09 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,29 @@ void	term_putstr(char *s)
 
 int		termcaps_clearline(t_read_input *s)
 {
+	input_is_end(s);
+	while (s->cursorpos)
+	{
+		ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
+		input_is_left(&(s->cursorpos), s);
+		if (get_cursorpos(s->cursorpos) == 0)
+			ft_putstr_fd(g_termcaps.deleteline, g_termcaps.fd);
+		if (g_termcaps.writtenchars > 0)
+			g_termcaps.writtenchars = g_termcaps.writtenchars - 1;
+	}
+	ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
+	ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
+	ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
+	ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
+	ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
+	ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
+
+	/* ORIGINAL
 	ft_putstr_fd(g_termcaps.returnhome, g_termcaps.fd);
 	ft_putstr_fd(g_termcaps.deleteline, g_termcaps.fd);
 	if (s && s->cursorpos)
 		s->cursorpos = 0;
 	prompt(s->promptstring);
-	/*input_is_end(s);
-	while (s->cursorpos)
-		input_is_backspace(&(s->cursorpos), &(s->buffer));*/
+	*/
 	return (0);
 }

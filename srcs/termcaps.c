@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 10:16:11 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/11 15:53:49 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/18 18:37:46 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	termcaps_strings(void)
 	if ((g_termcaps.deleteline = tgetstr("dl", NULL)) == NULL)
 		ft_putstr(ERR_TGETSTR);
 	if ((g_termcaps.returnhome = tgetstr("cr", NULL)) == NULL)
+		ft_putstr(ERR_TGETSTR);
+	if ((g_termcaps.deletetoend = tgetstr("ce", NULL)) == NULL)
 		ft_putstr(ERR_TGETSTR);
 }
 

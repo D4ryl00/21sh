@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 14:55:24 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/11 11:44:20 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/17 16:23:47 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	ft_buf_delete_char(t_buf *buffer, int index)
 	i = index - 1;
 	while (++i < buffer->i - 1)
 		buffer->buf[i] = buffer->buf[i + 1];
+	buffer->buf[i] = '\0';
 	(buffer->i)--;
 	return (0);
 }

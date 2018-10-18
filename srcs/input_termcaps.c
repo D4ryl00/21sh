@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/11 15:12:03 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/18 18:17:07 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	input_is_left(int *cursorpos, t_read_input *s)
 	int	i;
 
 	i = 0;
-	if (*cursorpos == 0 && (get_cursorpos(*cursorpos) > 1))
+	if (*cursorpos == 0 && (get_cursorpos(*cursorpos) >= 1))
 		return ;
 	if (s->buffer.buf && s->cursorpos <= s->buffer.i && s->cursorpos > 0 && (s->buffer.buf[s->cursorpos - 1] == '\n' || get_cursorpos(*cursorpos) == 0))
 	{
@@ -67,6 +67,8 @@ void		input_is_backspace(int *cursorpos, t_buf *buffer, t_read_input *s)
 {
 	if (*cursorpos == 0)
 		return ;
+	if (get_cursorpos(*cursorpos + 1) == 0)
+		ft_putstr_fd(g_termcaps.delete, 0);
 	input_is_left(cursorpos, s);
 	ft_buf_delete_char(buffer, *(cursorpos));
 	ft_putstr_fd(g_termcaps.delete, 0);

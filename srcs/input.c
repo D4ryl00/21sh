@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/12 12:39:05 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/18 18:37:02 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,6 @@ static int	set_t_read_input(t_read_input *s, char *promptstring)
 	return (0);
 }
 
-/*static void	write_input(t_read_input *s)
-{
-	
-	if ((s->c[3] > 1 && s->c[0] != '\n' && s->c[1] != 27 && s->c[1] != 0 &&
-	ft_isprint(s->c[1]) == 1) || s->c[1] == '\n')
-	{
-		term_putchar(s->c[1]);
-		if (s->c[1] != '\n')
-			s->cursorpos += (ft_buf_insert_char(&(s->buffer), s->c[1], s->cursorpos) + 1);
-	}
-	if ((s->c[3] > 2 && s->c[1] != '\n' && s->c[2] != 27 && s->c[2] != 0 &&
-	ft_isprint(s->c[2]) == 1) || s->c[2] == '\n')
-	{
-		term_putchar(s->c[2]);
-		if (s->c[2] != '\n')
-			s->cursorpos += (ft_buf_insert_char(&(s->buffer), s->c[2], s->cursorpos) + 1);
-	}
-}*/
-
 void		reprint_after(t_read_input *s)
 {
 	int	cursorposbackup;
@@ -52,10 +33,9 @@ void		reprint_after(t_read_input *s)
 	if (s->cursorpos == 1)
 		return ;
 	while (s->cursorpos < g_termcaps.writtenchars)
-	{
 		input_is_right(&(s->cursorpos), s);
-		//g_termcaps.writtenchars--;
-	}
+	ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
+	ft_putstr_fd(g_termcaps.deletetoend, g_termcaps.fd);
 	while (s->cursorpos > cursorposbackup)
 	{
 		input_is_left(&(s->cursorpos), s);
