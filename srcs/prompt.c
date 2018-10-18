@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:48:23 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/05 15:28:34 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/18 19:11:48 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void		prompt(char *promptstring)
 	{
 		term_putstr(promptstring);
 		g_termcaps.promptlength = ft_strlen(promptstring);
+		g_termcaps.writtenchars = 0;
 	}
 	else
 		sh_print_prompt();
