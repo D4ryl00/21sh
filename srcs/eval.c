@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/10 10:33:16 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/18 18:38:04 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int			get_new_tokens(t_list **empty_tokens, t_list *start)
 	return (0);
 }
 
-static void	print_tokens(t_list *tokens)
+/*static void	print_tokens(t_list *tokens)
 {
 	enum e_token	type;
 
@@ -61,7 +61,7 @@ static void	print_tokens(t_list *tokens)
 		tokens = tokens->next;
 	}
 	ft_putchar('\n');
-}
+}*/
 
 int			eval(t_input *input)
 {
@@ -79,7 +79,7 @@ int			eval(t_input *input)
 	input->save = NULL;
 	input->str = NULL;
 	program = NULL;
-	print_tokens(tokens);
+	//print_tokens(tokens);
 	if (ast_program(&program, tokens) > 0)
 		eval_program(program);
 	ft_lstdel(&tokens, token_free);

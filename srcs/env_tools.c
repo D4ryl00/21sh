@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:18:00 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/17 18:18:00 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/18 11:16:18 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	is_valid_posix_name(char *str)
 ** Return key value of g_env if exist.
 */
 
-char	*get_env_value(char *str)
+char	*env_get_value(char *str)
 {
 	char	*value;
 	t_list	*result;
@@ -82,4 +82,14 @@ int		env_select_key(t_list *node, void *data)
 		return (0);
 	len = pequ - (char *)node->content;
 	return (ft_strnequ(node->content, data, len));
+}
+
+/*
+** Function to delete a g_env entry (a t_list)
+*/
+
+void	env_del_entry(void *content, size_t size)
+{
+	(void)size;
+	free(content);
 }

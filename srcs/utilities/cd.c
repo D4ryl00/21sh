@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 07:13:07 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/17 16:23:02 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/18 11:17:12 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static char	*cd_select_cdpath(t_cd_params *params)
 	int		status;
 
 	path = NULL;
-	if ((cdpath = get_env_value("CDPATH")) && cdpath[0])
+	if ((cdpath = env_get_value("CDPATH")) && cdpath[0])
 	{
 		if (!(arrpaths = ft_strsplit(cdpath, ':')))
 			exit_perror(ENOMEM, NULL);
@@ -280,7 +280,7 @@ int	utility_cd(char **av)
 	if (!params.dir && !ft_lstselect(g_env, "HOME", env_select_key))
 		return (return_print("42sh: cd: HOME not set\n", -1));
 	// step 2
-	if (!params.dir && !(params.dir = get_env_value("HOME")))
+	if (!params.dir && !(params.dir = env_get_value("HOME")))
 		return (0);
 	// step 3 and 4
 	if (params.dir[0] != '/' && params.dir[0] != '.')

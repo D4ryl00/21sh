@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/17 18:17:19 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/18 11:15:50 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ void							save_current_hist(t_read_input *s);
 void							append_line_to_prev_hist(char *line);
 char							*p_to_equ_char(char *str);
 int								env_select_key(t_list *node, void *data);
-char							*get_env_value(char *str);
+char							*env_get_value(char *str);
+void							env_del_entry(void *content, size_t size);
 int								is_valid_posix_name(char *str);
 #endif

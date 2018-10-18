@@ -6,7 +6,7 @@
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 10:21:20 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/04/10 10:23:25 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/18 16:01:11 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_list		*ft_strnarrtolist(char **arr, int len)
 	{
 		if (list)
 			next = list;
-		if (!(list = ft_lstnew(arr[i], ft_strlen(arr[i]))))
+		if (!(list = ft_lstnew(arr[i], ft_strlen(arr[i]) + 1)))
 		{
 			ft_lstdel(&next, del_node);
 			return (NULL);
