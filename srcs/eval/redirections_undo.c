@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 13:38:43 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/19 14:25:21 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/19 16:22:33 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		t_redirs_save_fd(t_redirs *save, int fd)
 {
 	struct stat	buf;
 
-	if (fstat(fd, &buf))
+	if (fstat(fd, &buf) != -1)
 	{
 		save->dup_src = fd;
 		if ((save->dup_cpy = dup(fd)) == -1)
@@ -61,16 +61,15 @@ int		undo_redirs(t_list **redirs)
 {
 	while (*redirs)
 	{
-		if (((t_redirs *)(*redirs)->content)->dup_src)
+		if (((t_redirs *)(*redirs)->content)->dup_src != -1)
 		{
 			close(((t_redirs *)(*redirs)->content)->dup_src);
-			if (((t_redirs *)(*redirs)->content)->dup_cpy
+			if (((t_redirs *)(*redirs)->content)->dup_cpy != -1
 					&& dup2(((t_redirs *)(*redirs)->content)->dup_cpy
 						, ((t_redirs *)(*redirs)->content)->dup_src) == -1)
 				exit_perror(EDUP, NULL);
 		}
-		*redirs = (*redirs)->next;
+		ft_lstdelnode(redirs, *redirs, t_redirs_del);
 	}
-	return (0);
 	return (0);
 }

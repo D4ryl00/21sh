@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 14:06:22 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/19 14:27:03 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/19 16:23:20 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,25 @@ int			filename_redirect_input(t_ast_io_redirect *io_redirect
 		, int io_number, int mode, t_list **redirs)
 {
 	int			fd;
+	t_redirs	save;
 	t_list		*node;
 
 	io_number = io_number == -1 ? 0 : io_number;
-	if (!(node = (t_list *)malloc(sizeof(t_list)))
-			|| !(node->content = (t_redirs *)malloc(sizeof(t_redirs))))
-		exit_perror(ENOMEM, NULL);
-	t_redirs_init(node->content);
+	t_redirs_init(&save);
 	if ((fd = open(io_redirect->io_file->filename->word
 		, mode, 0644)) == -1)
 		return (return_perror(EOPEN, NULL));
-	if (t_redirs_save_fd(node->content, io_number) == -1)
+	if (t_redirs_save_fd(&save, io_number) == -1)
 		return (-1);
 	if (dup2(fd, io_number) == -1)
 	{
 		close(fd);
-		ft_lstdelone(&node, t_redirs_del);
 		return (return_perror(EDUP, NULL));
 	}
 	close(fd);
-	ft_lstaddback(redirs, node);
+	if (!(node = ft_lstnew(&save, sizeof(t_redirs))))
+		exit_perror(ENOMEM, NULL);
+	ft_lstadd(redirs, node);
 	return (0);
 }
 
@@ -58,26 +57,25 @@ int			filename_redirect_output(t_ast_io_redirect *io_redirect
 		, int io_number, int mode, t_list **redirs)
 {
 	int			fd;
+	t_redirs	save;
 	t_list		*node;
 
 	io_number = io_number == -1 ? 1 : io_number;
-	if (!(node = (t_list *)malloc(sizeof(t_list)))
-			|| !(node->content = (t_redirs *)malloc(sizeof(t_redirs))))
-		exit_perror(ENOMEM, NULL);
-	t_redirs_init(node->content);
+	t_redirs_init(&save);
 	if ((fd = open(io_redirect->io_file->filename->word
 		, mode, 0644)) == -1)
 		return (return_perror(EOPEN, NULL));
-	if (t_redirs_save_fd(node->content, io_number) == -1)
+	if (t_redirs_save_fd(&save, io_number) == -1)
 		return (-1);
 	if (dup2(fd, io_number) == -1)
 	{
 		close(fd);
-		ft_lstdelone(&node, t_redirs_del);
 		return (return_perror(EDUP, NULL));
 	}
 	close(fd);
-	ft_lstaddback(redirs, node);
+	if (!(node = ft_lstnew(&save, sizeof(t_redirs))))
+		exit_perror(ENOMEM, NULL);
+	ft_lstadd(redirs, node);
 	return (0);
 }
 
@@ -89,22 +87,29 @@ int			filename_redirect_output(t_ast_io_redirect *io_redirect
 int			fd_redirect(t_ast_io_redirect *io_redirect, int io_number, char op
 		, t_list **redirs)
 {
+	t_redirs	save;
+	t_list		*node;
+
 	if (io_number == -1)
 		io_number = op == '>' ? 1 : 0;
+	t_redirs_init(&save);
 	if (ft_isstrdigit(io_redirect->io_file->filename->word))
 	{
+		if (t_redirs_save_fd(&save, io_number) == -1)
+			return (-1);
 		if (dup2(ft_atoi(io_redirect->io_file->filename->word)
 		, io_number) == -1)
 			return (return_perror(EDUP, NULL));
+		if (!(node = ft_lstnew(&save, sizeof(t_redirs))))
+			exit_perror(ENOMEM, NULL);
+		ft_lstadd(redirs, node);
 	}
 	else if (op == '>')
 		return (filename_redirect_output(io_redirect, io_number
 					, O_CREAT | O_WRONLY, redirs));
 	else
-	{
 		return (filename_redirect_input(io_redirect, io_number
 					, O_CREAT | O_RDONLY, redirs));
-	}
 	return (0);
 }
 
