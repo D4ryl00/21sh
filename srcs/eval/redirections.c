@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 06:57:54 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/19 14:27:23 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,26 @@
 #include "libft.h"
 #include "eval.h"
 
-static int	simple_redirs(t_ast_io_redirect *io_redirect, int io_number)
+static int	simple_redirs(t_ast_io_redirect *io_redirect, int io_number
+		, t_list **redirs)
 {
 	int	status;
 
 	status = 0;
 	if (io_redirect->io_file->op->c == '>'
 		|| io_redirect->io_file->op->e == CLOBBER)
-		status = filename_redirect(io_redirect, io_number, '>'
-					, O_CREAT | O_WRONLY);
+		status = filename_redirect_output(io_redirect, io_number
+					, O_CREAT | O_WRONLY, redirs);
 	else if (io_redirect->io_file->op->e == DGREAT)
-		status = filename_redirect(io_redirect, io_number, '>'
-		, O_CREAT | O_WRONLY | O_APPEND);
+		status = filename_redirect_output(io_redirect, io_number
+		, O_CREAT | O_WRONLY | O_APPEND, redirs);
 	else if (io_redirect->io_file->op->c == '<')
-		status = filename_redirect(io_redirect, io_number, '<'
-					, O_RDONLY);
+		status = filename_redirect_input(io_redirect, io_number
+					, O_RDONLY, redirs);
 	else if (io_redirect->io_file->op->e == GREATAND)
-		status = fd_redirect(io_redirect, io_number, '>');
+		status = fd_redirect(io_redirect, io_number, '>', redirs);
 	else if (io_redirect->io_file->op->e == LESSAND)
-		status = fd_redirect(io_redirect, io_number, '<');
+		status = fd_redirect(io_redirect, io_number, '<', redirs);
 	return (status);
 }
 
@@ -40,7 +41,7 @@ static int	simple_redirs(t_ast_io_redirect *io_redirect, int io_number)
 ** Select and execute the good redirection depends on the redirection operator.
 */
 
-static int	select_redirs(t_ast_io_redirect *io_redirect)
+static int	select_redirs(t_ast_io_redirect *io_redirect, t_list **redirs)
 {
 	int	status;
 	int	io_number;
@@ -55,7 +56,7 @@ static int	select_redirs(t_ast_io_redirect *io_redirect)
 			return (-1);
 	}
 	if (io_redirect->io_file)
-		status = simple_redirs(io_redirect, io_number);
+		status = simple_redirs(io_redirect, io_number, redirs);
 	else if ((io_redirect->io_here) && (io_redirect->io_here->op == DLESS))
 		status = here_redirect(io_redirect, io_number);
 	return (status);
@@ -65,7 +66,7 @@ static int	select_redirs(t_ast_io_redirect *io_redirect)
 ** Scan a simple_command and get input and output redirections if they exist.
 */
 
-int			run_eval_redirs(t_ast_simple_command *sc)
+int			do_eval_redirs(t_ast_simple_command *sc, t_list **redirs)
 {
 	t_ast_cmd_prefix	*prefix;
 	t_ast_cmd_suffix	*suffix;
@@ -75,14 +76,14 @@ int			run_eval_redirs(t_ast_simple_command *sc)
 	while (prefix)
 	{
 		if (prefix->io_redirect
-				&& select_redirs(prefix->io_redirect) == -1)
+				&& select_redirs(prefix->io_redirect, redirs) == -1)
 			return (-1);
 		prefix = prefix->cmd_prefix;
 	}
 	while (suffix)
 	{
 		if (suffix->io_redirect
-				&& select_redirs(suffix->io_redirect) == -1)
+				&& select_redirs(suffix->io_redirect, redirs) == -1)
 			return (-1);
 		suffix = suffix->cmd_suffix;
 	}
