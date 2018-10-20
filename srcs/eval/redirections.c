@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/19 14:27:23 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/20 02:00:52 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	select_redirs(t_ast_io_redirect *io_redirect, t_list **redirs)
 	if (io_redirect->io_file)
 		status = simple_redirs(io_redirect, io_number, redirs);
 	else if ((io_redirect->io_here) && (io_redirect->io_here->op == DLESS))
-		status = here_redirect(io_redirect, io_number);
+		status = here_redirect(io_redirect, io_number, redirs);
 	return (status);
 }
 

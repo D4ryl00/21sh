@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:50:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/19 11:17:56 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/20 02:33:36 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,6 @@ static void	set_pipe(t_pipe *pipe, int rd, int wr)
 {
 	pipe->rd = rd;
 	pipe->wr = wr;
-}
-
-static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
-{
-	int	status;
-	int	pipe_fd[2];
-
-	if (pipe(pipe_fd) == -1)
-		return (return_perror(EPIPE, NULL));
-	set_pipe(&(pipe_env->output), 1, pipe_fd[1]);
-	status = eval_command(ps->command);
-	if (pipe_env->input.rd != -1)
-		close(pipe_env->input.rd);
-	close(pipe_fd[1]);
-	set_pipe(&(pipe_env->output), -1, -1);
-	set_pipe(&(pipe_env->input), pipe_fd[0], 0);
-	return (status);
 }
 
 /*
@@ -53,6 +36,25 @@ static int	run_eval_pipe(t_pipe_env *pipe_env)
 	return (0);
 }
 
+static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
+{
+	int	status;
+	int	pipe_fd[2];
+
+	if (pipe(pipe_fd) == -1)
+		return (return_perror(EPIPE, NULL));
+	set_pipe(&(pipe_env->output), 1, pipe_fd[1]);
+	if (run_eval_pipe(pipe_env) == -1)
+		return (-1);
+	status = eval_command(ps->command);
+	if (pipe_env->input.rd != -1)
+		close(pipe_env->input.rd);
+	close(pipe_fd[1]);
+	set_pipe(&(pipe_env->output), -1, -1);
+	set_pipe(&(pipe_env->input), pipe_fd[0], 0);
+	return (status);
+}
+
 int			eval_pipe_sequence(t_ast_pipe_sequence *ps)
 {
 	int			status;
@@ -66,8 +68,6 @@ int			eval_pipe_sequence(t_ast_pipe_sequence *ps)
 			status = eval_pipe(ps, &pipe_env);
 		else
 		{
-			if (run_eval_pipe(&pipe_env) == -1)
-				return (-1);
 			status = eval_command(ps->command);
 			if (pipe_env.input.rd != -1)
 				close(pipe_env.input.rd);

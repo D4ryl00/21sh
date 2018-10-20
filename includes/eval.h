@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/19 14:28:08 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/20 01:59:54 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int								filename_redirect_output(t_ast_io_redirect
 int								fd_redirect(t_ast_io_redirect *io_redirect
 		, int io_number, char op, t_list **redirs);
 int								here_redirect(t_ast_io_redirect *io_redirect
-		, int io_number);
+		, int io_number, t_list **redirs);
 void							t_redirs_init(t_redirs *redirs);
 void							t_redirs_del(void *content
 		, size_t content_size);

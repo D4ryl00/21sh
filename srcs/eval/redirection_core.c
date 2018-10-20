@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 14:06:22 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/19 16:23:20 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/20 02:20:15 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,12 +143,18 @@ static int	here_loop(t_ast_io_redirect *io_redirect, int fd_pipe[2])
 ** Open and close the pipe. Call the here doc loop until read the key.
 */
 
-int			here_redirect(t_ast_io_redirect *io_redirect, int io_number)
+int			here_redirect(t_ast_io_redirect *io_redirect, int io_number
+		, t_list **redirs)
 {
-	int		status;
-	int		fd_pipe[2];
+	int			status;
+	int			fd_pipe[2];
+	t_redirs	save;
+	t_list		*node;
 
 	io_number = io_number == -1 ? 0 : io_number;
+	t_redirs_init(&save);
+	if (t_redirs_save_fd(&save, io_number) == -1)
+		return (-1);
 	if (pipe(fd_pipe) == -1)
 		return_perror(EPIPE, NULL);
 	if ((fd_pipe[0] == io_number) && ((fd_pipe[0] = dup(fd_pipe[0])) == -1))
@@ -159,6 +165,9 @@ int			here_redirect(t_ast_io_redirect *io_redirect, int io_number)
 		return (-1);
 	if (dup2(fd_pipe[0], io_number) == -1)
 		return_perror(EDUP, NULL);
+	if (!(node = ft_lstnew(&save, sizeof(t_redirs))))
+		exit_perror(ENOMEM, NULL);
+	ft_lstadd(redirs, node);
 	close(fd_pipe[0]);
 	close(fd_pipe[1]);
 	if (status == -1)
