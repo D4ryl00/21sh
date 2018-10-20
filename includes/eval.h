@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/20 01:59:54 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/20 18:13:04 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct					s_pipe_env
 {
 	t_pipe						input;
 	t_pipe						output;
+	int							fd_cpy[2];
 }								t_pipe_env;
 
 typedef struct					s_redirs

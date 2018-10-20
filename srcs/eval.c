@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/18 18:38:04 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/20 17:38:42 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,11 @@ int			eval(t_input *input)
 	program = NULL;
 	//print_tokens(tokens);
 	if (ast_program(&program, tokens) > 0)
+	{
+		termcaps_reset_term();
 		eval_program(program);
+		ft_set_term();
+	}
 	ft_lstdel(&tokens, token_free);
 	free_ast_program(program);
 	return (0);
