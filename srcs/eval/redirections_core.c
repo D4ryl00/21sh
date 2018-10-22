@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirection_core.c                                 :+:      :+:    :+:   */
+/*   redirections_core.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 14:06:22 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/20 02:20:15 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/22 03:31:25 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,27 @@ static int	here_loop(t_ast_io_redirect *io_redirect, int fd_pipe[2])
 	return (status);
 }
 
+static int	check_fd_pipe(int *fd_pipe, int io_number)
+{
+	int	tmp;
+
+	if (fd_pipe[0] == io_number)
+	{
+		if ((tmp = dup(fd_pipe[0])) == -1)
+			return_perror(EPIPE, NULL);
+		close(fd_pipe[0]);
+		fd_pipe[0] = tmp;
+	}
+	if (fd_pipe[1] == io_number)
+	{
+		if ((tmp = dup(fd_pipe[1])) == -1)
+			return_perror(EPIPE, NULL);
+		close(fd_pipe[1]);
+		fd_pipe[1] = tmp;
+	}
+	return (0);
+}
+
 /*
 ** Open and close the pipe. Call the here doc loop until read the key.
 */
@@ -157,10 +178,8 @@ int			here_redirect(t_ast_io_redirect *io_redirect, int io_number
 		return (-1);
 	if (pipe(fd_pipe) == -1)
 		return_perror(EPIPE, NULL);
-	if ((fd_pipe[0] == io_number) && ((fd_pipe[0] = dup(fd_pipe[0])) == -1))
-		return_perror(EDUP, NULL);
-	if ((fd_pipe[1] == io_number) && ((fd_pipe[1] = dup(fd_pipe[1])) == -1))
-		return_perror(EDUP, NULL);
+	if (check_fd_pipe(fd_pipe, io_number) == -1)
+		return (-1);
 	if ((status = here_loop(io_redirect, fd_pipe)) == -1)
 		return (-1);
 	if (dup2(fd_pipe[0], io_number) == -1)
