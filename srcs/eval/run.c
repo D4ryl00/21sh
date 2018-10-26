@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/20 01:13:41 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/26 17:55:57 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,14 @@
 ** Execute the command in a fork and execve.
 */
 
-int			run(char *path, char **av)
+int			run(char *path, char **av, unsigned char async)
 {
 	pid_t	pid;
 	int		status;
 	char	**env;
 	int		ret;
 
+	ret = 0;
 	if (!(pid = fork()))
 	{
 		if (!(env = ft_lsttoarrstr(g_env)))
@@ -37,7 +38,10 @@ int			run(char *path, char **av)
 	}
 	else if (pid == -1)
 		return (return_perror(EFORK, NULL));
-	ret = wait(&status);
+	if (async)
+		ret = waitpid(pid, &status, WNOHANG | WUNTRACED);
+	else
+		ret = waitpid(pid, &status, WUNTRACED);
 	if (ret == -1)
 		return (return_perror(EWAIT, NULL));
 	return (WEXITSTATUS(status));
