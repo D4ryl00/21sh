@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:11:28 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 06:23:04 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/27 01:40:12 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ int			ast_complete_commands(t_ast_complete_commands **cc, t_list **tokens)
 		if ((status = ast_complete_command(&((*cc)->complete_command), tokens))
 				> 0)
 		{
-			if (ast_newline_list(&((*cc)->newline_list), tokens))
+			if ((status = ast_newline_list(&((*cc)->newline_list), tokens)) > 0)
 			{
 				if ((status = ast_complete_commands(&((*cc)->complete_commands)
 								, tokens)) == -1)
 					return (ast_complete_commands_error(cc, status));
 			}
 		}
-		else
+		if (status < 0)
 			return (ast_complete_commands_error(cc, status));
 		return (1);
 	}

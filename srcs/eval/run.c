@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/26 17:55:57 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/27 01:58:15 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int			run(char *path, char **av, unsigned char async)
 	else if (pid == -1)
 		return (return_perror(EFORK, NULL));
 	if (async)
-		ret = waitpid(pid, &status, WNOHANG | WUNTRACED);
+		ret = waitpid(pid, &status, 0);
 	else
-		ret = waitpid(pid, &status, WUNTRACED);
+		ret = waitpid(-1, &status, 0);
 	if (ret == -1)
 		return (return_perror(EWAIT, NULL));
 	return (WEXITSTATUS(status));

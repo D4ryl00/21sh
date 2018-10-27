@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:45:33 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/08 16:42:32 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/27 01:24:46 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int		ast_here_end(t_ast_here_end **here_end, t_list **tokens)
 		*tokens = (*tokens)->next;
 		return (1);
 	}
-	ft_perror(ESYNT, *tokens ? ((t_token *)(*tokens)->content)->content : "NULL"
-			, 1);
 	return (-1);
 }
 
