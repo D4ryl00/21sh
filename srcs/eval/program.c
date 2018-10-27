@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:41:31 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/26 15:27:44 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/27 03:12:04 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 #include "sh.h"
 #include "eval.h"
 
-static int	eval_and_or(t_ast_and_or *and_or, unsigned char async)
+static int	eval_and_or(t_ast_and_or *and_or, int wait)
 {
 	int	status;
 
 	status = 0;
 	if (and_or->pipeline)
-		status = eval_pipeline(and_or->pipeline, async);
+		status = eval_pipeline(and_or->pipeline, wait);
 	if (and_or->and_or)
 	{
 		if ((and_or->op == AND_IF && !status)
 				|| (and_or->op == OR_IF && status))
-			status = eval_and_or(and_or->and_or, async);
+			status = eval_and_or(and_or->and_or, wait);
 	}
 	return (status);
 }
 
-static int	eval_list(t_ast_list *list, unsigned char async)
+static int	eval_list(t_ast_list *list, int wait)
 {
 	int				status;
 
@@ -38,26 +38,26 @@ static int	eval_list(t_ast_list *list, unsigned char async)
 	if (list->and_or)
 	{
 		if (list->separator_op && list->separator_op->c == '&')
-			async = 1;
-		status = eval_and_or(list->and_or, async);
+			wait = WNOHANG;
+		status = eval_and_or(list->and_or, wait);
 	}
 	if (list->list)
-		status = eval_list(list->list, async);
+		status = eval_list(list->list, wait);
 	return (status);
 }
 
 static int	eval_complete_command(t_ast_complete_command *cc)
 {
-	int				status;
-	unsigned char	async;
+	int	status;
+	int	wait;
 
 	status = 0;
-	async = 0;
+	wait = 0;
 	if (cc->list)
 	{
 		if (cc->separator_op && cc->separator_op->c == '&')
-			async = 1;
-		status = eval_list(cc->list, async);
+			wait = WNOHANG;
+		status = eval_list(cc->list, wait);
 	}
 	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/27 01:58:15 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/27 03:17:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 ** Execute the command in a fork and execve.
 */
 
-int			run(char *path, char **av, unsigned char async)
+int			run(char *path, char **av, int wait)
 {
 	pid_t	pid;
 	int		status;
@@ -38,10 +38,8 @@ int			run(char *path, char **av, unsigned char async)
 	}
 	else if (pid == -1)
 		return (return_perror(EFORK, NULL));
-	if (async)
-		ret = waitpid(pid, &status, 0);
-	else
-		ret = waitpid(-1, &status, 0);
+	if (wait != -1)
+		ret = waitpid(pid, &status, wait);
 	if (ret == -1)
 		return (return_perror(EWAIT, NULL));
 	return (WEXITSTATUS(status));

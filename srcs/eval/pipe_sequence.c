@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:50:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/26 15:30:56 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/27 03:13:09 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
 		return (return_perror(EDUP, NULL));
 	if (run_eval_pipe(pipe_env) == -1)
 		return (-1);
-	status = eval_command(ps->command, 1);
+	status = eval_command(ps->command, 2);
 	if (pipe_env->input.rd != -1)
 		close(pipe_env->input.rd);
 	if (pipe_env->fd_cpy[0] != -1 && dup2(pipe_env->fd_cpy[0], 0) == -1)
@@ -64,7 +64,7 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
 	return (status);
 }
 
-int			eval_pipe_sequence(t_ast_pipe_sequence *ps, unsigned char async)
+int			eval_pipe_sequence(t_ast_pipe_sequence *ps, int wait)
 {
 	int			status;
 	t_pipe_env	pipe_env;
@@ -80,7 +80,7 @@ int			eval_pipe_sequence(t_ast_pipe_sequence *ps, unsigned char async)
 		{
 			if (run_eval_pipe(&pipe_env) == -1)
 				return (-1);
-			status = eval_command(ps->command, async);
+			status = eval_command(ps->command, wait);
 			if (pipe_env.input.rd != -1)
 				close(pipe_env.input.rd);
 			if (pipe_env.fd_cpy[0] != -1 && dup2(pipe_env.fd_cpy[0], 0) == -1)
