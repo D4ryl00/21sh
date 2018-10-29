@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:26:50 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/29 12:49:17 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/29 13:28:19 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 char	*g_builtin_cmd[] =
 {
+	"echo",
 	"env",
 	"setenv",
 	"unsetenv",
@@ -33,12 +34,15 @@ int		is_builtin_cmd(char **av)
 
 int		run_builtin_cmd(char **av)
 {
-	if (!ft_strcmp(av[0], "env"))
-		builtin_env(av);
+	int	status;
+	if (!ft_strcmp(av[0], "echo"))
+		status = builtin_echo(av);
+	else if (!ft_strcmp(av[0], "env"))
+		status = builtin_env(av);
 	else if (!ft_strcmp(av[0], "setenv"))
-		builtin_setenv(&g_env, av);
+		status = builtin_setenv(&g_env, av);
 	else if (!ft_strcmp(av[0], "unsetenv"))
-		builtin_unsetenv(&g_env, av);
+		status = builtin_unsetenv(&g_env, av);
 	else if (!ft_strcmp(av[0], "exit"))
 		builtin_exit(av);
 	return (0);
