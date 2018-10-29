@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:26:50 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/29 12:01:00 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/29 12:49:17 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ int		run_builtin_cmd(char **av)
 	else if (!ft_strcmp(av[0], "unsetenv"))
 		builtin_unsetenv(&g_env, av);
 	else if (!ft_strcmp(av[0], "exit"))
-		termcaps_reset_term_and_exit();
+		builtin_exit(av);
 	return (0);
 }

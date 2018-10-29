@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/18 18:40:53 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/29 12:53:27 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ enum							e_errno
 	EOPEN,
 	EDUP,
 	EPIPE,
+	ENONUM,
 	EOTHER
 };
 
@@ -135,7 +136,7 @@ void							term_putchar(char c);
 void							termcaps_reset_term(void);
 void							term_putstr(char *s);
 void							input_is_special_char(t_read_input *readstruct);
-void							termcaps_reset_term_and_exit(void);
+void							termcaps_reset_term_and_exit(int status);
 void							input_is_backspace(int *cursorpos,
 	t_buf *buffer, t_read_input *s);
 void							input_is_up(t_read_input *s);

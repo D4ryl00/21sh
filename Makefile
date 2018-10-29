@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/10/20 18:53:23 by rbarbero         ###   ########.fr        #
+#    Updated: 2018/10/29 12:54:43 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ DIR_UTILITES = $(DIR_SRCS)/utilities
 SRCS_UTILITES = cd.c
 
 DIR_BUILTINS = $(DIR_SRCS)/builtins
-SRCS_BUILTINS = env.c setenv.c unsetenv.c
+SRCS_BUILTINS = env.c setenv.c unsetenv.c exit.c
 
 SRCS = $(addprefix $(DIR_SRCS)/,$(SRCS_MAIN)) \
 	   $(addprefix $(DIR_LEXER)/, $(SRCS_LEXER)) \

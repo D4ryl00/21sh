@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/17 16:44:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/29 12:55:45 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/10/29 12:40:46 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/10/29 12:55:28 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#include "sh.h"
+#include "builtins.h"
 
-int		builtin_env(char **av);
-int		builtin_setenv(t_list **env, char **av);
-int		builtin_unsetenv(t_list **env, char **av);
-void	builtin_exit(char **av);
-
-#endif
+void	builtin_exit(char **av)
+{
+	if (av[1] && !ft_isstrdigit(av[1]))
+	{
+		ft_perror(ENONUM, av[1], 0);
+		termcaps_reset_term_and_exit(255);
+	}
+	termcaps_reset_term_and_exit(av[1] ? ft_atoi(av[1]) : 0);
+}
