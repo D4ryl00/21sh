@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/27 03:17:05 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/29 10:10:38 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,15 @@
 ** Execute the command in a fork and execve.
 */
 
-int			run(char *path, char **av, int wait)
+int			run(char *path, char **av, int wait, char **env)
 {
 	pid_t	pid;
 	int		status;
-	char	**env;
 	int		ret;
 
 	ret = 0;
 	if (!(pid = fork()))
 	{
-		if (!(env = ft_lsttoarrstr(g_env)))
-			exit_perror(ENOMEM, NULL);
 		execve(path, av, env);
 		return (0);
 	}

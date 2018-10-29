@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:06:29 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/27 03:13:57 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/29 10:34:04 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,16 +89,20 @@ int			eval_simple_command(t_ast_simple_command *sc, int wait)
 {
 	int		status;
 	char	**av;
+	char	**env;
 	t_list	*redirs;
 
 	status = 0;
 	redirs = NULL;
+	if (!(env = ft_lsttoarrstr(g_env)))
+		exit_perror(ENOMEM, NULL);
 	av = ast_construct_cmd_args(sc);
 	if (do_eval_redirs(sc, &redirs) == -1)
 		return (-1);
-	status = cmd_select_type(av, wait);
+	status = cmd_select_type(av, wait, env);
 	if (undo_redirs(&redirs) == -1)
 		return (-1);
 	ft_strarrdel(av);
+	ft_strarrdel(env);
 	return (status);
 }

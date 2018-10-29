@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/27 03:18:17 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/29 10:35:40 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,16 @@ int								eval_command(t_ast_command *command
 		, int wait);
 int								eval_simple_command(t_ast_simple_command *sc
 		, int wait);
-int								cmd_select_type(char **av, int wait);
+int								cmd_select_type(char **av, int wait
+		, char **env);
 int								is_builtin_cmd(char **av);
 int								run_builtin_cmd(char **av);
 int								is_special_builtin_cmd(char **av);
 int								run_special_builtin_cmd(char **av);
 int								is_utility_cmd(char **av);
 int								run_utility_cmd(char **av);
-int								run(char *path, char **av, int wait);
+int								run(char *path, char **av, int wait
+		, char **env);
 int								do_eval_redirs(t_ast_simple_command *sc
 		, t_list **redirs);
 int								filename_redirect_input(t_ast_io_redirect
