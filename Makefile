@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/10/29 13:31:12 by rbarbero         ###   ########.fr        #
+#    Updated: 2018/11/02 10:34:58 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ SRCS_PARSER = cmd_name.c cmd_word.c filename.c io_file.c here_end.c io_here.c \
 DIR_EVAL = $(DIR_SRCS)/eval
 SRCS_EVAL = program.c pipeline.c pipe_sequence.c command.c simple_command.c \
 			builtin_cmd.c special_builtin_cmd.c utility_cmd.c cmd_select.c \
-			run.c redirections_core.c redirections.c redirections_undo.c
+			run.c redirections_core.c redirections.c redirections_undo.c \
+			heredocs.c
 
 DIR_UTILITES = $(DIR_SRCS)/utilities
 SRCS_UTILITES = cd.c

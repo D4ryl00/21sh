@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 13:38:43 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/22 03:06:39 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/02 11:06:21 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int		undo_redirs(t_list **redirs)
 			{
 				if (dup2(((t_redirs *)(*redirs)->content)->dup_cpy
 						, ((t_redirs *)(*redirs)->content)->dup_src) == -1)
-				exit_perror(EDUP, NULL);
+					exit_perror(EDUP, NULL);
 				close(((t_redirs *)(*redirs)->content)->dup_cpy);
 			}
 		}

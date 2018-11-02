@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:12:56 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/27 01:46:08 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/02 11:12:06 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int		ast_program(t_ast_program **program, t_list *tokens)
 		{
 			free_ast_program(*program);
 			*program = NULL;
-			ft_perror(ESYNT, tokens ? ((t_token *)tokens->content)
-					->content : "NULL" , 1);
+			ft_perror(ESYNT, tokens ? ((t_token *)tokens->content)->content
+					: "NULL", 1);
 			return (status);
 		}
 		return (1);

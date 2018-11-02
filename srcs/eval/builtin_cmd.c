@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:26:50 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/29 13:28:19 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/02 11:05:52 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int		is_builtin_cmd(char **av)
 int		run_builtin_cmd(char **av)
 {
 	int	status;
+
 	if (!ft_strcmp(av[0], "echo"))
 		status = builtin_echo(av);
 	else if (!ft_strcmp(av[0], "env"))
