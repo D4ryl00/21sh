@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 22:57:48 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/07 12:09:35 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/02 14:32:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ static void	for_each_char(t_list **tokens, t_input *input
 
 /*
 ** Convert string input into tokens.
-** f_params[0]:: true when reading a token;
-** f_params[1]:: true when reading a operator token;
+** f_params[0]: true when reading a token;
+** f_params[1]: true when reading a operator token;
 */
 
 t_list		*lexer(t_input *input)

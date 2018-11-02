@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:53:52 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 06:16:43 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/02 16:45:13 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include "lexer.h"
 
 # define IO_NUMBER_SIZE	4
+
+typedef struct						s_ast_and_or t_ast_and_or;
 
 /*
 ** Structures for the AST
@@ -37,15 +39,9 @@ typedef struct						s_ast_filename
 	char							*word;
 }									t_ast_filename;
 
-typedef struct						s_ast_io_op
-{
-	char							c;
-	enum e_token					e;
-}									t_ast_io_op;
-
 typedef struct						s_ast_io_file
 {
-	t_ast_io_op						*op;
+	char							*op;
 	t_ast_filename					*filename;
 }									t_ast_io_file;
 
@@ -56,7 +52,7 @@ typedef struct						s_ast_here_end
 
 typedef struct						s_ast_io_here
 {
-	enum e_token					op;
+	char							*op;
 	t_ast_here_end					*here_end;
 }									t_ast_io_here;
 
@@ -95,12 +91,6 @@ typedef struct						s_ast_simple_command
 	t_ast_cmd_suffix				*cmd_suffix;
 }									t_ast_simple_command;
 
-typedef struct						s_ast_command
-{
-	t_ast_simple_command			*simple_command;
-	t_ast_redirect_list				*redirect_list;
-}									t_ast_command;
-
 typedef struct						s_ast_newline_list
 {
 	char							nl;
@@ -111,6 +101,49 @@ typedef struct						s_ast_linebreak
 {
 	t_ast_newline_list				*newline_list;
 }									t_ast_linebreak;
+
+typedef struct						s_ast_separator_op
+{
+	char							c;
+}									t_ast_separator_op;
+
+typedef struct						s_ast_separator
+{
+	t_ast_separator_op				*separator_op;
+	t_ast_linebreak					*linebreak;
+	t_ast_newline_list				*newline_list;
+}									t_ast_separator;
+
+typedef struct						s_ast_term
+{
+	t_ast_and_or					*and_or;
+	t_ast_separator					*separator;
+	struct s_ast_term				*term;
+}									t_ast_term;
+
+typedef struct						s_ast_compound_list
+{
+	t_ast_linebreak					*linebreak;
+	t_ast_term						*term;
+	t_ast_separator					*separator;
+}									t_ast_compound_list;
+
+typedef struct						s_ast_subshell
+{
+	t_ast_compound_list				*compound_list;
+}									t_ast_subshell;
+
+typedef struct						s_ast_compound_command
+{
+	t_ast_subshell					*subshell;
+}									t_ast_compound_command;
+
+typedef struct						s_ast_command
+{
+	t_ast_simple_command			*simple_command;
+	t_ast_compound_command			*compound_command;
+	t_ast_redirect_list				*redirect_list;
+}									t_ast_command;
 
 typedef struct						s_ast_pipe_sequence
 {
@@ -127,16 +160,11 @@ typedef struct						s_ast_pipeline
 
 typedef struct						s_ast_and_or
 {
-	enum e_token					op;
+	char							*op;
 	t_ast_pipeline					*pipeline;
 	t_ast_linebreak					*linebreak;
 	struct s_ast_and_or				*and_or;
 }									t_ast_and_or;
-
-typedef struct						s_ast_separator_op
-{
-	char							c;
-}									t_ast_separator_op;
 
 typedef struct						s_ast_list
 {
@@ -242,4 +270,22 @@ void								free_ast_complete_commands(
 int									ast_program(t_ast_program **program
 		, t_list *tokens);
 void								free_ast_program(t_ast_program *program);
+int									ast_compound_command(
+		t_ast_compound_command **cc, t_list **tokens);
+void								free_ast_compound_command(
+		t_ast_compound_command *cc);
+int									ast_subshell(t_ast_subshell **subshell
+		, t_list **tokens);
+void								free_ast_subshell(t_ast_subshell *subshell);
+int									ast_compound_list(t_ast_compound_list **cl
+		, t_list **tokens);
+void								free_ast_compound_list(
+		t_ast_compound_list *cl);
+int									ast_term(t_ast_term **term
+		, t_list **tokens);
+void								free_ast_term(t_ast_term *term);
+int									ast_separator(t_ast_separator **separator
+		, t_list **tokens);
+void								free_ast_separator(
+		t_ast_separator *separator);
 #endif
