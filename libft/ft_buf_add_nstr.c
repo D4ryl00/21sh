@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_buf_add_str.c                                   :+:      :+:    :+:   */
+/*   ft_buf_add_nstr.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/25 14:47:13 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/04 15:43:50 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/11/04 15:41:57 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/11/04 15:46:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_buf_add_str(t_buf *buffer, char *str)
+int	ft_buf_add_nstr(t_buf *buffer, char *str, int len)
 {
-	return (ft_buf_add_nstr(buffer, str, ft_strlen(str)));
+	if (buffer->i + len >= buffer->size)
+	{
+		if (ft_buf_extend(buffer) == -1)
+			return (-1);
+	}
+	ft_strncpy(&(buffer->buf[buffer->i]), str, len);
+	buffer->i += len;
+	return (0);
 }

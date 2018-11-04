@@ -6,39 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/02 10:33:46 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/02 10:34:39 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 16:39:27 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
 #include "eval.h"
-
-/*
-** For here documents, call the newprompt function until catch the keyword
-*/
-
-static int	here_loop(t_ast_io_redirect *io_redirect, int fd_pipe[2])
-{
-	int		status;
-	t_input	input;
-	int		len;
-
-	status = 0;
-	input.save = NULL;
-	while ((status = newprompt(&input, "> ") != -1)
-			&& (((len = ft_strlen(input.str)) == 1) || ft_strncmp(input.str
-				, io_redirect->io_here->here_end->word, len - 1)))
-	{
-		write(fd_pipe[1], input.str, len);
-		free(input.save);
-		input.save = NULL;
-		input.str = NULL;
-	}
-	if (input.save)
-		free(input.save);
-	return (status);
-}
 
 static int	check_fd_pipe(int *fd_pipe, int io_number)
 {
@@ -61,14 +35,9 @@ static int	check_fd_pipe(int *fd_pipe, int io_number)
 	return (0);
 }
 
-/*
-** Open and close the pipe. Call the here doc loop until read the key.
-*/
-
 int			here_redirect(t_ast_io_redirect *io_redirect, int io_number
 		, t_list **redirs)
 {
-	int			status;
 	int			fd_pipe[2];
 	t_redirs	save;
 	t_list		*node;
@@ -81,8 +50,8 @@ int			here_redirect(t_ast_io_redirect *io_redirect, int io_number
 		return_perror(EPIPE, NULL);
 	if (check_fd_pipe(fd_pipe, io_number) == -1)
 		return (-1);
-	if ((status = here_loop(io_redirect, fd_pipe)) == -1)
-		return (-1);
+	write(fd_pipe[1], io_redirect->io_here->data
+			, io_redirect->io_here->data_len);
 	if (dup2(fd_pipe[0], io_number) == -1)
 		return_perror(EDUP, NULL);
 	if (!(node = ft_lstnew(&save, sizeof(t_redirs))))
@@ -90,7 +59,5 @@ int			here_redirect(t_ast_io_redirect *io_redirect, int io_number
 	ft_lstadd(redirs, node);
 	close(fd_pipe[0]);
 	close(fd_pipe[1]);
-	if (status == -1)
-		exit_perror(ENOMEM, NULL);
 	return (0);
 }

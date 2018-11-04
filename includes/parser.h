@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:53:52 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/04 13:25:10 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 16:05:49 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ typedef struct						s_ast_io_here
 {
 	enum e_token					op;
 	t_ast_here_end					*here_end;
+	char							*data;
+	int								data_len;
 }									t_ast_io_here;
 
 typedef struct						s_ast_io_redirect

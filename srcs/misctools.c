@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 18:15:42 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/17 16:43:09 by amordret         ###   ########.fr       */
+/*   Updated: 2018/11/04 15:21:41 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int		get_cursorpos(int cursorpos)
 
 	if ((ioctl(g_termcaps.fd, TIOCGWINSZ, &ws)) == -1)
 		return (-1);
+	if (!ws.ws_col)
+		ws.ws_col = 40;
 	return ((cursorpos + g_termcaps.promptlength) % ws.ws_col);
 }
 

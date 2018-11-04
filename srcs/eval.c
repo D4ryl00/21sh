@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/20 17:38:42 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 14:01:32 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,13 @@ int			eval(t_input *input)
 	t_list			*tokens;
 	t_ast_program	*program;
 
-	if (!(tokens = lexer(input)))
-	{
-		free(input->save);
-		input->save = NULL;
-		input->str = NULL;
-		return (-1);
-	}
+	program = NULL;
+	tokens = lexer(input);
 	free(input->save);
 	input->save = NULL;
 	input->str = NULL;
-	program = NULL;
+	if (!tokens)
+		return (-1);
 	//print_tokens(tokens);
 	if (ast_program(&program, tokens) > 0)
 	{
