@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/02 16:52:17 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 12:55:12 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,19 @@ static int	simple_redirs(t_ast_io_redirect *io_redirect, int io_number
 	int	status;
 
 	status = 0;
-	if (!ft_strcmp(io_redirect->io_file->op, ">")
-		|| !ft_strcmp(io_redirect->io_file->op, ">|"))
+	if (io_redirect->io_file->op == GREAT
+		|| io_redirect->io_file->op == CLOBBER)
 		status = filename_redirect_output(io_redirect, io_number
 					, O_CREAT | O_WRONLY | O_TRUNC, redirs);
-	else if (!ft_strcmp(io_redirect->io_file->op, ">>"))
+	else if (io_redirect->io_file->op == DGREAT)
 		status = filename_redirect_output(io_redirect, io_number
 		, O_CREAT | O_WRONLY | O_APPEND, redirs);
-	else if (!ft_strcmp(io_redirect->io_file->op, "<"))
+	else if (io_redirect->io_file->op == LESS)
 		status = filename_redirect_input(io_redirect, io_number
 					, O_RDONLY, redirs);
-	else if (!ft_strcmp(io_redirect->io_file->op, ">&"))
+	else if (io_redirect->io_file->op == GREATAND)
 		status = fd_redirect(io_redirect, io_number, '>', redirs);
-	else if (!ft_strcmp(io_redirect->io_file->op, "<&"))
+	else if (io_redirect->io_file->op ==  LESSAND)
 		status = fd_redirect(io_redirect, io_number, '<', redirs);
 	return (status);
 }
@@ -57,8 +57,7 @@ static int	select_redirs(t_ast_io_redirect *io_redirect, t_list **redirs)
 	}
 	if (io_redirect->io_file)
 		status = simple_redirs(io_redirect, io_number, redirs);
-	else if ((io_redirect->io_here) && (!ft_strcmp(io_redirect->io_here->op
-					, "<<")))
+	else if (io_redirect->io_here && io_redirect->io_here->op == DLESS)
 		status = here_redirect(io_redirect, io_number, redirs);
 	return (status);
 }

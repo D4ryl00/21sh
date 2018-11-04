@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:53:52 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/02 16:45:13 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 12:41:19 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct						s_ast_filename
 
 typedef struct						s_ast_io_file
 {
-	char							*op;
+	enum e_token					op;
 	t_ast_filename					*filename;
 }									t_ast_io_file;
 
@@ -52,7 +52,7 @@ typedef struct						s_ast_here_end
 
 typedef struct						s_ast_io_here
 {
-	char							*op;
+	enum e_token					op;
 	t_ast_here_end					*here_end;
 }									t_ast_io_here;
 

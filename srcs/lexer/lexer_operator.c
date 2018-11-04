@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 14:10:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/02 14:49:49 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 12:41:39 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@
 
 enum e_token	get_op_type(char *str)
 {
+	int	i;
+
 	if (str)
 	{
-		if (ft_strarrchr(str, g_op_token) != -1)
-			return (OPERATOR);
+		if ((i = ft_strarrchr(str, g_op_token)) != -1)
+			return ((enum e_token)i + 5);
 	}
 	return (TOKEN);
 }

@@ -6,22 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:47:05 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/02 15:20:25 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 12:51:24 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
 #include "parser.h"
-
-static int	eval_io_here(t_ast_io_here **here, t_list **tokens)
-{
-	if (!((*here)->op = ft_strdup(((t_token *)(*tokens)->content)->
-					content)))
-		exit_perror(ENOMEM, NULL);
-	*tokens = (*tokens)->next;
-	return (ast_here_end(&((*here)->here_end), tokens));
-}
 
 int		ast_io_here(t_ast_io_here **here, t_list **tokens)
 {
@@ -33,10 +24,14 @@ int		ast_io_here(t_ast_io_here **here, t_list **tokens)
 		if (!(*here = (t_ast_io_here *)malloc(sizeof(t_ast_io_here))))
 			exit_perror(ENOMEM, NULL);
 		(*here)->here_end = NULL;
-		(*here)->op = NULL;
-		if (!ft_strcmp(((t_token *)(*tokens)->content)->content, "<<")
-				|| !ft_strcmp(((t_token *)(*tokens)->content)->content, "<<-"))
-			status = eval_io_here(here, tokens);
+		(*here)->op = TOKEN;
+		if (((t_token *)(*tokens)->content)->type == DLESS
+				|| ((t_token *)(*tokens)->content)->type == DLESSDASH)
+		{
+			(*here)->op = ((t_token *)(*tokens)->content)->type;
+			*tokens = (*tokens)->next;
+			status = ast_here_end(&((*here)->here_end), tokens);
+		}
 		if (status < 1)
 		{
 			free_ast_io_here(*here);

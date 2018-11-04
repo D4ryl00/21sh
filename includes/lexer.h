@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 22:54:56 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/02 14:40:09 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 12:20:06 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,24 @@ enum							e_token
 	IO_NUMBER,
 	ASSIGNMENT_WORD,
 	NAME,
+	AND,
+	AND_IF,
+	L_PARENTHESIS,
+	R_PARENTHESIS,
+	SEMI,
+	DSEMI,
 	NEWLINE,
-	OPERATOR
+	OR,
+	OR_IF,
+	LESS,
+	GREAT,
+	CLOBBER,
+	DLESS,
+	DGREAT,
+	LESSAND,
+	GREATAND,
+	DLESSDASH,
+	LESSGREAT
 };
 
 typedef struct					s_token
