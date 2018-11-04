@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/02 16:03:19 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/02 16:15:25 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 16:47:17 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	ast_term_error(t_ast_term **term, int status)
 	return (status);
 }
 
-int		ast_term(t_ast_term **term, t_list **tokens)
+int			ast_term(t_ast_term **term, t_list **tokens)
 {
 	int		status;
 	t_list	*save;
@@ -56,7 +56,7 @@ int		ast_term(t_ast_term **term, t_list **tokens)
 	return (0);
 }
 
-void	free_ast_term(t_ast_term *term)
+void		free_ast_term(t_ast_term *term)
 {
 	if (term)
 	{

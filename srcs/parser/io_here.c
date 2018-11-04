@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:47:05 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/04 16:15:44 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 16:46:50 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	io_here_init(t_ast_io_here *here)
 	here->op = TOKEN;
 }
 
-int		ast_io_here(t_ast_io_here **here, t_list **tokens)
+int			ast_io_here(t_ast_io_here **here, t_list **tokens)
 {
 	int	status;
 
@@ -80,7 +80,7 @@ int		ast_io_here(t_ast_io_here **here, t_list **tokens)
 	return (0);
 }
 
-void	free_ast_io_here(t_ast_io_here *io_here)
+void		free_ast_io_here(t_ast_io_here *io_here)
 {
 	if (io_here)
 	{

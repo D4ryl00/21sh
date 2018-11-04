@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 14:50:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/04 12:55:12 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 16:45:24 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	simple_redirs(t_ast_io_redirect *io_redirect, int io_number
 					, O_RDONLY, redirs);
 	else if (io_redirect->io_file->op == GREATAND)
 		status = fd_redirect(io_redirect, io_number, '>', redirs);
-	else if (io_redirect->io_file->op ==  LESSAND)
+	else if (io_redirect->io_file->op == LESSAND)
 		status = fd_redirect(io_redirect, io_number, '<', redirs);
 	return (status);
 }
