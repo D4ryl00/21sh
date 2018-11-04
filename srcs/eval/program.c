@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:41:31 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/02 16:45:46 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 13:32:17 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static int	eval_and_or(t_ast_and_or *and_or, int wait)
 		status = eval_pipeline(and_or->pipeline, wait);
 	if (and_or->and_or)
 	{
-		if ((!ft_strcmp(and_or->op, "&&") && !status)
-				|| (!ft_strcmp(and_or->op, "||") && status))
+		if ((and_or->op == AND_IF && !status)
+				|| (and_or->op == OR_IF && status))
 			status = eval_and_or(and_or->and_or, wait);
 	}
 	return (status);

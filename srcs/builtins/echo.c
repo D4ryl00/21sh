@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/29 13:25:55 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/29 17:09:29 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 13:41:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int			builtin_echo(char **av)
 	int	status;
 
 	status = 0;
-	while (*(av + 1) && !(status = eval_op(*(av++ + 1))))
+	while (*(av + 1) && !(status = eval_op(*(av++ + 1))) && *(av + 1))
 		write(1, " ", 1);
 	if (!status)
 		write(1, "\n", 1);

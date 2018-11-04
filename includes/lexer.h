@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 22:54:56 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/04 12:20:06 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 13:30:44 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ enum							e_token
 	IO_NUMBER,
 	ASSIGNMENT_WORD,
 	NAME,
-	AND,
+	AMPER,
 	AND_IF,
 	L_PARENTHESIS,
 	R_PARENTHESIS,
 	SEMI,
 	DSEMI,
 	NEWLINE,
-	OR,
+	PIPE,
 	OR_IF,
 	LESS,
 	GREAT,

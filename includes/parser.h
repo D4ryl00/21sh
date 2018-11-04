@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:53:52 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/04 12:41:19 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 13:25:10 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ typedef struct						s_ast_pipeline
 
 typedef struct						s_ast_and_or
 {
-	char							*op;
+	enum e_token					op;
 	t_ast_pipeline					*pipeline;
 	t_ast_linebreak					*linebreak;
 	struct s_ast_and_or				*and_or;
