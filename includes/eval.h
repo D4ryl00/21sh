@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/29 10:35:40 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 17:26:06 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,11 @@ int								eval_pipe_sequence(t_ast_pipe_sequence *ps
 		, int wait);
 int								eval_command(t_ast_command *command
 		, int wait);
+int								eval_compound_command(t_ast_compound_command *cc
+		, int wait);
 int								eval_simple_command(t_ast_simple_command *sc
+		, int wait);
+int								eval_subshell(t_ast_subshell *subshell
 		, int wait);
 int								cmd_select_type(char **av, int wait
 		, char **env);

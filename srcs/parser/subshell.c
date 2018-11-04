@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/02 12:24:59 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/02 16:43:32 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 16:56:04 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ int		ast_subshell(t_ast_subshell **subshell, t_list **tokens)
 
 	if (*tokens)
 	{
-		if (!ft_strcmp(((t_token *)(*tokens)->content)->content, "("))
+		if (((t_token *)(*tokens)->content)->type == L_PARENTHESIS)
 		{
 			if (!(*subshell = (t_ast_subshell *)malloc(sizeof(t_ast_subshell))))
 				exit_perror(ENOMEM, NULL);
 			(*subshell)->compound_list = NULL;
 			*tokens = (*tokens)->next;
 			if (((status = ast_compound_list(&((*subshell)->compound_list)
-							, tokens)) < 1) || (ft_strcmp(
-							((t_token *)(*tokens)->content)->content, ")")))
+							, tokens)) < 1)
+					|| (((t_token *)(*tokens)->content)->type != R_PARENTHESIS))
 			{
 				free_ast_subshell(*subshell);
 				*subshell = NULL;
