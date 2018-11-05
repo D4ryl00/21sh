@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:50:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 14:21:36 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/05 15:57:47 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,15 @@ int			eval_pipe_sequence(t_ast_pipe_sequence *ps, int async)
 		{
 			if (run_eval_pipe(&pipe_env) == -1)
 				return (-1);
-			if ((pid = newjob(&status, 0)) == -1)
+			if (multipipes && (pid = newjob(&status, 0)) == -1)
 				return (-1);
-			if (!pid)
+			if (multipipes && !pid)
 			{
 				status = eval_command(ps->command, async);
 				exit(status);
 			}
+			else if (!multipipes)
+				status = eval_command(ps->command, async);
 			waitjobs();
 			if (pipe_env.input.rd != -1)
 				close(pipe_env.input.rd);

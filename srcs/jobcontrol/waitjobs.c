@@ -6,13 +6,14 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 13:09:15 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 15:03:58 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/05 15:52:06 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
 #include "jobcontrol.h"
+#include <sys/wait.h>
 
 static void	del_pid(void *content, size_t content_size)
 {
