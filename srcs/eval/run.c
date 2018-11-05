@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 11:32:15 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/05 12:35:00 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,9 @@ int			run(char *path, char **av, int async, char **env)
 {
 	pid_t	pid;
 	int		status;
-	int		ret;
 
-	ret = 0;
-	if ((pid = newjob(&status, async) == -1))
+	status = 0;
+	if ((pid = newjob(&status, async)) == -1)
 		return (-1);
 	if (!pid)
 	{
