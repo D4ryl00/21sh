@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   compound_command.c                                 :+:      :+:    :+:   */
+/*   jobcontrol.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/04 17:12:42 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 11:27:26 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/11/05 11:33:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "sh.h"
-#include "eval.h"
+#ifndef JOBCONTROL_H
+# define JOBCONTROL_H
 
-int	eval_compound_command(t_ast_compound_command *cc, int async)
-{
-	int	status;
+#include <unistd.h>
 
-	status = 0;
-	if (cc->subshell)
-		status = eval_subshell(cc->subshell, async);
-	return (status);
-}
+/*
+** GLOBALS
+*/
+
+t_list	*g_syncjobs;
+t_list	*g_asyncjobs;
+
+/*
+** PROTOTYPES
+*/
+
+pid_t		newjob(int *status, const unsigned char async);
+
+#endif

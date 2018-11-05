@@ -6,38 +6,32 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/29 10:10:38 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/05 11:32:15 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 #include "libft.h"
 #include "eval.h"
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+#include "jobcontrol.h"
 
 /*
 ** Execute the command in a fork and execve.
 */
 
-int			run(char *path, char **av, int wait, char **env)
+int			run(char *path, char **av, int async, char **env)
 {
 	pid_t	pid;
 	int		status;
 	int		ret;
 
 	ret = 0;
-	if (!(pid = fork()))
+	if ((pid = newjob(&status, async) == -1))
+		return (-1);
+	if (!pid)
 	{
 		execve(path, av, env);
-		return (0);
+		return (-1);
 	}
-	else if (pid == -1)
-		return (return_perror(EFORK, NULL));
-	if (wait != -1)
-		ret = waitpid(pid, &status, wait);
-	if (ret == -1)
-		return (return_perror(EWAIT, NULL));
 	return (WEXITSTATUS(status));
 }

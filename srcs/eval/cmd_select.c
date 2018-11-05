@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:36:33 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/29 10:34:59 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/05 11:28:35 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static char	*get_path_exec(char *filename, char **dirs)
 ** and run the command.
 */
 
-static int	run_cmd_path(char **av, int wait, char **env)
+static int	run_cmd_path(char **av, int async, char **env)
 {
 	char	**dirs;
 	char	*path;
@@ -61,7 +61,7 @@ static int	run_cmd_path(char **av, int wait, char **env)
 		{
 			status = 126;
 			if (!access(path, X_OK))
-				status = run(path, av, wait, env);
+				status = run(path, av, async, env);
 			else
 				ft_perror(EACCES, av[0], 0);
 			free(path);
@@ -77,7 +77,7 @@ static int	run_cmd_path(char **av, int wait, char **env)
 ** The command path is know, so we call it directly if we can.
 */
 
-static int	run_cmd_direct_path(char **av, int wait, char **env)
+static int	run_cmd_direct_path(char **av, int async, char **env)
 {
 	int		status;
 
@@ -86,7 +86,7 @@ static int	run_cmd_direct_path(char **av, int wait, char **env)
 	{
 		status = 126;
 		if (!access(av[0], X_OK))
-			status = run(av[0], av, wait, env);
+			status = run(av[0], av, async, env);
 		else
 			ft_perror(EACCES, av[0], 0);
 	}
@@ -99,7 +99,7 @@ static int	run_cmd_direct_path(char **av, int wait, char **env)
 ** Find the good category of the command and execute it.
 */
 
-int			cmd_select_type(char **av, int wait, char **env)
+int			cmd_select_type(char **av, int async, char **env)
 {
 	if (!ft_strchr(av[0], '/'))
 	{
@@ -110,9 +110,9 @@ int			cmd_select_type(char **av, int wait, char **env)
 		else if (is_utility_cmd(av))
 			return (run_utility_cmd(av));
 		else
-			return (run_cmd_path(av, wait, env));
+			return (run_cmd_path(av, async, env));
 	}
 	else
-		return (run_cmd_direct_path(av, wait, env));
+		return (run_cmd_direct_path(av, async, env));
 	return (-1);
 }

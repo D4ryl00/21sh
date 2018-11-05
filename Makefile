@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/11/04 17:28:31 by rbarbero         ###   ########.fr        #
+#    Updated: 2018/11/05 09:19:44 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,18 +42,22 @@ SRCS_UTILITES = cd.c
 DIR_BUILTINS = $(DIR_SRCS)/builtins
 SRCS_BUILTINS = echo.c env.c setenv.c unsetenv.c exit.c
 
+DIR_JOBCONTROL = $(DIR_SRCS)/jobcontrol
+SRCS_JOBCONTROL = newjob.c
+
 SRCS = $(addprefix $(DIR_SRCS)/,$(SRCS_MAIN)) \
 	   $(addprefix $(DIR_LEXER)/, $(SRCS_LEXER)) \
 	   $(addprefix $(DIR_PARSER)/, $(SRCS_PARSER)) \
 	   $(addprefix $(DIR_EVAL)/, $(SRCS_EVAL)) \
 	   $(addprefix $(DIR_UTILITES)/, $(SRCS_UTILITES)) \
-	   $(addprefix $(DIR_BUILTINS)/, $(SRCS_BUILTINS))
+	   $(addprefix $(DIR_BUILTINS)/, $(SRCS_BUILTINS)) \
+	   $(addprefix $(DIR_JOBCONTROL)/, $(SRCS_JOBCONTROL))
 
 OBJS = $(SRCS:%.c=%.o)
 
 LIB_DIR = libft
 
-HEADERS = sh.h lexer.h parser.h eval.h utilities.h builtins.h
+HEADERS = sh.h lexer.h parser.h eval.h utilities.h builtins.h jobcontrol.h
 HEADERS_DIR = includes/
 LHEADERS = $(HEADERS:%.h=$(HEADERS_DIR)%.h)
 
