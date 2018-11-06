@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 14:39:01 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/05/18 10:31:00 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/06 10:30:01 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_buf_insert_char(t_buf *buffer, char c, int index)
 		return (-1);
 	if (buffer->i + data_len >= buffer->size)
 	{
-		if (!ft_buf_extend(buffer))
+		if (ft_buf_extend(buffer) == -1)
 			return (-1);
 	}
 	end = buffer->size;

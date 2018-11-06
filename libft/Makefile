@@ -6,7 +6,7 @@
 #    By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/09 12:15:31 by rbarbero          #+#    #+#              #
-#    Updated: 2018/11/04 15:44:38 by rbarbero         ###   ########.fr        #
+#    Updated: 2018/11/05 10:15:50 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ SRCS = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c \
 	   ft_buf_insert_char.c ft_buf_delete_char.c ft_isstrdigit.c \
 	   ft_btreenew.c ft_btreedelone.c ft_btreedel.c ft_strarrdel.c \
 	   ft_lsttoarrstr.c ft_strarrchr.c ft_buf_add_str.c ft_strndup.c \
-	   ft_strmove.c ft_lstdup.c ft_buf_add_nstr.c
+	   ft_strmove.c ft_lstdup.c ft_buf_add_nstr.c ft_lstpush.c
 DIR_FT_VSDPRINTF = ft_vsdprintf
 SRCS_FT_VSDPRINTF = ft_vsdprintf.c parse.c parse_format.c parse_width.c \
 				 parse_precision.c int_arg.c int_conv.c conv_tools.c \

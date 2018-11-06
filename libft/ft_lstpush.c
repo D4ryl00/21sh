@@ -1,25 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   compound_command.c                                 :+:      :+:    :+:   */
+/*   ft_lstpush.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/04 17:12:42 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 11:27:26 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/11/05 10:04:42 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/11/05 10:17:42 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "sh.h"
-#include "eval.h"
 
-int	eval_compound_command(t_ast_compound_command *cc, int async)
+/*
+** Create a new t_list node and add it in front of the list
+** (or assign the list to the node if the list was NULL)
+*/
+
+t_list	*ft_lstpush(t_list **list, void *content, size_t content_size)
 {
-	int	status;
+	t_list	*node;
+	t_list	*tmp;
 
-	status = 0;
-	if (cc->subshell)
-		status = eval_subshell(cc->subshell, async);
-	return (status);
+	tmp = NULL;
+	if (!list)
+		return (NULL);
+	if (!(node = ft_lstnew(content, content_size)))
+		return (NULL);
+	if (*list)
+		tmp = *list;
+	*list = node;
+	node->next = tmp;
+	return (node);
 }

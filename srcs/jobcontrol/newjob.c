@@ -1,25 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   compound_command.c                                 :+:      :+:    :+:   */
+/*   newjob.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/04 17:12:42 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 11:27:26 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/11/05 09:17:08 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/11/05 15:52:57 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
-#include "eval.h"
+#include "jobcontrol.h"
+#include <unistd.h>
+#include <sys/wait.h>
 
-int	eval_compound_command(t_ast_compound_command *cc, int async)
+pid_t	newjob(int *status, const unsigned char async)
 {
-	int	status;
+	t_list	**jobs;
+	pid_t	pid;
 
-	status = 0;
-	if (cc->subshell)
-		status = eval_subshell(cc->subshell, async);
-	return (status);
+	if (async)
+		jobs = &g_asyncjobs;
+	else
+		jobs = &g_syncjobs;
+	if ((pid = fork()) == -1)
+		return_perror(EFORK, NULL);
+	if (!ft_lstpush(jobs, &pid, sizeof(pid_t)))
+	{
+		if (!pid)
+			exit(1);
+		return (-1);
+	}
+	if (pid && !async)
+		waitpid(pid, status, 0);
+	return (pid);
 }
