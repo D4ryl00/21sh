@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/18 18:40:53 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/30 15:02:45 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ typedef struct					s_read_input
 	char						*tmpline;
 	t_buf						buffer;
 	int							cursorpos;
+	int							cursorposinline;
+	int							cursorline;
 	int							charsinline;
 	int							historynb;
 

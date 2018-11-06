@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 11:49:18 by amordret          #+#    #+#             */
-/*   Updated: 2018/09/24 13:07:50 by amordret         ###   ########.fr       */
+/*   Updated: 2018/11/06 10:14:32 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ static void	savehisttofile2(int fd, t_command_history *c, t_command_history *p)
 	if (i == MAX_HISTORY)
 		free_minilibx(c->next);
 	ft_putendl_fd(c->command, fd);
-	free(c->command);
+	if (c->command)
+		free(c->command);
 	free(c);
 	if (p)
 		p->next = NULL;
