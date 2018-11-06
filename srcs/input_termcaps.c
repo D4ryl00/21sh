@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/18 18:17:07 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/29 12:52:36 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void		input_is_special_char(t_read_input *s)
 	if (s->c[0] == 127)
 		return (input_is_backspace(&(s->cursorpos), &(s->buffer), s));
 	if (s->c[0] == 3)
-		termcaps_reset_term_and_exit();
+		termcaps_reset_term_and_exit(0);
 	s->c[3] = read(0, &(s->c[1]), 2);
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 68)
 		return (input_is_left(&(s->cursorpos), s));

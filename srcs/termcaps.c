@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 10:16:11 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/18 18:37:46 by amordret         ###   ########.fr       */
+/*   Updated: 2018/10/29 12:53:03 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ void	termcaps_strings(void)
 		ft_putstr(ERR_TGETSTR);
 }
 
-void	termcaps_reset_term_and_exit(void)
+void	termcaps_reset_term_and_exit(int status)
 {
 	if (tcsetattr(g_termcaps.fd, TCSANOW, &(g_termcaps.backup_termios)) < 0)
 		return (ft_putstr(ERR_TCSETATTR));
 	ft_putstr_fd(g_termcaps.leaveinsertmode, g_termcaps.fd);
 	save_hist_to_file();
-	exit(0);
+	exit(status);
 }
 
 void	termcaps_reset_term(void)
@@ -69,7 +69,9 @@ void	ft_set_term(void)
 {
 	char	*terminame;
 
-	if ((g_termcaps.fd = open(ttyname(0), O_RDWR)) == -1)
+	if (isatty(0))
+		g_termcaps.fd = 0;
+	else if ((g_termcaps.fd = open(ttyname(0), O_RDWR)) == -1)
 		return (ft_perror(EDUP, NULL, 0));
 	if ((terminame = getenv("TERM")) == NULL)
 		return (ft_putstr(ERR_GETENV));

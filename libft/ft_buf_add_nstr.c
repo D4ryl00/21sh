@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   ft_buf_add_nstr.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/17 16:44:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/29 13:26:57 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/11/04 15:41:57 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/11/04 15:46:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#include "libft.h"
 
-int		builtin_echo(char **av);
-int		builtin_env(char **av);
-int		builtin_setenv(t_list **env, char **av);
-int		builtin_unsetenv(t_list **env, char **av);
-void	builtin_exit(char **av);
-
-#endif
+int	ft_buf_add_nstr(t_buf *buffer, char *str, int len)
+{
+	if (buffer->i + len >= buffer->size)
+	{
+		if (ft_buf_extend(buffer) == -1)
+			return (-1);
+	}
+	ft_strncpy(&(buffer->buf[buffer->i]), str, len);
+	buffer->i += len;
+	return (0);
+}

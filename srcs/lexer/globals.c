@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 23:36:05 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 06:17:47 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/02 16:54:41 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,28 @@
 #include "lexer.h"
 
 /*
-** The order is important. It's linked with e_token.
-** PLEASE DO NOT CHANGE THAT!
+** List of operator tokens (see XBD Operator).
 */
 
 char	*g_op_token[] =
 {
+	"&",
 	"&&",
-	"||",
+	"(",
+	")",
+	";",
 	";;",
+	"\n",
+	"|",
+	"||",
+	"<",
+	">",
+	">|",
 	"<<",
 	">>",
 	"<&",
 	">&",
-	"<>",
 	"<<-",
-	">|",
-	""
-};
-
-char	*g_control_operator[] =
-{
-	"&&",
-	"||",
-	"|",
-	")",
-	";",
-	"&",
-	"!",
+	"<>",
 	""
 };

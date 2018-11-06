@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/17 16:47:56 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/18 18:06:56 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/29 11:56:25 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include "builtins.h"
 
-int	builtin_setenv(char **av, t_list *env)
+int	builtin_setenv(t_list **env, char **av)
 {
 	t_list	*entry;
 	char	*value;
@@ -26,11 +26,11 @@ int	builtin_setenv(char **av, t_list *env)
 			return (return_print("Variable name is not valid\n", 1));
 		if (ft_sprintf(&value, "%s=%s", av[1], av[2] ? av[2] : "") == -1)
 			exit_perror(ENOMEM, NULL);
-		if (!(entry = ft_lstselect(env, av[1], env_select_key)))
+		if (!(entry = ft_lstselect(*env, av[1], env_select_key)))
 		{
 			if (!(entry = (t_list *)malloc(sizeof(t_list))))
 				exit_perror(ENOMEM, NULL);
-			ft_lstaddback(&env, entry);
+			ft_lstaddback(env, entry);
 		}
 		else
 			free(entry->content);

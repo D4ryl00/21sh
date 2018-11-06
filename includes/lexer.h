@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 22:54:56 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/07 12:08:10 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 13:30:44 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,29 +22,34 @@ extern char						*g_control_operator[];
 */
 
 /*
-** The order of the first ten entries is important.
-** It's linked with g_op_token.
-** PLEASE DO NOT CHANGE THAT!
+** Possible token types
 */
 
 enum							e_token
 {
+	TOKEN,
+	WORD,
+	IO_NUMBER,
+	ASSIGNMENT_WORD,
+	NAME,
+	AMPER,
 	AND_IF,
-	OR_IF,
+	L_PARENTHESIS,
+	R_PARENTHESIS,
+	SEMI,
 	DSEMI,
+	NEWLINE,
+	PIPE,
+	OR_IF,
+	LESS,
+	GREAT,
+	CLOBBER,
 	DLESS,
 	DGREAT,
 	LESSAND,
 	GREATAND,
-	LESSGREAT,
 	DLESSDASH,
-	CLOBBER,
-	TOKEN,
-	IO_NUMBER,
-	ASSIGNMENT_WORD,
-	NAME,
-	NEWLINE,
-	CONTROL
+	LESSGREAT
 };
 
 typedef struct					s_token

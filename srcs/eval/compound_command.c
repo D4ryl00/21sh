@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   compound_command.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/17 16:44:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/29 13:26:57 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/11/04 17:12:42 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/11/04 17:41:37 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#include "libft.h"
+#include "sh.h"
+#include "eval.h"
 
-int		builtin_echo(char **av);
-int		builtin_env(char **av);
-int		builtin_setenv(t_list **env, char **av);
-int		builtin_unsetenv(t_list **env, char **av);
-void	builtin_exit(char **av);
+int	eval_compound_command(t_ast_compound_command *cc, int wait)
+{
+	int	status;
 
-#endif
+	status = 0;
+	if (cc->subshell)
+		status = eval_subshell(cc->subshell, wait);
+	return (status);
+}

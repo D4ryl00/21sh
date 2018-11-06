@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   subshell.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/17 16:44:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/29 13:26:57 by rbarbero         ###   ########.fr       */
+/*   Created: 2018/11/04 17:24:30 by rbarbero          #+#    #+#             */
+/*   Updated: 2018/11/04 17:29:30 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#include "libft.h"
+#include "sh.h"
+#include "eval.h"
 
-int		builtin_echo(char **av);
-int		builtin_env(char **av);
-int		builtin_setenv(t_list **env, char **av);
-int		builtin_unsetenv(t_list **env, char **av);
-void	builtin_exit(char **av);
+int	eval_subshell(t_ast_subshell *subshell, int wait)
+{
+	int	status;
 
-#endif
+	(void)subshell;
+	(void)wait;
+	status = 0;
+	return (status);
+}

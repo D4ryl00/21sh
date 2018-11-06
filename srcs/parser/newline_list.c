@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:02:48 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 06:24:57 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/27 01:40:53 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		ast_newline_list(t_ast_newline_list **nl_list, t_list **tokens)
 		{
 			free_ast_newline_list(*nl_list);
 			*nl_list = NULL;
-			return (0);
+			return (-1);
 		}
 		return (1);
 	}

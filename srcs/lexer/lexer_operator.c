@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 14:10:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/07 12:10:03 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 12:41:39 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,12 @@ enum e_token	get_op_type(char *str)
 {
 	int	i;
 
-	i = 10;
 	if (str)
 	{
 		if ((i = ft_strarrchr(str, g_op_token)) != -1)
-			return (i);
-		if ((i = ft_strarrchr(str, g_control_operator)) != -1)
-			return ((enum e_token)CONTROL);
-		i = 10;
+			return ((enum e_token)i + 5);
 	}
-	return (i);
+	return (TOKEN);
 }
 
 int				operator_case(t_list **tokens, t_buf *buffer, t_input *input,
@@ -66,7 +62,8 @@ int				operator_start_case(t_list **tokens, t_buf *buffer
 	{
 		if (!(word = ft_buf_flush(buffer)))
 			exit_perror(ENOMEM, NULL);
-		if (ft_isstrdigit(word))
+		if (ft_isstrdigit(word)
+				&& (input->str[0] == '<' || input->str[0] == '>'))
 			type = IO_NUMBER;
 		else
 			type = TOKEN;

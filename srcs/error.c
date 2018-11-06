@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 22:09:25 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/17 00:54:41 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/29 12:52:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,29 @@ char			*g_errors[] =
 	"Open error",
 	"Dup error",
 	"Pipe error",
+	"numeric argument required",
 	""
 };
 
 void	exit_perror(enum e_errno num, char *str)
 {
-	termcaps_echo(1);
+	//termcaps_echo(1);
 	if (str)
 		ft_dprintf(2, "42sh: %s: %s\n", str, g_errors[num]);
 	else
 		ft_dprintf(2, "42sh: %s\n", g_errors[num]);
-	termcaps_echo(0);
-	termcaps_reset_term_and_exit();
+	//termcaps_echo(0);
+	termcaps_reset_term_and_exit(1);
 }
 
 int		return_perror(enum e_errno num, char *str)
 {
-	termcaps_echo(1);
+	//termcaps_echo(1);
 	if (str)
 		ft_dprintf(2, "42sh: %s: %s\n", str, g_errors[num]);
 	else
 		ft_dprintf(2, "42sh: %s\n", g_errors[num]);
-	termcaps_echo(0);
+	//termcaps_echo(0);
 	return (-1);
 }
 
@@ -57,9 +58,9 @@ int		return_print(char *str, int status)
 {
 	if (str)
 	{
-		termcaps_echo(1);
+		//termcaps_echo(1);
 		ft_dprintf(2, str);
-		termcaps_echo(0);
+		//termcaps_echo(0);
 	}
 	return (status);
 }
@@ -71,12 +72,12 @@ int		return_print(char *str, int status)
 
 void	ft_perror(enum e_errno num, char *str, int suffix)
 {
-	termcaps_echo(1);
+	//termcaps_echo(1);
 	if (str && suffix)
 		ft_dprintf(2, "42sh: %s: %s\n", g_errors[num], str);
 	else if (str)
 		ft_dprintf(2, "42sh: %s: %s\n", str, g_errors[num]);
 	else
 		ft_dprintf(2, "42sh: %s\n", g_errors[num]);
-	termcaps_echo(0);
+	//termcaps_echo(0);
 }

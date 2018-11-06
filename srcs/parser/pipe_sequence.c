@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:05:34 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/08 14:41:25 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/04 13:29:39 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,7 @@ int			ast_pipe_sequence(t_ast_pipe_sequence **ps, t_list **tokens)
 		pipe_sequence_init(*ps);
 		if ((status = ast_command(&((*ps)->command), tokens)) > 0)
 		{
-			if (*tokens && !ft_strcmp(((t_token *)(*tokens)->content)
-						->content, "|"))
+			if (*tokens && ((t_token *)(*tokens)->content)->type == PIPE)
 				if ((status = ast_pipe_sequence_next(ps, tokens, save)) < 1)
 					return (status);
 		}

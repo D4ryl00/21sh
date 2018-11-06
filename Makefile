@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/10/17 18:56:51 by rbarbero         ###   ########.fr        #
+#    Updated: 2018/11/04 17:28:31 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,18 +27,20 @@ SRCS_PARSER = cmd_name.c cmd_word.c filename.c io_file.c here_end.c io_here.c \
 		   io_redirect.c cmd_suffix.c cmd_prefix.c simple_command.c \
 		   command.c separator_op.c newline_list.c linebreak.c \
 		   pipe_sequence.c pipeline.c and_or.c list.c complete_command.c \
-		   complete_commands.c program.c
+		   complete_commands.c program.c compound_command.c subshell.c \
+		   compound_list.c term.c separator.c
 
 DIR_EVAL = $(DIR_SRCS)/eval
 SRCS_EVAL = program.c pipeline.c pipe_sequence.c command.c simple_command.c \
 			builtin_cmd.c special_builtin_cmd.c utility_cmd.c cmd_select.c \
-			run.c redirection_core.c redirections.c
+			run.c redirections_core.c redirections.c redirections_undo.c \
+			heredocs.c compound_command.c subshell.c
 
 DIR_UTILITES = $(DIR_SRCS)/utilities
 SRCS_UTILITES = cd.c
 
 DIR_BUILTINS = $(DIR_SRCS)/builtins
-SRCS_BUILTINS = env.c setenv.c unsetenv.c
+SRCS_BUILTINS = echo.c env.c setenv.c unsetenv.c exit.c
 
 SRCS = $(addprefix $(DIR_SRCS)/,$(SRCS_MAIN)) \
 	   $(addprefix $(DIR_LEXER)/, $(SRCS_LEXER)) \

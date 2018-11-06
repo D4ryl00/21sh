@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:09:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 06:26:30 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/10/27 01:33:44 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static int	ast_list_error(t_ast_list **list, int status)
 
 int			ast_list(t_ast_list **list, t_list **tokens)
 {
-	int	status;
+	int		status;
+	t_list	*save;
 
 	if (*tokens)
 	{
@@ -59,10 +60,11 @@ int			ast_list(t_ast_list **list, t_list **tokens)
 		(*list)->list = NULL;
 		if ((status = ast_and_or(&((*list)->and_or), tokens)) > 0)
 		{
+			save = *tokens;
 			if (ast_separator_op(&((*list)->separator_op), tokens))
 			{
 				if ((status = ast_list(&((*list)->list), tokens)) == -1)
-					return (ast_list_error(list, status));
+					*tokens = save;
 			}
 		}
 		else
