@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/06 10:36:48 by amordret         ###   ########.fr       */
+/*   Updated: 2018/11/07 11:02:26 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ void							termcaps_echo(char c);
 void							term_putchar(char c);
 void							termcaps_reset_term(void);
 void							term_putstr(char *s);
+void							term_putstr_fd(char *s, int fd);
 void							input_is_special_char(t_read_input *readstruct);
 void							termcaps_reset_term_and_exit(int status);
 void							input_is_backspace(int *cursorpos,

@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 18:15:42 by amordret          #+#    #+#             */
-/*   Updated: 2018/11/04 15:21:41 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/07 11:02:12 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,14 @@ void	term_putstr(char *s)
 {
 	termcaps_echo(1);
 	ft_putstr(s);
+	g_termcaps.writtenchars += ft_strlen(s);
+	termcaps_echo(0);
+}
+
+void	term_putstr_fd(char *s, int fd)
+{
+	termcaps_echo(1);
+	ft_putstr_fd(s, fd);
 	g_termcaps.writtenchars += ft_strlen(s);
 	termcaps_echo(0);
 }
