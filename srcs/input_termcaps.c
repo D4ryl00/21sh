@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/10/29 12:52:36 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/07 18:20:19 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void		input_is_right(int *cursorpos, t_read_input *s)
 		ft_putstr_fd(g_termcaps.cursorright, 0);
 }
 
-static void	input_is_del(int *cursorpos, t_buf *buffer)
+void	input_is_del(int *cursorpos, t_buf *buffer)
 {
 	char c;
 
@@ -58,7 +58,7 @@ static void	input_is_del(int *cursorpos, t_buf *buffer)
 	if (*cursorpos == buffer->i)
 		return ;
 	ft_buf_delete_char(buffer, *(cursorpos));
-	ft_putstr_fd(g_termcaps.delete, 0);
+	ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
 	if (g_termcaps.writtenchars)
 		g_termcaps.writtenchars--;
 }
@@ -82,6 +82,8 @@ void		input_is_special_char(t_read_input *s)
 		return (input_is_backspace(&(s->cursorpos), &(s->buffer), s));
 	if (s->c[0] == 3)
 		termcaps_reset_term_and_exit(0);
+	if (s->c[0] == 22)
+		return (go_vim_mode(s));
 	s->c[3] = read(0, &(s->c[1]), 2);
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 68)
 		return (input_is_left(&(s->cursorpos), s));

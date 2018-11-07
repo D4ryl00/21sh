@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2018/11/06 10:10:27 by amordret         ###   ########.fr       */
+/*   Updated: 2018/11/07 16:58:20 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	read_input_loop(t_read_input *s)
 		if (get_cursorpos(s->cursorpos) == 0)
 			ft_putstr_fd(g_termcaps.cursordown, g_termcaps.fd);
 	}	
-	else if (s->c[0] == 127 || s->c[0] == 27 || s->c[0] == 3)
+	else if (s->c[0] == 127 || s->c[0] == 27 || s->c[0] == 3 || s->c[0] == 22)
 		input_is_special_char(s);
 	reprint_after(s);
 	return (0);

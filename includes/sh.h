@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/07 11:02:26 by amordret         ###   ########.fr       */
+/*   Updated: 2018/11/07 18:45:05 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 # define PROMPT2		"\033[0;33m $>"
 # define PROMPT3		"\033[0m "
 
+# define VIMMODEPROMPT1	"\033[0;30;107m"
+# define VIMMODEPROMPT2 "VIM MODE ACTIVE"
+# define VIMMODEPROMPT3 " \033[0;33m $>\033[0m "
 # define ERR_GETENV		"\nGETENV() error. Check ENV. TERMCAPS OFF\n"
 # define ERR_TGETENT    "\nTGETENT() error. Check ENV. TERMCAPS OFF\n"
 # define ERR_TCGETATTR  "\nTCGETATTR() error. Check ENV. TERMCAPS OFF\n"
@@ -78,6 +81,8 @@ typedef struct					s_termcaps
 	char						*delete;
 	char						*deleteline;
 	char						*returnhome;
+	char						*entervideomode;
+	char						*leavevideomode;
 	int							writtenchars;
 	int							fd;
 	int							promptlength;
@@ -142,6 +147,7 @@ void							input_is_special_char(t_read_input *readstruct);
 void							termcaps_reset_term_and_exit(int status);
 void							input_is_backspace(int *cursorpos,
 	t_buf *buffer, t_read_input *s);
+void							input_is_del(int *cursorpos, t_buf *buffer);
 void							input_is_up(t_read_input *s);
 void							input_is_down(t_read_input *s);
 void							input_is_end(t_read_input *s);
@@ -172,5 +178,7 @@ void							env_del_entry(void *content, size_t size);
 int								is_valid_posix_name(char *str);
 char							*get_env_value(char *str);
 void							reprint_after(t_read_input *s);
+void							go_vim_mode(t_read_input *s);
+
 
 #endif
