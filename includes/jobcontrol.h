@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 15:10:22 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/08 16:21:47 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,32 @@
 ** GLOBALS
 */
 
-extern t_list	*g_syncjobs;
-extern t_list	*g_asyncjobs;
+extern t_list	*g_jobs;
+
+/*
+** STRUCTURES
+*/
+
+typedef struct		s_process
+{
+	char			**argv;
+	pid_t			pid;
+	unsigned char	completed;
+	unsigned char	stopped;
+	int				status;
+}					t_process;
+
+typedef struct		s_job
+{
+	char			*command;
+	t_list			*process;
+	pid_t			pgid;
+	unsigned char	notified;
+	struct termios	tmodes;
+	int				stdin;
+	int				stdout;
+	int				stderr;
+}					t_job;
 
 /*
 ** PROTOTYPES
