@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/07 18:45:05 by amordret         ###   ########.fr       */
+/*   Updated: 2018/11/08 17:08:55 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 # define VIMMODEPROMPT1	"\033[0;30;107m"
 # define VIMMODEPROMPT2 "VIM MODE ACTIVE"
 # define VIMMODEPROMPT3 " \033[0;33m $>\033[0m "
+# define VIMINSERTMODEPROMPT2 "-- VISUAL --"
+
 # define ERR_GETENV		"\nGETENV() error. Check ENV. TERMCAPS OFF\n"
 # define ERR_TGETENT    "\nTGETENT() error. Check ENV. TERMCAPS OFF\n"
 # define ERR_TCGETATTR  "\nTCGETATTR() error. Check ENV. TERMCAPS OFF\n"
@@ -179,6 +181,23 @@ int								is_valid_posix_name(char *str);
 char							*get_env_value(char *str);
 void							reprint_after(t_read_input *s);
 void							go_vim_mode(t_read_input *s);
-
+void							vimmode_reprint_all(t_read_input *s,
+								int initialcursorpos);
+void							vimmode_print_prompt(int initialcursorpos);
+void							visualmode(t_read_input *s, char **yanked);
+void							visualmode_reprint_all(t_read_input *s,
+								int initialcursorpos, int cursorposbackup);
+int								esc_was_pressed(t_read_input *s);
+void							yank(int initialcursorpos, t_read_input *s,
+								char **yanked);
+void							startend(int initialcursorpos, int cursorpos,
+								int *a, int *b);
+void							vim_paste(t_read_input *s, char **yanked);
+void							vim_free_yanked(char **yanked);
+void							vimcut(int initialcursorpos,
+								t_read_input *s, char **yanked);
+void							highlight(t_read_input *s, int initialcursorpos,
+								int cursorposbackup);
+int								d_was_pressed_again(t_read_input *s);
 
 #endif

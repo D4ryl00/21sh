@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/11/07 17:02:16 by amordret         ###   ########.fr        #
+#    Updated: 2018/11/08 16:49:38 by amordret         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = 21sh
 DIR_SRCS = srcs
 SRCS_MAIN = main.c error.c free.c eval.c termcaps.c prompt.c input.c \
 	   input_termcaps.c input_upanddown.c misctools.c history.c \
-	   history2.c env_tools.c history_file.c input_homeend.c vimmode.c
+	   history2.c env_tools.c history_file.c input_homeend.c
 
 DIR_LEXER = $(DIR_SRCS)/lexer
 SRCS_LEXER = lexer.c globals.c lexer_operator.c lexer_quote.c \
@@ -45,13 +45,18 @@ SRCS_BUILTINS = echo.c env.c setenv.c unsetenv.c exit.c
 DIR_JOBCONTROL = $(DIR_SRCS)/jobcontrol
 SRCS_JOBCONTROL = globals.c newjob.c waitjobs.c
 
+DIR_VIM = $(DIR_SRCS)/vim
+SRCS_VIM = vimmode.c visualmode.c vimmisctools.c vimmisctools2.c vimmode2.c \
+			visualmode2.c
+
 SRCS = $(addprefix $(DIR_SRCS)/,$(SRCS_MAIN)) \
 	   $(addprefix $(DIR_LEXER)/, $(SRCS_LEXER)) \
 	   $(addprefix $(DIR_PARSER)/, $(SRCS_PARSER)) \
 	   $(addprefix $(DIR_EVAL)/, $(SRCS_EVAL)) \
 	   $(addprefix $(DIR_UTILITES)/, $(SRCS_UTILITES)) \
 	   $(addprefix $(DIR_BUILTINS)/, $(SRCS_BUILTINS)) \
-	   $(addprefix $(DIR_JOBCONTROL)/, $(SRCS_JOBCONTROL))
+	   $(addprefix $(DIR_JOBCONTROL)/, $(SRCS_JOBCONTROL)) \
+	   $(addprefix $(DIR_VIM)/, $(SRCS_VIM))
 
 OBJS = $(SRCS:%.c=%.o)
 
