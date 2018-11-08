@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/08 17:08:55 by amordret         ###   ########.fr       */
+/*   Updated: 2018/11/08 17:34:46 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <sys/ioctl.h>
+# include <time.h>
 
 # define VERSION "21sh"
 
@@ -148,7 +149,7 @@ void							term_putstr_fd(char *s, int fd);
 void							input_is_special_char(t_read_input *readstruct);
 void							termcaps_reset_term_and_exit(int status);
 void							input_is_backspace(int *cursorpos,
-	t_buf *buffer, t_read_input *s);
+								t_buf *buffer, t_read_input *s);
 void							input_is_del(int *cursorpos, t_buf *buffer);
 void							input_is_up(t_read_input *s);
 void							input_is_down(t_read_input *s);
