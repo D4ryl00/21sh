@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:26:50 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/02 11:05:52 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/08 17:39:51 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,5 @@ int		run_builtin_cmd(char **av)
 		status = builtin_unsetenv(&g_env, av);
 	else if (!ft_strcmp(av[0], "exit"))
 		builtin_exit(av);
-	return (0);
+	return (status);
 }
