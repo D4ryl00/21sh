@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 16:59:04 by amordret          #+#    #+#             */
-/*   Updated: 2018/11/08 17:07:29 by amordret         ###   ########.fr       */
+/*   Updated: 2018/11/09 11:17:53 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static void	visualmode_d(t_read_input *s, char **yanked, int initialcursorpos)
 {
 	if (d_was_pressed_again(s))
 	{
+		input_is_end(s);
 		s->cursorpos = s->buffer.i;
 		return (vimcut(0, s, yanked));
 	}

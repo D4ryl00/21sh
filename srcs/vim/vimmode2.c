@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/08 16:34:12 by amordret          #+#    #+#             */
-/*   Updated: 2018/11/08 17:01:19 by amordret         ###   ########.fr       */
+/*   Updated: 2018/11/09 11:03:42 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void		vimmode_reprint_all(t_read_input *s, int initialcursorpos)
 		input_is_right(&(s->cursorpos), s);
 	ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
 	ft_putstr_fd(g_termcaps.deletetoend, g_termcaps.fd);
-	while (s->cursorpos > cursorposbackup)
+	while (s->cursorpos > 0)
 	{
 		input_is_left(&(s->cursorpos), s);
 		ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);

@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:26:50 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/08 17:39:51 by amordret         ###   ########.fr       */
+/*   Updated: 2018/11/09 14:45:04 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@ int		run_builtin_cmd(char **av)
 {
 	int	status;
 
+	status = 1; //A VERIFIER DANS LA LOGIQUE C'ETAIT POUR QUE CLANG ARRETE DE ME CASSER LES COUILLES
+	//DANS LE CAS D'UN RETURN DE STATUS NON-INITIALISE
+	//ENCORE COMMENTAIRE POUR FAIRE GUEULER LA NORMINETTE POUR TE FORCER A REGARDER
+	/*
+	ET ENCORE UN DE PLUS 
+	*/
 	if (!ft_strcmp(av[0], "echo"))
 		status = builtin_echo(av);
 	else if (!ft_strcmp(av[0], "env"))
