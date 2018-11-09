@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 07:13:07 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/18 11:17:12 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/11/08 17:42:54 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,5 +314,7 @@ int	utility_cd(char **av)
 	if (params.P)
 		pwd = getcwd(NULL, 0);
 	ft_printf("cd: %s\nPath_max: %d\n", curpath, PATH_MAX);
+	if (pwd)
+		return (0);
 	return (0);
 }
