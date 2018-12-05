@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:41:31 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 11:30:52 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/05 18:50:55 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	eval_and_or(t_ast_and_or *and_or, int async)
 	return (status);
 }
 
-static int	eval_list(t_ast_list *list, int async)
+static int	eval_list(t_ast_list *list, t_list *jobs, int async)
 {
 	int				status;
 
@@ -42,11 +42,11 @@ static int	eval_list(t_ast_list *list, int async)
 		status = eval_and_or(list->and_or, async);
 	}
 	if (list->list)
-		status = eval_list(list->list, async);
+		status = eval_list(list->list, jobs, async);
 	return (status);
 }
 
-static int	eval_complete_command(t_ast_complete_command *cc)
+static int	eval_complete_command(t_ast_complete_command *cc, t_list *jobs)
 {
 	int	status;
 	int	async;
@@ -57,26 +57,29 @@ static int	eval_complete_command(t_ast_complete_command *cc)
 	{
 		if (cc->separator_op && cc->separator_op->c == '&')
 			async = 1;
-		status = eval_list(cc->list, async);
+		status = eval_list(cc->list, jobs, async);
 	}
 	return (status);
 }
 
-static int	eval_complete_commands(t_ast_complete_commands *cc)
+static int	eval_complete_commands(t_ast_complete_commands *cc, t_list *jobs)
 {
 	int	status;
 
 	status = 0;
 	if (cc->complete_command)
-		status = eval_complete_command(cc->complete_command);
+		status = eval_complete_command(cc->complete_command, jobs);
 	if (cc->complete_commands)
-		status = eval_complete_commands(cc->complete_commands);
+		status = eval_complete_commands(cc->complete_commands, jobs);
 	return (status);
 }
 
 int			eval_program(t_ast_program *program)
 {
+	t_list	*jobs;
+
+	jobs = NULL;
 	if (program->complete_commands)
-		return (eval_complete_commands(program->complete_commands));
+		return (eval_complete_commands(program->complete_commands, jobs));
 	return (0);
 }
