@@ -6,13 +6,14 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:41:31 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/12/05 18:50:55 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/06 17:48:14 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
 #include "eval.h"
+#include "jobcontrol.h"
 
 static int	eval_and_or(t_ast_and_or *and_or, int async)
 {
@@ -32,9 +33,12 @@ static int	eval_and_or(t_ast_and_or *and_or, int async)
 
 static int	eval_list(t_ast_list *list, t_list *jobs, int async)
 {
-	int				status;
+	int		status;
+	t_job	job;
 
 	status = 0;
+	job = (t_job) { .stdin = STDIN_FILENO, .stdout = STDOUT_FILENO
+		, .stderr = STDERR_FILENO };
 	if (list->and_or)
 	{
 		if (list->separator_op && list->separator_op->c == '&')
