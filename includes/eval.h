@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 11:25:18 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/07 12:03:41 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "sh.h"
 # include "parser.h"
+# include "jobcontrol.h"
 
 extern char						*g_builtin_cmd[];
 extern char						*g_special_builtin_cmd[];
@@ -51,9 +52,9 @@ typedef struct					s_redirs
 int								eval(t_input *input);
 int								eval_program(t_ast_program *program);
 int								eval_pipeline(t_ast_pipeline *pipeline
-		, int async);
+		, t_job *job, int async);
 int								eval_pipe_sequence(t_ast_pipe_sequence *ps
-		, int async);
+		, t_job *job, int async);
 int								eval_command(t_ast_command *command
 		, int async);
 int								eval_compound_command(t_ast_compound_command *cc

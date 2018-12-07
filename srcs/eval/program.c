@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:41:31 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/12/06 17:48:14 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/07 14:36:32 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 #include "eval.h"
 #include "jobcontrol.h"
 
-static int	eval_and_or(t_ast_and_or *and_or, int async)
+static int	eval_and_or(t_ast_and_or *and_or, t_job *job, int async)
 {
 	int	status;
 
 	status = 0;
 	if (and_or->pipeline)
-		status = eval_pipeline(and_or->pipeline, async);
+		status = eval_pipeline(and_or->pipeline, job, async);
 	if (and_or->and_or)
 	{
 		if ((and_or->op == AND_IF && !status)
 				|| (and_or->op == OR_IF && status))
-			status = eval_and_or(and_or->and_or, async);
+			status = eval_and_or(and_or->and_or, job, async);
 	}
 	return (status);
 }
@@ -37,13 +37,12 @@ static int	eval_list(t_ast_list *list, t_list *jobs, int async)
 	t_job	job;
 
 	status = 0;
-	job = (t_job) { .stdin = STDIN_FILENO, .stdout = STDOUT_FILENO
-		, .stderr = STDERR_FILENO };
+	job = (t_job) { .command = NULL };
 	if (list->and_or)
 	{
 		if (list->separator_op && list->separator_op->c == '&')
 			async = 1;
-		status = eval_and_or(list->and_or, async);
+		status = eval_and_or(list->and_or, &job, async);
 	}
 	if (list->list)
 		status = eval_list(list->list, jobs, async);

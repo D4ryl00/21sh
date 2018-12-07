@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:50:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 15:57:47 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/07 14:45:42 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
 	return (status);
 }
 
-int			eval_pipe_sequence(t_ast_pipe_sequence *ps, int async)
+/*int			eval_pipe_sequence(t_ast_pipe_sequence *ps, t_job *job, int async)
 {
 	int				status;
 	t_pipe_env		pipe_env;
@@ -110,5 +110,21 @@ int			eval_pipe_sequence(t_ast_pipe_sequence *ps, int async)
 		}
 		ps = ps->pipe_sequence;
 	}
+	return (status);
+}*/
+
+int				eval_pipe_sequence(t_ast_pipe_sequence *ps, t_job *job
+		, int async)
+{
+	int		status;
+	int		pipe_fd[2];
+	int		stdin;
+	int		stdout;
+
+	status = 0;
+	if (ps->pipe_sequence && pipe(pipe_fd) == -1)
+		return (return_perror(EPIPE, NULL));
+	if (ps->command)
+		status = eval_command(ps->command, async);
 	return (status);
 }

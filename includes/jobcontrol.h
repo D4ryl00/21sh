@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/08 16:21:47 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/07 14:36:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ typedef struct		s_process
 	unsigned char	completed;
 	unsigned char	stopped;
 	int				status;
+	int				stdin;
+	int				stdout;
+	int				stderr;
 }					t_process;
 
 typedef struct		s_job
@@ -41,9 +44,6 @@ typedef struct		s_job
 	pid_t			pgid;
 	unsigned char	notified;
 	struct termios	tmodes;
-	int				stdin;
-	int				stdout;
-	int				stderr;
 }					t_job;
 
 /*
