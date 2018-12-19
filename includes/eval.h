@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/12/07 12:03:41 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/19 14:16:40 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,27 +52,27 @@ typedef struct					s_redirs
 int								eval(t_input *input);
 int								eval_program(t_ast_program *program);
 int								eval_pipeline(t_ast_pipeline *pipeline
-		, t_job *job, int async);
+		, t_job *job);
 int								eval_pipe_sequence(t_ast_pipe_sequence *ps
-		, t_job *job, int async);
+		, t_job *job);
 int								eval_command(t_ast_command *command
-		, int async);
+		, t_job *job, int fork);
 int								eval_compound_command(t_ast_compound_command *cc
-		, int async);
+		, t_job *job, int fork);
 int								eval_simple_command(t_ast_simple_command *sc
-		, int async);
+		, t_job *job, int fork);
 int								eval_subshell(t_ast_subshell *subshell
-		, int async);
-int								cmd_select_type(char **av, int async
-		, char **env);
+		, t_job *job, int fork);
+int								cmd_select_type(char **av, char **env
+		, t_job *job, int fork);
 int								is_builtin_cmd(char **av);
 int								run_builtin_cmd(char **av);
 int								is_special_builtin_cmd(char **av);
 int								run_special_builtin_cmd(char **av);
 int								is_utility_cmd(char **av);
 int								run_utility_cmd(char **av);
-int								run(char *path, char **av, int async
-		, char **env);
+int								run(char *path, char **av, char **env
+		, t_job *job, int fork);
 int								do_eval_redirs(t_ast_simple_command *sc
 		, t_list **redirs);
 int								filename_redirect_input(t_ast_io_redirect

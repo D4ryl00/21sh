@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:50:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/12/07 14:45:42 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/19 15:23:54 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@
 #include "jobcontrol.h"
 #include <unistd.h>
 
-static void	set_pipe(t_pipe *pipe, int rd, int wr)
+/*static void	set_pipe(t_pipe *pipe, int rd, int wr)
 {
 	pipe->rd = rd;
 	pipe->wr = wr;
-}
+}*/
 
 /*
 **	Get fd of an opened pipe and dup them on stdin or stdout.
 */
 
-static int	run_eval_pipe(t_pipe_env *pipe_env)
+/*static int	run_eval_pipe(t_pipe_env *pipe_env)
 {
 	if ((pipe_env->input.rd != -1)
 			&& (dup2(pipe_env->input.rd, pipe_env->input.wr) == -1))
@@ -72,7 +72,7 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
 	return (status);
 }
 
-/*int			eval_pipe_sequence(t_ast_pipe_sequence *ps, t_job *job, int async)
+int			eval_pipe_sequence(t_ast_pipe_sequence *ps, t_job *job, int async)
 {
 	int				status;
 	t_pipe_env		pipe_env;
@@ -113,8 +113,7 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
 	return (status);
 }*/
 
-int				eval_pipe_sequence(t_ast_pipe_sequence *ps, t_job *job
-		, int async)
+int				eval_pipe_sequence(t_ast_pipe_sequence *ps, t_job *job)
 {
 	int		status;
 	int		pipe_fd[2];
@@ -122,9 +121,11 @@ int				eval_pipe_sequence(t_ast_pipe_sequence *ps, t_job *job
 	int		stdout;
 
 	status = 0;
+	(void)stdin;
+	(void)stdout;
 	if (ps->pipe_sequence && pipe(pipe_fd) == -1)
 		return (return_perror(EPIPE, NULL));
 	if (ps->command)
-		status = eval_command(ps->command, async);
+		status = eval_command(ps->command, job, 0);
 	return (status);
 }

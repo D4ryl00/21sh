@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:17:08 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 15:52:57 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/19 15:35:10 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-pid_t	newjob(int *status, const unsigned char async)
+/*pid_t	newjob(int *status, const unsigned char async)
 {
 	t_list	**jobs;
 	pid_t	pid;
@@ -36,4 +36,4 @@ pid_t	newjob(int *status, const unsigned char async)
 	if (pid && !async)
 		waitpid(pid, status, 0);
 	return (pid);
-}
+}*/

@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:41:31 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/12/07 14:36:32 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/19 13:04:52 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 #include "eval.h"
 #include "jobcontrol.h"
 
-static int	eval_and_or(t_ast_and_or *and_or, t_job *job, int async)
+static int	eval_and_or(t_ast_and_or *and_or, t_job *job)
 {
 	int	status;
 
 	status = 0;
 	if (and_or->pipeline)
-		status = eval_pipeline(and_or->pipeline, job, async);
+		status = eval_pipeline(and_or->pipeline, job);
 	if (and_or->and_or)
 	{
 		if ((and_or->op == AND_IF && !status)
 				|| (and_or->op == OR_IF && status))
-			status = eval_and_or(and_or->and_or, job, async);
+			status = eval_and_or(and_or->and_or, job);
 	}
 	return (status);
 }
@@ -42,7 +42,7 @@ static int	eval_list(t_ast_list *list, t_list *jobs, int async)
 	{
 		if (list->separator_op && list->separator_op->c == '&')
 			async = 1;
-		status = eval_and_or(list->and_or, &job, async);
+		status = eval_and_or(list->and_or, &job);
 	}
 	if (list->list)
 		status = eval_list(list->list, jobs, async);

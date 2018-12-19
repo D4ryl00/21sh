@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/12/07 14:36:05 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/19 15:33:55 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define JOBCONTROL_H
 
 #include <unistd.h>
+#include <termios.h>
 
 /*
 ** GLOBALS

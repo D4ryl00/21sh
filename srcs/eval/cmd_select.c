@@ -6,13 +6,14 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:36:33 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 11:28:35 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/19 14:16:03 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sh.h"
 #include "eval.h"
+#include "jobcontrol.h"
 
 /*
 ** For each dirs entry, test if the path 'dirs[i]/filename' exist
@@ -45,7 +46,7 @@ static char	*get_path_exec(char *filename, char **dirs)
 ** and run the command.
 */
 
-static int	run_cmd_path(char **av, int async, char **env)
+static int	run_cmd_path(char **av, char **env, t_job *job, int fork)
 {
 	char	**dirs;
 	char	*path;
@@ -61,7 +62,7 @@ static int	run_cmd_path(char **av, int async, char **env)
 		{
 			status = 126;
 			if (!access(path, X_OK))
-				status = run(path, av, async, env);
+				status = run(path, av, env, job, fork);
 			else
 				ft_perror(EACCES, av[0], 0);
 			free(path);
@@ -77,7 +78,7 @@ static int	run_cmd_path(char **av, int async, char **env)
 ** The command path is know, so we call it directly if we can.
 */
 
-static int	run_cmd_direct_path(char **av, int async, char **env)
+static int	run_cmd_direct_path(char **av, char **env, t_job *job, int fork)
 {
 	int		status;
 
@@ -86,7 +87,7 @@ static int	run_cmd_direct_path(char **av, int async, char **env)
 	{
 		status = 126;
 		if (!access(av[0], X_OK))
-			status = run(av[0], av, async, env);
+			status = run(av[0], av, env, job, fork);
 		else
 			ft_perror(EACCES, av[0], 0);
 	}
@@ -99,7 +100,7 @@ static int	run_cmd_direct_path(char **av, int async, char **env)
 ** Find the good category of the command and execute it.
 */
 
-int			cmd_select_type(char **av, int async, char **env)
+int			cmd_select_type(char **av, char **env, t_job *job, int fork)
 {
 	if (!ft_strchr(av[0], '/'))
 	{
@@ -110,9 +111,9 @@ int			cmd_select_type(char **av, int async, char **env)
 		else if (is_utility_cmd(av))
 			return (run_utility_cmd(av));
 		else
-			return (run_cmd_path(av, async, env));
+			return (run_cmd_path(av, env, job, fork));
 	}
 	else
-		return (run_cmd_direct_path(av, async, env));
+		return (run_cmd_direct_path(av, env, job, fork));
 	return (-1);
 }

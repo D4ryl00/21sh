@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 12:35:00 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/19 15:28:41 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,27 @@
 #include "libft.h"
 #include "eval.h"
 #include "jobcontrol.h"
+#include <unistd.h>
 
 /*
 ** Execute the command in a fork and execve.
 */
 
-int			run(char *path, char **av, int async, char **env)
+int			run(char *path, char **av, char **env, t_job *job, int is_fork)
 {
-	pid_t	pid;
-	int		status;
+	t_process	process;
 
-	status = 0;
-	if ((pid = newjob(&status, async)) == -1)
+	if (!is_fork && (process.pid = fork()) == -1)
 		return (-1);
-	if (!pid)
+	if (!process.pid)
 	{
 		execve(path, av, env);
 		return (-1);
 	}
-	return (WEXITSTATUS(status));
+	else
+	{
+		if (!ft_lstpushback(&(job->process), &process, sizeof(t_process)))
+			return_perror(ENOMEM, NULL);
+	}
+	return (0);
 }
