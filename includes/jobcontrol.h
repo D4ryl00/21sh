@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/12/19 15:33:55 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/20 14:19:06 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 ** GLOBALS
 */
 
-extern t_list	*g_jobs;
+extern t_list	*g_asyncjobs;
 
 /*
 ** STRUCTURES
@@ -52,6 +52,7 @@ typedef struct		s_job
 */
 
 pid_t			newjob(int *status, const unsigned char async);
-void			waitjobs(void);
+//void			waitjobs(void);
+int				waitjob(t_job *job);
 
 #endif

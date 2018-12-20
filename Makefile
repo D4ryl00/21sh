@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/11/08 16:49:38 by amordret         ###   ########.fr        #
+#    Updated: 2018/12/20 13:07:08 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ DIR_BUILTINS = $(DIR_SRCS)/builtins
 SRCS_BUILTINS = echo.c env.c setenv.c unsetenv.c exit.c
 
 DIR_JOBCONTROL = $(DIR_SRCS)/jobcontrol
-SRCS_JOBCONTROL = globals.c newjob.c waitjobs.c
+SRCS_JOBCONTROL = globals.c newjob.c waitjobs.c waitjob.c
 
 DIR_VIM = $(DIR_SRCS)/vim
 SRCS_VIM = vimmode.c visualmode.c vimmisctools.c vimmisctools2.c vimmode2.c \

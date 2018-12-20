@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:41:31 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/12/19 13:04:52 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/20 14:19:12 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ static int	eval_list(t_ast_list *list, t_list *jobs, int async)
 		if (list->separator_op && list->separator_op->c == '&')
 			async = 1;
 		status = eval_and_or(list->and_or, &job);
+		if (status > -1)
+		{
+			if (async && !ft_lstpush(&g_asyncjobs, &job, sizeof(t_job)))
+				exit_perror(ENOMEM, NULL);
+			waitjob(async ? NULL : &job);
+		}
 	}
 	if (list->list)
 		status = eval_list(list->list, jobs, async);
