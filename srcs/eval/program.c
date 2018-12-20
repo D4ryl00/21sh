@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:41:31 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/12/20 14:19:12 by rbarbero         ###   ########.fr       */
+/*   Updated: 2018/12/20 14:28:59 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,13 @@ static int	eval_complete_commands(t_ast_complete_commands *cc, t_list *jobs)
 
 int			eval_program(t_ast_program *program)
 {
+	int		status;
 	t_list	*jobs;
 
+	status = 0;
 	jobs = NULL;
 	if (program->complete_commands)
-		return (eval_complete_commands(program->complete_commands, jobs));
-	return (0);
+		status = eval_complete_commands(program->complete_commands, jobs);
+	waitjobs();
+	return (status);
 }
