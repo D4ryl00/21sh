@@ -6,13 +6,13 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:50:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 15:57:47 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/29 13:11:40 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "sh.h"
 #include "eval.h"
+#include "parser.h"
 #include "jobcontrol.h"
 #include <unistd.h>
 
@@ -37,7 +37,8 @@ static int	run_eval_pipe(t_pipe_env *pipe_env)
 	return (0);
 }
 
-static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
+static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env,
+		struct s_job *job)
 {
 	int		status;
 	int		pipe_fd[2];
@@ -54,7 +55,8 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
 		return (-1);
 	if (!pid)
 	{
-		status = eval_command(ps->command, 1);
+		//status = eval_command(ps->command, 1);
+		status = eval_command(ps->command, job);
 		exit(status);
 	}
 	if (pipe_env->input.rd != -1)
@@ -72,7 +74,7 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
 	return (status);
 }
 
-int			eval_pipe_sequence(t_ast_pipe_sequence *ps, int async)
+int			eval_pipe_sequence(t_ast_pipe_sequence *ps, struct s_job *job)
 {
 	int				status;
 	t_pipe_env		pipe_env;
@@ -86,7 +88,7 @@ int			eval_pipe_sequence(t_ast_pipe_sequence *ps, int async)
 	while (ps)
 	{
 		if (ps->pipe_sequence)
-			status = eval_pipe(ps, &pipe_env);
+			status = eval_pipe(ps, &pipe_env, job);
 		else
 		{
 			if (run_eval_pipe(&pipe_env) == -1)
@@ -95,11 +97,11 @@ int			eval_pipe_sequence(t_ast_pipe_sequence *ps, int async)
 				return (-1);
 			if (multipipes && !pid)
 			{
-				status = eval_command(ps->command, async);
+				status = eval_command(ps->command, job);
 				exit(status);
 			}
 			else if (!multipipes)
-				status = eval_command(ps->command, async);
+				status = eval_command(ps->command, job);
 			waitjobs();
 			if (pipe_env.input.rd != -1)
 				close(pipe_env.input.rd);

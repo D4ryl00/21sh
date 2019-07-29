@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.c                                          :+:      :+:    :+:   */
+/*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/05 09:52:24 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/29 11:05:48 by rbarbero         ###   ########.fr       */
+/*   Created: 2019/07/29 10:52:27 by rbarbero          #+#    #+#             */
+/*   Updated: 2019/07/29 13:06:10 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "eval.h"
+#include "parser.h"
 #include "jobcontrol.h"
 
-int			eval_command(t_ast_command *command, struct s_job *job)
+int	eval_list(t_ast_list *list, struct s_job *job)
 {
-	int	status;
+	int				status;
 
 	status = 0;
-	if (command->simple_command)
-		status = eval_simple_command(command->simple_command, job);
-	if (!status && command->compound_command)
-		status = eval_compound_command(command->compound_command, job);
+	if (list->and_or)
+	{
+		if (list->separator_op && list->separator_op->c == '&')
+			job->async = 1;
+		status = eval_and_or(list->and_or, job);
+	}
+	if (list->list)
+		status = eval_list(list->list, job);
 	return (status);
 }
+
+

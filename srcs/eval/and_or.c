@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.c                                          :+:      :+:    :+:   */
+/*   and_or.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/05 09:52:24 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/29 11:05:48 by rbarbero         ###   ########.fr       */
+/*   Created: 2019/07/29 10:55:30 by rbarbero          #+#    #+#             */
+/*   Updated: 2019/07/29 13:06:29 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "eval.h"
+#include "parser.h"
 #include "jobcontrol.h"
 
-int			eval_command(t_ast_command *command, struct s_job *job)
+int	eval_and_or(t_ast_and_or *and_or, struct s_job *job)
 {
 	int	status;
 
 	status = 0;
-	if (command->simple_command)
-		status = eval_simple_command(command->simple_command, job);
-	if (!status && command->compound_command)
-		status = eval_compound_command(command->compound_command, job);
+	if (and_or->pipeline)
+		status = eval_pipeline(and_or->pipeline, job);
+	if (and_or->and_or)
+	{
+		if ((and_or->op == AND_IF && !status)
+				|| (and_or->op == OR_IF && status))
+			status = eval_and_or(and_or->and_or, job);
+	}
 	return (status);
 }

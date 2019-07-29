@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2018/11/08 16:49:38 by amordret         ###   ########.fr        #
+#    Updated: 2019/07/29 13:21:35 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,8 @@ DIR_EVAL = $(DIR_SRCS)/eval
 SRCS_EVAL = program.c pipeline.c pipe_sequence.c command.c simple_command.c \
 			builtin_cmd.c special_builtin_cmd.c utility_cmd.c cmd_select.c \
 			run.c redirections_core.c redirections.c redirections_undo.c \
-			heredocs.c compound_command.c subshell.c
+			heredocs.c compound_command.c subshell.c complete_commands.c \
+			complete_command.c list.c and_or.c
 
 DIR_UTILITES = $(DIR_SRCS)/utilities
 SRCS_UTILITES = cd.c
@@ -43,7 +44,7 @@ DIR_BUILTINS = $(DIR_SRCS)/builtins
 SRCS_BUILTINS = echo.c env.c setenv.c unsetenv.c exit.c
 
 DIR_JOBCONTROL = $(DIR_SRCS)/jobcontrol
-SRCS_JOBCONTROL = globals.c newjob.c waitjobs.c
+SRCS_JOBCONTROL = init.c newjob.c waitjobs.c
 
 DIR_VIM = $(DIR_SRCS)/vim
 SRCS_VIM = vimmode.c visualmode.c vimmisctools.c vimmisctools2.c vimmode2.c \

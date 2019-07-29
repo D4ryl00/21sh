@@ -6,13 +6,14 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:06:29 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 11:27:41 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/29 13:04:35 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "sh.h"
 #include "eval.h"
+#include "parser.h"
+#include "jobcontrol.h"
 
 /*
 ** For a simple_command, return the number of arguments of the command.
@@ -85,7 +86,7 @@ static char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 ** Evalutation of an simple_command (shell grammar POSIX)
 */
 
-int			eval_simple_command(t_ast_simple_command *sc, int async)
+int			eval_simple_command(t_ast_simple_command *sc, struct s_job *job)
 {
 	int		status;
 	char	**av;
@@ -99,7 +100,7 @@ int			eval_simple_command(t_ast_simple_command *sc, int async)
 	av = ast_construct_cmd_args(sc);
 	if (do_eval_redirs(sc, &redirs) == -1)
 		return (-1);
-	status = cmd_select_type(av, async, env);
+	status = cmd_select_type(av, job, env);
 	if (undo_redirs(&redirs) == -1)
 		return (-1);
 	ft_strarrdel(av);

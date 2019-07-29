@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 12:35:00 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/29 13:20:55 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 ** Execute the command in a fork and execve.
 */
 
-int			run(char *path, char **av, int async, char **env)
+int			run(char *path, char **av, struct s_job *job, char **env)
 {
 	pid_t	pid;
 	int		status;
 
 	status = 0;
-	if ((pid = newjob(&status, async)) == -1)
+	if ((pid = newjob(&status, job->async)) == -1)
 		return (-1);
 	if (!pid)
 	{
