@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:17:08 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/30 16:35:59 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/30 22:17:30 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-static int	get_job_id(void)
+static int	get_free_job_id(void)
 {
 	t_list	*node;
 	int		id;
@@ -25,7 +25,7 @@ static int	get_job_id(void)
 	node = g_asyncjobs;
 	while (node)
 	{
-		if (id < ((struct s_job *)node->content)->job_id)
+		if (id != ((struct s_job *)node->content)->job_id)
 			break ;
 		id++;
 		node = node->next;
@@ -59,7 +59,7 @@ int			newjob(struct s_job *job, int force_async)
 		job->async = 1;
 	if (pid)
 	{
-		job->job_id = get_job_id();
+		job->job_id = get_free_job_id();
 		job->pgid = job->pgid == -1 ? pid : job->pgid;
 		if (setpgid(pid, job->pgid) == -1)
 			return_perror(ESETPGID, NULL);
