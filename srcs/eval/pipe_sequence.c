@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:50:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/29 13:11:40 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/30 13:29:42 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env,
 {
 	int		status;
 	int		pipe_fd[2];
-	pid_t	pid;
 
+	status = 0;
 	if (pipe(pipe_fd) == -1)
 		return (return_perror(EPIPE, NULL));
 	set_pipe(&(pipe_env->output), 1, pipe_fd[1]);
@@ -51,9 +51,9 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env,
 		return (return_perror(EDUP, NULL));
 	if (run_eval_pipe(pipe_env) == -1)
 		return (-1);
-	if ((pid = newjob(&status, 1)) == -1)
+	if ((newjob(job, 1)) == -1)
 		return (-1);
-	if (!pid)
+	if (!job->pid)
 	{
 		//status = eval_command(ps->command, 1);
 		status = eval_command(ps->command, job);
@@ -78,13 +78,10 @@ int			eval_pipe_sequence(t_ast_pipe_sequence *ps, struct s_job *job)
 {
 	int				status;
 	t_pipe_env		pipe_env;
-	unsigned char	multipipes;
-	pid_t			pid;
 
 	set_pipe(&(pipe_env.input), -1, -1);
 	set_pipe(&(pipe_env.output), -1, -1);
 	pipe_env.fd_cpy[0] = -1;
-	multipipes = ps->pipe_sequence ? 1 : 0;
 	while (ps)
 	{
 		if (ps->pipe_sequence)
@@ -93,16 +90,7 @@ int			eval_pipe_sequence(t_ast_pipe_sequence *ps, struct s_job *job)
 		{
 			if (run_eval_pipe(&pipe_env) == -1)
 				return (-1);
-			if (multipipes && (pid = newjob(&status, 0)) == -1)
-				return (-1);
-			if (multipipes && !pid)
-			{
-				status = eval_command(ps->command, job);
-				exit(status);
-			}
-			else if (!multipipes)
-				status = eval_command(ps->command, job);
-			waitjobs();
+			status = eval_command(ps->command, job);
 			if (pipe_env.input.rd != -1)
 				close(pipe_env.input.rd);
 			if (pipe_env.fd_cpy[0] != -1 && dup2(pipe_env.fd_cpy[0], 0) == -1)

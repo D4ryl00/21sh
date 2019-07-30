@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 13:09:15 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/05 15:52:06 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/30 14:21:31 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "jobcontrol.h"
 #include <sys/wait.h>
 
-static void	del_pid(void *content, size_t content_size)
+static void	del_job_node(void *content, size_t content_size)
 {
 	(void)content_size;
 	if (content)
@@ -29,27 +29,48 @@ static void	del_pid(void *content, size_t content_size)
 	//if (waitpid((pid_t *)node->content, status, WNOHANG) == 0
 }*/
 
-void	waitjobs(void)
+int		waitjob(struct s_job *job)
+{
+	int	status;
+
+	if (job->async)
+		waitpid(-job->pgid, &status, WNOHANG);
+	else
+		while (waitpid(-job->pgid, &status, 0) != -1)
+			;
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (0);
+}
+
+void	waitjobs(t_list **jobs)
 {
 	t_list	**prev;
 	t_list	*node;
+	t_list	**list;
 	int		status;
 
 	status = 0;
-	prev = &g_asyncjobs;
-	node = g_asyncjobs;
-	while (node)
+	list = jobs ? jobs : &g_asyncjobs;
+	prev = list;
+	node = *list;
+	while (*list)
 	{
-		if (!waitpid(*(pid_t *)node->content, &status, WNOHANG))
+		if (waitpid(((struct s_job *)node->content)->pid, &status, WNOHANG) > 0)
 		{
-			if (g_asyncjobs == node)
-				g_asyncjobs = g_asyncjobs->next;
-			ft_lstdelnode(prev, node, del_pid);
+			ft_lstdelnode(prev, node, del_job_node);
+			if (*prev)
+				node = (*prev)->next;
 		}
 		else
 		{
 			prev = &node;
 			node = node->next;
+		}
+		if (!node)
+		{
+			prev = list;
+			node = *list;
 		}
 	}
 }

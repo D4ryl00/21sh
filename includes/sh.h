@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/08 17:34:46 by amordret         ###   ########.fr       */
+/*   Updated: 2019/07/30 13:06:26 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ enum							e_errno
 	EDUP,
 	EPIPE,
 	ENONUM,
+	ESETPGID,
 	EOTHER
 };
 

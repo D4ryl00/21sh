@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/29 13:20:55 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/30 13:29:50 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@
 
 int			run(char *path, char **av, struct s_job *job, char **env)
 {
-	pid_t	pid;
 	int		status;
 
 	status = 0;
-	if ((pid = newjob(&status, job->async)) == -1)
+	if (!job->forked && newjob(job, 0) == -1)
 		return (-1);
-	if (!pid)
+	if (!job->pid)
 	{
 		execve(path, av, env);
 		return (-1);
 	}
-	return (WEXITSTATUS(status));
+	status = waitjob(job);
+	return (status);
 }

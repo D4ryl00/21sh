@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/29 13:20:43 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/30 11:16:58 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ typedef struct					s_redirs
 int								eval(t_input *input);
 int								eval_program(t_ast_program *program);
 int								eval_complete_commands(
-		t_ast_complete_commands *cc , struct s_job *job);
+		t_ast_complete_commands *cc);
 int								eval_complete_command(
-		t_ast_complete_command *cc, struct s_job *job);
+		t_ast_complete_command *cc);
 int								eval_list(t_ast_list *list, struct s_job *job);
 int								eval_and_or(t_ast_and_or *and_or,
 		struct s_job *job);
