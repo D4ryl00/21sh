@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 13:09:15 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/30 14:21:31 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/30 16:39:07 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,6 @@ static void	del_job_node(void *content, size_t content_size)
 		free(content);
 }
 
-/*static int	is_finished(t_list *node, void *content)
-{
-	(void)node;
-	(void)content;
-	//if (waitpid((pid_t *)node->content, status, WNOHANG) == 0
-}*/
-
 int		waitjob(struct s_job *job)
 {
 	int	status;
@@ -43,34 +36,30 @@ int		waitjob(struct s_job *job)
 	return (0);
 }
 
-void	waitjobs(t_list **jobs)
+void	waitjobs(void)
 {
 	t_list	**prev;
 	t_list	*node;
-	t_list	**list;
+	pid_t	pid;
 	int		status;
 
 	status = 0;
-	list = jobs ? jobs : &g_asyncjobs;
-	prev = list;
-	node = *list;
-	while (*list)
+	prev = &g_asyncjobs;
+	node = g_asyncjobs;
+	while (node)
 	{
-		if (waitpid(((struct s_job *)node->content)->pid, &status, WNOHANG) > 0)
+		while ((pid = waitpid(-((struct s_job *)node->content)->pgid, &status,
+						WNOHANG)) > 0)
 		{
+			ft_dprintf(2, "[%d] done\n", ((struct s_job *)node->content)->job_id);
 			ft_lstdelnode(prev, node, del_job_node);
 			if (*prev)
 				node = (*prev)->next;
 		}
-		else
+		if (node)
 		{
 			prev = &node;
 			node = node->next;
-		}
-		if (!node)
-		{
-			prev = list;
-			node = *list;
 		}
 	}
 }

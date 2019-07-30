@@ -6,7 +6,7 @@
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/29 10:27:12 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/29 10:39:08 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/30 16:07:19 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_list	*g_asyncjobs = NULL;
 
 void	init_job_struct(struct s_job *job)
 {
+	job->job_id = -1;
 	job->pid = -1;
 	job->pgid = -1;
 	job->forked = 0;
