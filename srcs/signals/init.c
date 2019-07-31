@@ -5,31 +5,27 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/29 10:27:12 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 17:40:11 by rbarbero         ###   ########.fr       */
+/*   Created: 2019/07/31 17:59:24 by rbarbero          #+#    #+#             */
+/*   Updated: 2019/07/31 20:09:26 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+/*
+** sigaction
+*/
+
+#include <signal.h>
+
 #include "jobcontrol.h"
 
-/*
-** Definition of global variables
-*/
-
-struct s_jobctrl	g_jobctrl = { .asyncjobs = NULL, .starting_job_id = 1 };
-
-/*
-** Initialization with default values of struct a s_job.
-*/
-
-void	init_job_struct(void)
+int	signal_init(void)
 {
-	g_jobctrl.job.job_id = -1;
-	g_jobctrl.job.pid = -1;
-	g_jobctrl.job.pgid = -1;
-	g_jobctrl.job.forked = 0;
-	g_jobctrl.job.async = 0;
-	g_jobctrl.job.suspended = 0;
-	g_jobctrl.job.status = 1;
+	struct sigaction	action;
+	struct sigaction	old;
+	int					status;
+
+	ft_memset(&action, 0, sizeof(action));
+	action.__sigaction_u.__sa_handler = &job_to_bg;
+	status = sigaction(SIGTSTP, &action, &old);
+	return (status);
 }

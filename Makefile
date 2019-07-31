@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2019/07/29 13:21:35 by rbarbero         ###   ########.fr        #
+#    Updated: 2019/07/31 18:16:07 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,10 @@ DIR_BUILTINS = $(DIR_SRCS)/builtins
 SRCS_BUILTINS = echo.c env.c setenv.c unsetenv.c exit.c
 
 DIR_JOBCONTROL = $(DIR_SRCS)/jobcontrol
-SRCS_JOBCONTROL = init.c newjob.c waitjobs.c
+SRCS_JOBCONTROL = init.c newjob.c waitjobs.c job_to_bg.c
+
+DIR_SIGNALS = $(DIR_SRCS)/signals
+SRCS_SIGNALS = init.c
 
 DIR_VIM = $(DIR_SRCS)/vim
 SRCS_VIM = vimmode.c visualmode.c vimmisctools.c vimmisctools2.c vimmode2.c \
@@ -57,13 +60,15 @@ SRCS = $(addprefix $(DIR_SRCS)/,$(SRCS_MAIN)) \
 	   $(addprefix $(DIR_UTILITES)/, $(SRCS_UTILITES)) \
 	   $(addprefix $(DIR_BUILTINS)/, $(SRCS_BUILTINS)) \
 	   $(addprefix $(DIR_JOBCONTROL)/, $(SRCS_JOBCONTROL)) \
+	   $(addprefix $(DIR_SIGNALS)/, $(SRCS_SIGNALS)) \
 	   $(addprefix $(DIR_VIM)/, $(SRCS_VIM))
 
 OBJS = $(SRCS:%.c=%.o)
 
 LIB_DIR = libft
 
-HEADERS = sh.h lexer.h parser.h eval.h utilities.h builtins.h jobcontrol.h
+HEADERS = sh.h lexer.h parser.h eval.h utilities.h builtins.h jobcontrol.h \
+		  signals.h
 HEADERS_DIR = includes/
 LHEADERS = $(HEADERS:%.h=$(HEADERS_DIR)%.h)
 

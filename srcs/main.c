@@ -6,13 +6,14 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/08 17:38:14 by amordret         ###   ########.fr       */
+/*   Updated: 2019/07/31 18:21:09 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 #include "libft.h"
 #include "eval.h"
+#include "signals.h"
 
 t_command_history	*g_first_cmd_history = NULL;
 t_list				*g_env = NULL;
@@ -48,6 +49,8 @@ int		main(int argc, char **argv, char **environ)
 	status = 0;
 	g_env = ft_strarrtolist(environ);
 	ft_set_term();
+	if (signal_init() == -1)
+		termcaps_reset_term_and_exit(1);
 	fill_command_hist();
 	while (42)
 	{

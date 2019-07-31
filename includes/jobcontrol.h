@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 16:27:02 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/31 18:13:32 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ struct					s_job
 	pid_t				pgid;
 	int					forked;
 	int					async;
+	int					suspended;
 	int					status;
 };
 
@@ -52,5 +53,6 @@ void					init_job_struct(void);
 int						newjob(int force_async);
 int						waitjob(void);
 void					waitjobs(int signal);
+void					job_to_bg(int signal);
 
 #endif
