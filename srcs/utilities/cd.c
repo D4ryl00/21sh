@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 07:13:07 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/08 17:42:54 by amordret         ###   ########.fr       */
+/*   Updated: 2019/07/31 12:33:32 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,7 +313,6 @@ int	utility_cd(char **av)
 		return (1);
 	if (params.P)
 		pwd = getcwd(NULL, 0);
-	ft_printf("cd: %s\nPath_max: %d\n", curpath, PATH_MAX);
 	if (pwd)
 		return (0);
 	return (0);

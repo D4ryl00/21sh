@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 12:08:04 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/31 12:41:31 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 struct					s_job
 {
-	int					job_id;
+	unsigned int		job_id;
 	pid_t				pid;
 	pid_t				pgid;
 	int					forked;
@@ -34,7 +34,7 @@ struct					s_job
 struct					s_jobctrl
 {
 	t_list				*asyncjobs;
-	unsigned int		starting_pid;
+	unsigned int		starting_job_id;
 };
 
 /*

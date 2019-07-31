@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:17:08 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 12:27:03 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/31 12:42:00 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int			newjob(struct s_job *job, int force_async)
 	}
 	if (job->pid && job->async && !force_async)
 	{
-		job->job_id = g_jobctrl.starting_pid++;
+		job->job_id = g_jobctrl.starting_job_id++;
 		if (!ft_lstpushback(&g_jobctrl.asyncjobs, job, sizeof(*job)))
 		{
 			ft_perror(ENOMEM, NULL, 0);
