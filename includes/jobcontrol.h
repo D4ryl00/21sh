@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/30 16:06:30 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/31 12:08:04 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,35 @@
 ** STRUCTURES
 */
 
-struct			s_job
+struct					s_job
 {
-	int			job_id;
-	pid_t		pid;
-	pid_t		pgid;
-	int			forked;
-	int			async;
-	int			status;
+	int					job_id;
+	pid_t				pid;
+	pid_t				pgid;
+	int					forked;
+	int					async;
+	int					status;
+};
+
+struct					s_jobctrl
+{
+	t_list				*asyncjobs;
+	unsigned int		starting_pid;
 };
 
 /*
 ** GLOBALS
 */
 
-extern t_list	*g_asyncjobs;
+extern struct s_jobctrl	g_jobctrl;
 
 /*
 ** PROTOTYPES
 */
 
-void			init_job_struct(struct s_job *job);
-int				newjob(struct s_job *job, int force_async);
-int				waitjob(struct s_job *job);
-void			waitjobs(void);
+void					init_job_struct(struct s_job *job);
+int						newjob(struct s_job *job, int force_async);
+int						waitjob(struct s_job *job);
+void					waitjobs(int signal);
 
 #endif

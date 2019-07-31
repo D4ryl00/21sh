@@ -6,7 +6,7 @@
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/29 10:27:12 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/30 16:07:19 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/31 12:18:54 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** Definition of global variables
 */
 
-t_list	*g_asyncjobs = NULL;
+struct s_jobctrl	g_jobctrl = { NULL, 1 };
 
 /*
 ** Initialization with default values of struct a s_job.

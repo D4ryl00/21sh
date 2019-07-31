@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 13:09:15 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/30 23:39:04 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/31 12:12:52 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,14 @@ int		waitjob(struct s_job *job)
 	return (0);
 }
 
-void	waitjobs(void)
+void	waitjobs(int signal)
 {
 	t_list	*node;
 	t_list	*next;
 	pid_t	pid;
 
-	node = g_asyncjobs;
+	(void)signal;
+	node = g_jobctrl.asyncjobs;
 	while (node)
 	{
 		while ((pid = waitpid(-((struct s_job *)node->content)->pgid,
@@ -59,7 +60,8 @@ void	waitjobs(void)
 		{
 			ft_dprintf(2, "[%d] done\n", ((struct s_job *)node->content)->job_id);
 			next = node->next;
-			ft_lstdelif(&g_asyncjobs, &((struct s_job *)node->content)->pgid,
+			ft_lstdelif(&g_jobctrl.asyncjobs,
+					&((struct s_job *)node->content)->pgid,
 					&test_job_node, &del_job_node);
 			node = next;
 		}
