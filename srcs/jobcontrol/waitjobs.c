@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 13:09:15 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 12:12:52 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/31 16:12:33 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ static int	test_job_node(t_list *node, void *data)
 	return (0);
 }
 
-int		waitjob(struct s_job *job)
+int		waitjob(void)
 {
 	int	status;
 
-	if (job->async)
-		waitpid(-job->pgid, &status, WNOHANG);
+	if (g_jobctrl.job.async)
+		waitpid(-g_jobctrl.job.pgid, &status, WNOHANG);
 	else
-		while (waitpid(-job->pgid, &status, 0) != -1)
+		while (waitpid(-g_jobctrl.job.pgid, &status, 0) != -1)
 			;
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));

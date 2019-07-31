@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 12:41:31 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/31 16:27:02 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ struct					s_job
 
 struct					s_jobctrl
 {
+	struct s_job		job;
 	t_list				*asyncjobs;
 	unsigned int		starting_job_id;
 };
@@ -47,9 +48,9 @@ extern struct s_jobctrl	g_jobctrl;
 ** PROTOTYPES
 */
 
-void					init_job_struct(struct s_job *job);
-int						newjob(struct s_job *job, int force_async);
-int						waitjob(struct s_job *job);
+void					init_job_struct(void);
+int						newjob(int force_async);
+int						waitjob(void);
 void					waitjobs(int signal);
 
 #endif

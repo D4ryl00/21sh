@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:50:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/30 13:29:42 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/31 16:08:11 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ static int	run_eval_pipe(t_pipe_env *pipe_env)
 	return (0);
 }
 
-static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env,
-		struct s_job *job)
+static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
 {
 	int		status;
 	int		pipe_fd[2];
@@ -51,12 +50,12 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env,
 		return (return_perror(EDUP, NULL));
 	if (run_eval_pipe(pipe_env) == -1)
 		return (-1);
-	if ((newjob(job, 1)) == -1)
+	if ((newjob(1)) == -1)
 		return (-1);
-	if (!job->pid)
+	if (!g_jobctrl.job.pid)
 	{
 		//status = eval_command(ps->command, 1);
-		status = eval_command(ps->command, job);
+		status = eval_command(ps->command);
 		exit(status);
 	}
 	if (pipe_env->input.rd != -1)
@@ -74,7 +73,7 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env,
 	return (status);
 }
 
-int			eval_pipe_sequence(t_ast_pipe_sequence *ps, struct s_job *job)
+int			eval_pipe_sequence(t_ast_pipe_sequence *ps)
 {
 	int				status;
 	t_pipe_env		pipe_env;
@@ -85,12 +84,12 @@ int			eval_pipe_sequence(t_ast_pipe_sequence *ps, struct s_job *job)
 	while (ps)
 	{
 		if (ps->pipe_sequence)
-			status = eval_pipe(ps, &pipe_env, job);
+			status = eval_pipe(ps, &pipe_env);
 		else
 		{
 			if (run_eval_pipe(&pipe_env) == -1)
 				return (-1);
-			status = eval_command(ps->command, job);
+			status = eval_command(ps->command);
 			if (pipe_env.input.rd != -1)
 				close(pipe_env.input.rd);
 			if (pipe_env.fd_cpy[0] != -1 && dup2(pipe_env.fd_cpy[0], 0) == -1)

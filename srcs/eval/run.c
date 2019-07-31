@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/30 13:29:50 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/31 16:11:16 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,18 @@
 ** Execute the command in a fork and execve.
 */
 
-int			run(char *path, char **av, struct s_job *job, char **env)
+int			run(char *path, char **av, char **env)
 {
 	int		status;
 
 	status = 0;
-	if (!job->forked && newjob(job, 0) == -1)
+	if (!g_jobctrl.job.forked && newjob(0) == -1)
 		return (-1);
-	if (!job->pid)
+	if (!g_jobctrl.job.pid)
 	{
 		execve(path, av, env);
 		return (-1);
 	}
-	status = waitjob(job);
+	status = waitjob();
 	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/29 10:52:27 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/30 22:25:03 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/31 16:17:27 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "parser.h"
 #include "jobcontrol.h"
 
-int	eval_list(t_ast_list *list, struct s_job *job)
+int	eval_list(t_ast_list *list)
 {
 	int				status;
 
@@ -22,13 +22,13 @@ int	eval_list(t_ast_list *list, struct s_job *job)
 	if (list->and_or)
 	{
 		if (list->separator_op && list->separator_op->c == '&')
-			job->async = 1;
-		status = eval_and_or(list->and_or, job);
+			g_jobctrl.job.async = 1;
+		status = eval_and_or(list->and_or);
 	}
 	if (list->list)
 	{
-		init_job_struct(job);
-		status = eval_list(list->list, job);
+		init_job_struct();
+		status = eval_list(list->list);
 	}
 	return (status);
 }

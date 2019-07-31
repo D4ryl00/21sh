@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/17 18:56:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/29 11:55:36 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/07/31 16:17:52 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int	launch_utility(char **av, int *i, t_list *env)
 	{
 		if (!(export_env = ft_lsttoarrstr(env)))
 			exit_perror(ENOMEM, NULL);
-		status = cmd_select_type(&(av[*i]), 0, export_env);
+		status = cmd_select_type(&(av[*i]), export_env);
 		ft_strarrdel(export_env);
 	}
 	else
