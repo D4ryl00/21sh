@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:29:58 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 08:07:22 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/08/01 11:26:58 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	*g_utility_cmd[] =
 {
 	"alias",
 	"cd",
+	"fg",
 	""
 };
 
@@ -34,5 +35,7 @@ int		run_utility_cmd(char **av)
 	(void)av;
 	if (!ft_strcmp(av[0], "cd"))
 		return (utility_cd(av));
+	else if (!ft_strcmp(av[0], "fg"))
+		return (utility_fg(av));
 	return (0);
 }

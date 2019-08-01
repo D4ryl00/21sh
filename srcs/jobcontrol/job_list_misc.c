@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   job_list_misc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/31 17:59:24 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/08/01 13:39:57 by rbarbero         ###   ########.fr       */
+/*   Created: 2019/08/01 10:45:00 by rbarbero          #+#    #+#             */
+/*   Updated: 2019/08/01 10:46:55 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
-** sigaction
+** free
 */
 
-#include <signal.h>
+#include <stdlib.h>
 
+#include "libft.h"
 #include "jobcontrol.h"
 
-int	signal_init(void)
+void	del_job_node(void *content, size_t content_size)
 {
-	struct sigaction	action;
-	struct sigaction	old;
-	int					status;
+	(void)content_size;
+	if (content)
+		free(content);
+}
 
-	ft_memset(&action, 0, sizeof(action));
-	action.sa_handler = &job_to_bg;
-	status = sigaction(SIGTSTP, &action, &old);
-	action.sa_handler = SIG_IGN;;
-	status = sigaction(SIGTTIN, &action, &old);
-	status = sigaction(SIGTTOU, &action, &old);
-	return (status);
+int		test_job_node(t_list *node, void *data)
+{
+	if (((struct s_job *)node->content)->pgid == *(pid_t *)data)
+		return (1);
+	return (0);
 }

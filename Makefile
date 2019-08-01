@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2019/07/31 18:16:07 by rbarbero         ###   ########.fr        #
+#    Updated: 2019/08/01 10:47:42 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,13 +38,13 @@ SRCS_EVAL = program.c pipeline.c pipe_sequence.c command.c simple_command.c \
 			complete_command.c list.c and_or.c
 
 DIR_UTILITES = $(DIR_SRCS)/utilities
-SRCS_UTILITES = cd.c
+SRCS_UTILITES = cd.c fg.c
 
 DIR_BUILTINS = $(DIR_SRCS)/builtins
 SRCS_BUILTINS = echo.c env.c setenv.c unsetenv.c exit.c
 
 DIR_JOBCONTROL = $(DIR_SRCS)/jobcontrol
-SRCS_JOBCONTROL = init.c newjob.c waitjobs.c job_to_bg.c
+SRCS_JOBCONTROL = init.c newjob.c waitjobs.c job_to_bg.c job_list_misc.c
 
 DIR_SIGNALS = $(DIR_SRCS)/signals
 SRCS_SIGNALS = init.c

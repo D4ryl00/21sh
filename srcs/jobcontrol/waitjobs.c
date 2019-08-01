@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 13:09:15 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 16:12:33 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/08/01 10:46:57 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,6 @@
 #include "sh.h"
 #include "jobcontrol.h"
 #include <sys/wait.h>
-
-static void	del_job_node(void *content, size_t content_size)
-{
-	(void)content_size;
-	if (content)
-		free(content);
-}
-
-static int	test_job_node(t_list *node, void *data)
-{
-	if (((struct s_job *)node->content)->pgid == *(pid_t *)data)
-		return (1);
-	return (0);
-}
 
 int		waitjob(void)
 {
