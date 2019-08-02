@@ -6,7 +6,7 @@
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/01 10:34:02 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/08/01 12:39:16 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/08/02 14:38:11 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,25 +23,27 @@
 int	utility_fg(char **av)
 {
 	t_list			*node;
-	struct s_job	*suspended;
+	struct s_job	*stopped;
 
 	(void)av;
 	node = g_jobctrl.asyncjobs;
-	suspended = NULL;
+	stopped = NULL;
 	while (node)
 	{
-		if (((struct s_job *)node->content)->suspended)
-			suspended = node->content;
+		if (((struct s_job *)node->content)->stopped)
+			stopped = node->content;
 		node = node->next;
 	}
-	if (suspended)
+	if (stopped)
 	{
-		ft_memcpy(&g_jobctrl.job, suspended, sizeof(struct s_job));
-		ft_lstdelif(&g_jobctrl.asyncjobs, &suspended->job_id,
+		ft_memcpy(&g_jobctrl.job, stopped, sizeof(struct s_job));
+		ft_lstdelif(&g_jobctrl.asyncjobs, &stopped->job_id,
 				&test_job_node, &del_job_node);
-		killpg(g_jobctrl.job.pgid, SIGCONT);
 		termcaps_reset_term();
-		tcsetpgrp(g_termcaps.fd, g_jobctrl.job.pgid);
+		if (tcsetpgrp(g_termcaps.fd, g_jobctrl.job.pgid) == -1)
+			return_perror(EOTHER, "eval_pipe_sequence: tcsetpgrp error");
+		killpg(g_jobctrl.job.pgid, SIGCONT);
+		waitjob();
 	}
 	return (0);
 }

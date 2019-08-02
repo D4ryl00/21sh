@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 16:11:16 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/08/02 14:26:44 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,12 @@ int			run(char *path, char **av, char **env)
 	status = 0;
 	if (!g_jobctrl.job.forked && newjob(0) == -1)
 		return (-1);
-	if (!g_jobctrl.job.pid)
+	if (g_jobctrl.job.child)
 	{
 		execve(path, av, env);
-		return (-1);
+		exit (1);
 	}
 	status = waitjob();
+	tcsetpgrp(g_termcaps.fd, g_shell.pgid);
 	return (status);
 }

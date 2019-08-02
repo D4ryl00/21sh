@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/08/01 10:46:48 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/08/02 11:37:47 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ struct					s_job
 	unsigned int		job_id;
 	pid_t				pid;
 	pid_t				pgid;
+	int					child;
 	int					forked;
 	int					async;
-	int					suspended;
+	int					stopped;
+	int					completed;
 	int					status;
 };
 
@@ -39,16 +41,24 @@ struct					s_jobctrl
 	unsigned int		starting_job_id;
 };
 
+struct							s_shell
+{
+	pid_t						pid;
+	pid_t						pgid;
+};
+
 /*
 ** GLOBALS
 */
 
 extern struct s_jobctrl	g_jobctrl;
+extern struct s_shell	g_shell;
 
 /*
 ** PROTOTYPES
 */
 
+void					init_s_shell(void);
 void					init_job_struct(void);
 int						newjob(int force_async);
 int						waitjob(void);

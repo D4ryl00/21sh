@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 13:09:15 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/08/01 10:46:57 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/08/02 13:58:40 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int		waitjob(void)
 	int	status;
 
 	if (g_jobctrl.job.async)
-		waitpid(-g_jobctrl.job.pgid, &status, WNOHANG);
+		waitpid(-g_jobctrl.job.pgid, &status, WUNTRACED | WNOHANG);
 	else
-		while (waitpid(-g_jobctrl.job.pgid, &status, 0) != -1)
+		while (waitpid(-g_jobctrl.job.pgid, &status, WUNTRACED) != -1)
 			;
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
@@ -40,7 +40,8 @@ void	waitjobs(int signal)
 	while (node)
 	{
 		while ((pid = waitpid(-((struct s_job *)node->content)->pgid,
-					&((struct s_job *)node->content)->status, WNOHANG)) > 0)
+					&((struct s_job *)node->content)->status,
+					WUNTRACED | WNOHANG)) > 0)
 			;
 		if (pid == -1)
 		{

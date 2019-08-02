@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 22:09:25 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/30 13:08:20 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/08/02 09:37:07 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ char			*g_errors[] =
 	"Dup error",
 	"Pipe error",
 	"numeric argument required",
-	"setpgid error",
 	""
 };
 
