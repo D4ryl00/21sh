@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:17:08 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/05 15:12:23 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/12 22:23:17 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include "sh.h"
 #include "jobcontrol.h"
 #include "signals.h"
+
+#include <stdio.h>
 
 struct s_job	*newjob(int async)
 {
@@ -52,7 +54,10 @@ int				newprocess(struct s_job *job)
 	if (!job->processes)
 		job->pgid = process.pid;
 	if (setpgid(process.pid, job->pgid) == -1)
+	{
 		ft_perror(EOTHER, "setpgid error", 0);
+		perror(NULL);
+	}
 	if (!(node = ft_lstpushback(&job->processes, &process, sizeof(process))))
 		return_perror(ENOMEM, NULL);
 	return (0);

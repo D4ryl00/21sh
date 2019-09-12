@@ -6,7 +6,7 @@
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/01 10:45:00 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/12 07:37:21 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/12 17:09:04 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	del_job_node(void *content, size_t content_size)
 
 int		test_job_node(t_list *node, void *data)
 {
-	if ((void *)node == data)
+	if ((void *)node->content == data)
 		return (1);
 	return (0);
 }

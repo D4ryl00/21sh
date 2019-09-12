@@ -6,7 +6,7 @@
 #    By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/09 12:15:31 by rbarbero          #+#    #+#              #
-#    Updated: 2018/11/05 10:15:50 by rbarbero         ###   ########.fr        #
+#    Updated: 2019/09/12 16:57:43 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,8 +50,8 @@ OBJS += $(SRCS_FT_VSDPRINTF:%.c=$(DIR_FT_VSDPRINTF)/%.o)
 HEADERS_DIR = includes/
 HEADERS = libft.h get_next_line.h ft_vsdprintf.h
 LHEADERS = $(HEADERS:%.h=$(HEADERS_DIR)%.h)
-CC = clang
-CFLAGS = -Wall -Wextra -Werror
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -g
 
 all: $(NAME)
 

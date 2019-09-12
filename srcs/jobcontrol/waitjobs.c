@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 13:09:15 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/12 11:59:55 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/12 20:36:52 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static struct s_process	*process_find(int pid)
 	job_node = g_jobctrl.jobs;
 	while (job_node)
 	{
-		job = (struct s_job *)g_jobctrl.jobs->content;
+		job = (struct s_job *)job_node->content;
 		if ((process = ft_lstselect(job->processes, &pid, &process_select)))
 			return ((struct s_process *)process->content);
 		job_node = job_node->next;
@@ -162,6 +162,7 @@ int		waitjob(struct s_job *job)
 	int		status;
 	pid_t	pid;
 
+	status = 0;
 	while ((pid = waitpid(-1, &status, WUNTRACED)) > 0)
 	{
 		if (pid == -1)
@@ -169,12 +170,13 @@ int		waitjob(struct s_job *job)
 		update_status_process(pid, status);
 		if (job_is_completed(job) || job_is_stopped(job))
 		{
+			status = get_job_status(job);
 			ft_lstdelif(&g_jobctrl.jobs, job,
 					&test_job_node, &del_job_node);
 			g_jobctrl.current_job = NULL;
 			break ;
 		}
 	}
-	return (0);
+	return (status);
 }
 
