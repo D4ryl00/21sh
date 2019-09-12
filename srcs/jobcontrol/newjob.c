@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:17:08 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/08/02 14:25:19 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/05 15:12:23 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,47 +19,41 @@
 #include "jobcontrol.h"
 #include "signals.h"
 
-static int	init_child_foreground(void)
+struct s_job	*newjob(int async)
 {
-	if (g_jobctrl.job.pgid == -1)
-		g_jobctrl.job.pgid = g_jobctrl.job.pid;
-	setpgid(g_jobctrl.job.pid, g_jobctrl.job.pgid);
-	if (g_jobctrl.job.async)
-		tcsetpgrp(g_termcaps.fd, g_jobctrl.job.pgid);
-	return (0);
+	struct s_job	job;
+	t_list			*node;
+
+	ft_memset(&job, 0, sizeof(job));
+	job.async = async;
+	if (async)
+		job.id = g_jobctrl.start_id++;
+	if (!(node = ft_lstpushback(&g_jobctrl.jobs, &job, sizeof(job))))
+		exit_perror(ENOMEM, NULL);
+	return ((struct s_job *)node->content);
 }
 
-int			newjob(int force_async)
+int				newprocess(struct s_job *job)
 {
-	pid_t	pid;
+	pid_t				pid;
+	struct s_process	process;
+	t_list				*node;
 
+	ft_memset(&process, 0, sizeof(process));
 	if ((pid = fork()) == -1)
 		return_perror(EFORK, NULL);
 	if (!pid)
 	{
-		g_jobctrl.job.pid = getpid();
-		if (init_child_foreground() == -1) //not for async!!!
-			exit(1);
-		if (signals_restore() == -1)
-			exit(1);
-		g_jobctrl.job.child = 1;
-		g_jobctrl.job.forked = 1;
-		if (force_async)
-			g_jobctrl.job.async = 1;
+		process.pid = getpid();
+		job->child = 1;
 	}
 	if (pid)
-	{
-		g_jobctrl.job.pid = pid;
-		if (init_child_foreground() == -1)
-			return (-1);
-		if (g_jobctrl.job.async && !force_async)
-		{
-			g_jobctrl.job.job_id = g_jobctrl.starting_job_id++;
-			if (!ft_lstpushback(&g_jobctrl.asyncjobs, &g_jobctrl.job,
-						sizeof(g_jobctrl.job)))
-				exit_perror(ENOMEM, NULL);
-			ft_dprintf(2, "[%d] %d\n", g_jobctrl.job.job_id, pid);
-		}
-	}
+		process.pid = pid;
+	if (!job->processes)
+		job->pgid = process.pid;
+	if (setpgid(process.pid, job->pgid) == -1)
+		ft_perror(EOTHER, "setpgid error", 0);
+	if (!(node = ft_lstpushback(&job->processes, &process, sizeof(process))))
+		return_perror(ENOMEM, NULL);
 	return (0);
 }

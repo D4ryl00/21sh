@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:50:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/08/02 14:38:54 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/12 10:36:48 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
 		return (return_perror(EDUP, NULL));
 	if (run_eval_pipe(pipe_env) == -1)
 		return (-1);
-	if ((newjob(1)) == -1)
+	if (!newprocess(g_jobctrl.current_job))
 		return (-1);
-	if (g_jobctrl.job.child)
+	if (g_jobctrl.current_job->child)
 	{
 		//status = eval_command(ps->command, 1);
 		status = eval_command(ps->command);
@@ -96,8 +96,8 @@ int			eval_pipe_sequence(t_ast_pipe_sequence *ps)
 				return (return_perror(EDUP, NULL));
 			pipe_env.fd_cpy[0] = -1;
 			set_pipe(&(pipe_env.input), -1, -1);
-			if (tcsetpgrp(g_termcaps.fd, g_shell.pgid) == -1)
-				return_perror(EOTHER, "eval_pipe_sequence: tcsetpgrp error");
+			/*if (tcsetpgrp(g_termcaps.fd, g_shell.pgid) == -1)
+				return_perror(EOTHER, "eval_pipe_sequence: tcsetpgrp error");*/
 		}
 		ps = ps->pipe_sequence;
 	}

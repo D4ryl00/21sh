@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 16:16:45 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/05 15:14:09 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ int								eval_complete_commands(
 		t_ast_complete_commands *cc);
 int								eval_complete_command(
 		t_ast_complete_command *cc);
-int								eval_list(t_ast_list *list);
-int								eval_and_or(t_ast_and_or *and_or);
+int								eval_list(t_ast_list *list, int async);
+int								eval_and_or(t_ast_and_or *and_or, int async);
 int								eval_pipeline(t_ast_pipeline *pipeline);
 int								eval_pipe_sequence(t_ast_pipe_sequence *ps);
 int								eval_command(t_ast_command *command);

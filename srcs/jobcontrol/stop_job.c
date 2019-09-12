@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   job_to_bg.c                                        :+:      :+:    :+:   */
+/*   stop_job.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 18:12:50 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/08/02 14:12:12 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/12 07:39:28 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,11 @@
 #include "sh.h"
 #include "signals.h"
 
-void	job_to_bg(int signal)
+void	stop_job(int signal)
 {
 	(void)signal;
-	g_jobctrl.job.stopped = 1;
-	g_jobctrl.job.job_id = g_jobctrl.starting_job_id++;
-	if (!ft_lstpushback(&g_jobctrl.asyncjobs, &g_jobctrl.job,
-				sizeof(g_jobctrl.job)))
-	{
-		ft_perror(ENOMEM, NULL, 0);
-		return ;
-	}
-	killpg(g_jobctrl.job.pgid, SIGTSTP);
+	g_jobctrl.current_job->id = g_jobctrl.start_id++;
+	killpg(g_jobctrl.current_job->pgid, SIGTSTP);
+	print_job_infos(g_jobctrl.current_job, "stopped");
+	g_jobctrl.current_job = NULL;
 }

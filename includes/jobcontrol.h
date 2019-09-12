@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/08/02 11:37:47 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/12 09:01:50 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,43 @@
 
 # include <unistd.h>
 
+/*
+** struct termios
+*/
+
+# include <termios.h>
+
 # include "libft.h"
 
 /*
 ** STRUCTURES
 */
 
+struct					s_process
+{
+	pid_t				pid;
+	int					completed;
+	int					stopped;
+	int					status;
+};
+
 struct					s_job
 {
-	unsigned int		job_id;
-	pid_t				pid;
+	unsigned int		id;
+	char				*cmd;
 	pid_t				pgid;
 	int					child;
-	int					forked;
 	int					async;
-	int					stopped;
-	int					completed;
-	int					status;
+	int					notified;
+	struct termios		tmodes;
+	t_list				*processes;
 };
 
 struct					s_jobctrl
 {
-	struct s_job		job;
-	t_list				*asyncjobs;
-	unsigned int		starting_job_id;
+	t_list				*jobs;
+	struct s_job		*current_job;
+	unsigned int		start_id;
 };
 
 struct							s_shell
@@ -59,12 +72,14 @@ extern struct s_shell	g_shell;
 */
 
 void					init_s_shell(void);
-void					init_job_struct(void);
-int						newjob(int force_async);
-int						waitjob(void);
-void					waitjobs(int signal);
-void					job_to_bg(int signal);
+struct s_job			*newjob(int async);
+int						newprocess(struct s_job *job);
+int						waitjob(struct s_job *job);
+void					do_job_notification(void);
+void					stop_job(int signal);
 void					del_job_node(void *content, size_t content_size);
 int						test_job_node(t_list *node, void *data);
+void					print_job_infos(struct s_job *job, const char *action);
+int						get_job_status(struct s_job *job);
 
 #endif

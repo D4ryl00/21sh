@@ -6,7 +6,7 @@
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/01 10:34:02 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/08/02 14:38:11 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/12 08:21:37 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,30 +20,66 @@
 #include "jobcontrol.h"
 #include "libft.h"
 
-int	utility_fg(char **av)
+static struct s_job	*find_bg_job(t_list *jobs, unsigned int job_id)
 {
 	t_list			*node;
-	struct s_job	*stopped;
+	struct s_job	*current_job;
+	struct s_job	*finded_job;
 
-	(void)av;
-	node = g_jobctrl.asyncjobs;
-	stopped = NULL;
+	node = jobs;
+	finded_job = NULL;
 	while (node)
 	{
-		if (((struct s_job *)node->content)->stopped)
-			stopped = node->content;
+		current_job = (struct s_job *)node->content;
+		if (!job_id)
+		{
+			if (!finded_job || (current_job->id > finded_job->id))
+				finded_job = current_job;
+		}
+		else
+		{
+			if (job_id == current_job->id)
+			{
+				finded_job = current_job;
+				break ;
+			}
+		}
 		node = node->next;
 	}
-	if (stopped)
+	return (finded_job);
+}
+
+static int	get_arg_job(char **av)
+{
+	int	res;
+
+	res = 0;
+	if (av[1])
+		res = ft_atoi(av[1]);
+	return (res);
+}
+
+int	utility_fg(char **av)
+{
+	struct s_job	*job;
+	unsigned int	requested_job;
+
+	requested_job = get_arg_job(av);
+	job = find_bg_job(g_jobctrl.jobs, requested_job);
+	if (!job)
 	{
-		ft_memcpy(&g_jobctrl.job, stopped, sizeof(struct s_job));
-		ft_lstdelif(&g_jobctrl.asyncjobs, &stopped->job_id,
-				&test_job_node, &del_job_node);
-		termcaps_reset_term();
-		if (tcsetpgrp(g_termcaps.fd, g_jobctrl.job.pgid) == -1)
-			return_perror(EOTHER, "eval_pipe_sequence: tcsetpgrp error");
-		killpg(g_jobctrl.job.pgid, SIGCONT);
-		waitjob();
+		dprintf(2, "fd: %s: no such job\n", av[1] ? av[1] : "current");
+		return (1);
 	}
+	g_jobctrl.current_job = job;
+	if (tcsetattr(0, TCSADRAIN, &g_jobctrl.current_job->tmodes) < 0)
+	{
+		ft_putstr(ERR_TCSETATTR);
+		return (-1);
+	}
+	if (tcsetpgrp(g_termcaps.fd, g_jobctrl.current_job->pgid) == -1)
+		return_perror(EOTHER, "eval_pipe_sequence: tcsetpgrp error");
+	killpg(g_jobctrl.current_job->pgid, SIGCONT);
+	waitjob(g_jobctrl.current_job);
 	return (0);
 }

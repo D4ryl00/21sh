@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list.c                                             :+:      :+:    :+:   */
+/*   print_job_infos.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/29 10:52:27 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/05 16:22:06 by rbarbero         ###   ########.fr       */
+/*   Created: 2019/09/12 07:31:56 by rbarbero          #+#    #+#             */
+/*   Updated: 2019/09/12 07:35:58 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "eval.h"
-#include "parser.h"
+#include "sh.h"
 #include "jobcontrol.h"
+#include "libft.h"
 
-int	eval_list(t_ast_list *list, int async)
+void	print_job_infos(struct s_job *job, const char *action)
 {
-	int	status;
-
-	status = 0;
-	if (list->and_or)
-	{
-		if (list->separator_op && list->separator_op->c == '&')
-			async = 1;
-		status = eval_and_or(list->and_or, async);
-	}
-	if (list->list)
-		status = eval_list(list->list, async);
-	return (status);
+	if (action)
+		dprintf(2, "[%u]\t%s\t%s", job->id, action, job->cmd);
+	else
+		dprintf(2, "[%u]\t%s", job->id, job->cmd);
 }

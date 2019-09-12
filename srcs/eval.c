@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 11:08:32 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/12 09:01:11 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int			eval(t_input *input)
 		eval_program(program);
 		ft_set_term();
 	}
-	waitjobs(0);
+	do_job_notification();
 	ft_lstdel(&tokens, token_free);
 	free_ast_program(program);
 	return (0);
