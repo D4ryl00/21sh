@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:17:08 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/12 22:23:17 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/13 08:35:35 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ int				newprocess(struct s_job *job)
 		job->child = 1;
 	}
 	if (pid)
+	{
 		process.pid = pid;
+		job->fork = 1;
+	}
 	if (!job->processes)
 		job->pgid = process.pid;
 	if (setpgid(process.pid, job->pgid) == -1)

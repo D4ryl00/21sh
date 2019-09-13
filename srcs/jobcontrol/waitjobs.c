@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 13:09:15 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/12 20:36:52 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/13 08:51:11 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,11 +145,9 @@ void		do_job_notification(void)
 
 int		get_job_status(struct s_job *job)
 {
-	int					status;
 	t_list				*node_process;
 	struct s_process	*process;
 
-	status = 0;
 	node_process = job->processes;
 	while (node_process->next)
 		node_process = node_process->next;
@@ -171,9 +169,9 @@ int		waitjob(struct s_job *job)
 		if (job_is_completed(job) || job_is_stopped(job))
 		{
 			status = get_job_status(job);
-			ft_lstdelif(&g_jobctrl.jobs, job,
+			/*ft_lstdelif(&g_jobctrl.jobs, job,
 					&test_job_node, &del_job_node);
-			g_jobctrl.current_job = NULL;
+			g_jobctrl.current_job = NULL;*/
 			break ;
 		}
 	}

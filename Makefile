@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2019/09/12 07:40:14 by rbarbero         ###   ########.fr        #
+#    Updated: 2019/09/13 06:53:32 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,7 +73,7 @@ HEADERS = sh.h lexer.h parser.h eval.h utilities.h builtins.h jobcontrol.h \
 HEADERS_DIR = includes/
 LHEADERS = $(HEADERS:%.h=$(HEADERS_DIR)%.h)
 
-CC = clang
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
