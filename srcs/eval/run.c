@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/13 09:15:24 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/13 14:31:24 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int			run(char *path, char **av, char **env)
 	int		status;
 
 	status = 0;
-	if (!g_jobctrl.current_job->fork && !g_jobctrl.current_job->child
+	if (!g_jobctrl.current_job->forked && !g_jobctrl.current_job->child
 			&& newprocess(g_jobctrl.current_job) == -1)
 		return (-1);
 	if (!g_jobctrl.current_job->async)

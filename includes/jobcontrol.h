@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/13 09:12:17 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/13 14:51:33 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ struct					s_job
 	unsigned int		id;
 	char				*cmd;
 	pid_t				pgid;
-	int					fork;
+	int					forked;
 	int					child;
 	int					nowait;
 	int					async;
