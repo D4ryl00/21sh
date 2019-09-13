@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 11:49:18 by amordret          #+#    #+#             */
-/*   Updated: 2018/11/06 10:14:32 by amordret         ###   ########.fr       */
+/*   Updated: 2019/09/13 23:55:37 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 void		add_to_command_hist(char *line)
 {
 	t_command_history	*new_element;
-	int					i;
+	unsigned int		i;
+	size_t				line_length;
 
 	i = -1;
+	line_length = line ? ft_strlen(line) : 0;
 	if (!(line) || (new_element = malloc(sizeof(*new_element))) == NULL ||
-	((new_element->command = malloc(ft_strlen(line))) == NULL))
+	((new_element->command = malloc(sizeof(char) * (line_length + 1))) == NULL))
 		return (term_putstr(ERR_COM_HIST));
-	while (line[++i] && line[i] != '\n')
+	while (++i < line_length)
 		new_element->command[i] = line[i];
 	new_element->command[i] = '\0';
 	//new_element->command = ft_strdup(line);
