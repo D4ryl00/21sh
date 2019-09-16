@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:26:50 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/13 15:04:31 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/16 21:10:19 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ int		run_builtin_cmd(char **av)
 			|| (g_jobctrl.current_job->forked && g_jobctrl.current_job->child))
 	{
 		if (!ft_strcmp(av[0], "echo"))
-			exit(builtin_echo(av));
+			return(builtin_echo(av));
 		else if (!ft_strcmp(av[0], "env"))
-			exit(builtin_env(av));
+			return(builtin_env(av));
 		else if (!ft_strcmp(av[0], "setenv"))
-			exit(builtin_setenv(&g_env, av));
+			return(builtin_setenv(&g_env, av));
 		else if (!ft_strcmp(av[0], "unsetenv"))
-			exit(builtin_unsetenv(&g_env, av));
+			return(builtin_unsetenv(&g_env, av));
 		else if (!ft_strcmp(av[0], "exit"))
 			builtin_exit(av);
 	}
