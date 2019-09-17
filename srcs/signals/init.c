@@ -6,7 +6,7 @@
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 17:59:24 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/12 12:01:49 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/17 09:41:28 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,24 @@
 #include <signal.h>
 
 #include "jobcontrol.h"
+#include "signals.h"
 #include "sh.h"
 
 int	signals_init(void)
 {
 	struct sigaction	action;
-	struct sigaction	old;
 	int					status;
 
 	status = 0;
 	ft_memset(&action, 0, sizeof(action));
 	action.sa_handler = &stop_job;
-	status |= sigaction(SIGTSTP, &action, &old);
-	action.sa_handler = SIG_IGN;;
-	status |= sigaction(SIGINT, &action, &old);
-	status |= sigaction(SIGQUIT, &action, &old);
-	status |= sigaction(SIGTTIN, &action, &old);
-	status |= sigaction(SIGTTOU, &action, &old);
-	//status |= sigaction(SIGCHLD, &action, &old);
+	status |= sigaction(SIGCHLD, &action, NULL);
+	action.sa_handler = SIG_IGN;
+	status |= sigaction(SIGTSTP, &action, NULL);
+	status |= sigaction(SIGINT, &action, NULL);
+	status |= sigaction(SIGQUIT, &action, NULL);
+	status |= sigaction(SIGTTIN, &action, NULL);
+	status |= sigaction(SIGTTOU, &action, NULL);
 	if (status)
 		return_perror(EOTHER, "sigaction error");
 	return (status);
@@ -43,17 +43,16 @@ int	signals_init(void)
 int	signals_restore(void)
 {
 	struct sigaction	action;
-	struct sigaction	old;
 	int					status;
 
 	status = 0;
 	ft_memset(&action, 0, sizeof(action));
 	action.sa_handler = SIG_DFL;
-	status |= sigaction(SIGTSTP, &action, &old);
-	status |= sigaction(SIGINT, &action, &old);
-	status |= sigaction(SIGQUIT, &action, &old);
-	status |= sigaction(SIGTTIN, &action, &old);
-	status |= sigaction(SIGTTOU, &action, &old);
-	//status |= sigaction(SIGCHLD, &action, &old);
+	status |= sigaction(SIGTSTP, &action, NULL);
+	status |= sigaction(SIGINT, &action, NULL);
+	status |= sigaction(SIGQUIT, &action, NULL);
+	status |= sigaction(SIGTTIN, &action, NULL);
+	status |= sigaction(SIGTTOU, &action, NULL);
+	status |= sigaction(SIGCHLD, &action, NULL);
 	return (status);
 }

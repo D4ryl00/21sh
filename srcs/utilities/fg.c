@@ -6,7 +6,7 @@
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/01 10:34:02 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/12 08:21:37 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/17 11:19:22 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@ int	utility_fg(char **av)
 		return (1);
 	}
 	g_jobctrl.current_job = job;
-	if (tcsetattr(0, TCSADRAIN, &g_jobctrl.current_job->tmodes) < 0)
+	/*if (tcsetattr(0, TCSADRAIN, &g_jobctrl.current_job->tmodes) < 0)
 	{
 		ft_putstr(ERR_TCSETATTR);
 		return (-1);
-	}
+	}*/
 	if (tcsetpgrp(g_termcaps.fd, g_jobctrl.current_job->pgid) == -1)
-		return_perror(EOTHER, "eval_pipe_sequence: tcsetpgrp error");
+		return_perror(EOTHER, "fg: tcsetpgrp error");
 	killpg(g_jobctrl.current_job->pgid, SIGCONT);
 	waitjob(g_jobctrl.current_job);
 	return (0);

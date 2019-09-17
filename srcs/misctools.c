@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 18:15:42 by amordret          #+#    #+#             */
-/*   Updated: 2018/11/07 11:02:12 by amordret         ###   ########.fr       */
+/*   Updated: 2019/09/17 09:10:16 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,26 @@ int		get_windows_width(void)
 
 void	term_putchar(char c)
 {
-	termcaps_echo(1);
+	//termcaps_echo(1);
 	ft_putchar(c);
 	g_termcaps.writtenchars++;
-	termcaps_echo(0);
+	//termcaps_echo(0);
 }
 
 void	term_putstr(char *s)
 {
-	termcaps_echo(1);
+	//termcaps_echo(1);
 	ft_putstr(s);
 	g_termcaps.writtenchars += ft_strlen(s);
-	termcaps_echo(0);
+	//termcaps_echo(0);
 }
 
 void	term_putstr_fd(char *s, int fd)
 {
-	termcaps_echo(1);
+	//termcaps_echo(1);
 	ft_putstr_fd(s, fd);
 	g_termcaps.writtenchars += ft_strlen(s);
-	termcaps_echo(0);
+	//termcaps_echo(0);
 }
 
 /*int		termcaps_clearlineandbuff(t_read_input *s)
