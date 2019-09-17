@@ -6,7 +6,7 @@
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/01 10:34:02 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/17 18:59:41 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/18 00:18:54 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ static struct s_job	*find_bg_job(t_list *jobs, unsigned int job_id)
 		current_job = (struct s_job *)node->content;
 		if (!job_id)
 		{
-			if (!finded_job || (current_job->id > finded_job->id))
+			if (current_job->id > 0 && (!finded_job
+						|| (current_job->id > finded_job->id)))
 				finded_job = current_job;
 		}
 		else
@@ -72,6 +73,7 @@ int	utility_fg(char **av)
 		return (1);
 	}
 	g_jobctrl.current_job = job;
+	g_jobctrl.current_job->id = 0;
 	if (tcsetattr(0, TCSADRAIN, &g_jobctrl.current_job->tmodes) < 0)
 	{
 		ft_putstr(ERR_TCSETATTR);

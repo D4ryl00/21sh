@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utilities.h                                        :+:      :+:    :+:   */
+/*   jobs.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/09 07:14:18 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/17 22:55:06 by rbarbero         ###   ########.fr       */
+/*   Created: 2019/09/17 22:46:54 by rbarbero          #+#    #+#             */
+/*   Updated: 2019/09/17 23:01:51 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILITES_H
-# define UTILITES_H
+#include "sh.h"
+#include "jobcontrol.h"
+#include "libft.h"
 
-/*
-** STRUCTURES
-*/
-
-typedef struct	s_cd_params
+int	utility_jobs(char **av)
 {
-	unsigned char	L;
-	unsigned char	P;
-	char			*dir;
-}				t_cd_params;
+	t_list			*job_node;
+	struct s_job	*job;
 
-/*
-** PROTOTYPES
-*/
-
-int	utility_cd(char **av);
-int	utility_fg(char **av);
-int	utility_jobs(char **av);
-
-#endif
+	(void)av;
+	job_node = g_jobctrl.jobs;
+	while (job_node)
+	{
+		job = (struct s_job *)job_node->content;
+		if (job->id > 0)
+			print_job_infos(job, NULL);
+		job_node = job_node->next;
+	}
+	return (0);
+}

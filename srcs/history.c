@@ -6,26 +6,36 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 11:49:18 by amordret          #+#    #+#             */
-/*   Updated: 2019/09/13 23:55:37 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/17 23:52:32 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
+
+/*
+** "line" contains previous shell commands terminated or not by a final newline.
+** So the above function removes the final newline to this string
+** if there is it.
+*/
 
 void		add_to_command_hist(char *line)
 {
 	t_command_history	*new_element;
 	unsigned int		i;
 	size_t				line_length;
+	int					has_newline;
 
 	i = -1;
-	line_length = line ? ft_strlen(line) : 0;
-	if (!(line) || (new_element = malloc(sizeof(*new_element))) == NULL ||
-	((new_element->command = malloc(sizeof(char) * (line_length + 1))) == NULL))
+	if (!line)
+		return (term_putstr(ERR_COM_HIST));
+	line_length = ft_strlen(line);
+	has_newline = line[line_length - 1] == '\n' ? 1 : 0;
+	if (!(new_element = malloc(sizeof(*new_element))) || !(new_element->command
+				= malloc(sizeof(char) * (line_length + (has_newline ? 0 : 1)))))
 		return (term_putstr(ERR_COM_HIST));
 	while (++i < line_length)
 		new_element->command[i] = line[i];
-	new_element->command[i] = '\0';
+	new_element->command[has_newline ? i - 1 : i] = '\0';
 	//new_element->command = ft_strdup(line);
 	new_element->next = g_first_cmd_history;
 	g_first_cmd_history = new_element;

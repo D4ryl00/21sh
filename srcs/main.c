@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/17 08:38:28 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/18 00:11:25 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		newprompt(t_input *input, char *promptstring)
 	}
 	prompt(promptstring);
 	status = read_input(input, promptstring);
-	termcaps_reset_term();
+	//termcaps_reset_term(); // remove for multiline quoted
 	return (status);
 }
 

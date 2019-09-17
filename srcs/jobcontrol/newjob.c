@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:17:08 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/13 14:31:07 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/18 00:28:15 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int				newprocess(struct s_job *job)
 		ft_perror(EOTHER, "setpgid error", 0);
 		perror(NULL);
 	}
+	if (!job->async)
+		tcsetpgrp(g_termcaps.fd, job->pgid);
 	if (!(node = ft_lstpushback(&job->processes, &process, sizeof(process))))
 		return_perror(ENOMEM, NULL);
 	return (0);
