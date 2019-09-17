@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:29:58 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/13 15:01:50 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/17 19:05:53 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ int		run_utility_cmd(char **av)
 			|| (g_jobctrl.current_job->forked && g_jobctrl.current_job->child))
 	{
 		if (!ft_strcmp(av[0], "cd"))
-			exit(utility_cd(av));
+			return(utility_cd(av));
 		else if (!ft_strcmp(av[0], "fg"))
-			exit(utility_fg(av));
+			return(utility_fg(av));
 	}
 	else if (!g_jobctrl.current_job->nowait && !g_jobctrl.current_job->async)
 		status = waitjob(g_jobctrl.current_job);

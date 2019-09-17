@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 13:09:15 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/13 08:51:11 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/17 18:59:01 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,15 @@ static int	update_status_process(pid_t pid, int status)
 		return (-1);
 	}
 	process->status = status;
-	if (!WIFSTOPPED(status))
+	if (WIFSTOPPED(status))
+	{
+		process->stopped = 1;
+		g_jobctrl.current_job->id = g_jobctrl.start_id++;
+		print_job_infos(g_jobctrl.current_job, "stopped");
+		if (tcgetattr(0, &g_jobctrl.current_job->tmodes) < 0)
+			ft_dprintf(2, "stop_job: tcsetpgrp error\n");
+	}
+	else
 	{
 		process->completed = 1;
 		if (WIFSIGNALED(status))
