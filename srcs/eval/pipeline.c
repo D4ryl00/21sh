@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:46:20 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 16:04:51 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/19 15:20:13 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,14 @@
 #include "parser.h"
 #include "jobcontrol.h"
 
-int	eval_pipeline(t_ast_pipeline *pipeline)
+void	get_pipeline_cmd_name(t_ast_pipeline *pipeline,
+		t_buf *pipeline_cmd_name)
+{
+	if (pipeline->pipe_sequence)
+		get_pipe_sequence_cmd_name(pipeline->pipe_sequence, pipeline_cmd_name);
+}
+
+int		eval_pipeline(t_ast_pipeline *pipeline)
 {
 	int	status;
 

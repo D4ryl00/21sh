@@ -6,12 +6,19 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/04 17:12:42 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 16:08:55 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/19 15:26:28 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "eval.h"
 #include "jobcontrol.h"
+
+void	get_compound_command_cmd_name(t_ast_compound_command *cc,
+		t_buf *cc_cmd_name)
+{
+	if (cc->subshell)
+		get_subshell_cmd_name(cc->subshell, cc_cmd_name);
+}
 
 int	eval_compound_command(t_ast_compound_command *cc)
 {

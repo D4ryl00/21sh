@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:50:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/13 10:33:21 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/19 17:00:53 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,25 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
 		return (return_perror(EDUP, NULL));
 	set_pipe(&(pipe_env->input), pipe_fd[0], 0);
 	return (status);
+}
+
+void		get_pipe_sequence_cmd_name(t_ast_pipe_sequence *ps,
+		t_buf *ps_cmd_name)
+{
+	int	multipipes;
+
+	while (ps)
+	{
+		if (ps->pipe_sequence)
+			multipipes = 1;
+		else
+			multipipes = 0;
+		if (ps->command)
+			get_command_cmd_name(ps->command, ps_cmd_name);
+		if (multipipes)
+			ft_buf_add_str(ps_cmd_name, " | ");
+		ps = ps->pipe_sequence;
+	}
 }
 
 int			eval_pipe_sequence(t_ast_pipe_sequence *ps)

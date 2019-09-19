@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/05 15:14:09 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/19 15:25:39 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,18 @@ int								eval_compound_command(
 		t_ast_compound_command *cc);
 int								eval_simple_command(t_ast_simple_command *sc);
 int								eval_subshell(t_ast_subshell *subshell);
+void							get_pipeline_cmd_name(t_ast_pipeline *pipeline,
+		t_buf *pipeline_cmd_name);
+void							get_pipe_sequence_cmd_name(
+		t_ast_pipe_sequence *ps, t_buf *ps_cmd_name);
+void							get_command_cmd_name(t_ast_command *command,
+		t_buf *command_cmd_name);
+void							get_simple_command_cmd_name(
+		t_ast_simple_command *sc, t_buf *sc_cmd_name);
+void							get_compound_command_cmd_name(
+		t_ast_compound_command *cc, t_buf *sc_cmd_name);
+void							get_subshell_cmd_name(t_ast_subshell *subshell,
+		t_buf *sc_subshell_name);
 int								cmd_select_type(char **av, char **env);
 int								is_builtin_cmd(char **av);
 int								run_builtin_cmd(char **av);

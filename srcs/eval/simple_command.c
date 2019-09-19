@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:06:29 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 16:09:35 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/19 16:53:13 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,16 +82,35 @@ static char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 	return (args);
 }
 
+void		get_simple_command_cmd_name(t_ast_simple_command *sc,
+		t_buf *sc_cmd_name)
+{
+	char				*str;
+	t_ast_cmd_suffix	*suffix;
+
+	if (!(str = ast_get_cmd_name(sc)))
+		return ;
+	ft_buf_add_str(sc_cmd_name, str);
+	suffix = sc->cmd_suffix;
+	while (suffix)
+	{
+		ft_buf_add_char(sc_cmd_name, ' ');
+		if (suffix->word)
+			ft_buf_add_str(sc_cmd_name, suffix->word);
+		suffix = suffix->cmd_suffix;
+	}
+}
+
 /*
 ** Evalutation of an simple_command (shell grammar POSIX)
 */
 
 int			eval_simple_command(t_ast_simple_command *sc)
 {
-	int		status;
-	char	**av;
-	char	**env;
-	t_list	*redirs;
+	int			status;
+	char		**av;
+	char		**env;
+	t_list		*redirs;
 
 	status = 0;
 	redirs = NULL;

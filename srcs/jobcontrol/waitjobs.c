@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 13:09:15 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/17 18:59:01 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/19 21:27:56 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,12 @@ static int	process_select(t_list *node, void *data)
 	return (0);
 }
 
-static struct s_process	*process_find(int pid)
+/*
+** Find a process by its id. If it's found, set jobp to the job ans return
+** the process address.
+*/
+
+static struct s_process	*process_find(int pid, struct s_job **jobp)
 {
 	t_list			*job_node;
 	struct s_job	*job;
@@ -40,17 +45,23 @@ static struct s_process	*process_find(int pid)
 	{
 		job = (struct s_job *)job_node->content;
 		if ((process = ft_lstselect(job->processes, &pid, &process_select)))
+		{
+			*jobp = job;
 			return ((struct s_process *)process->content);
+		}
 		job_node = job_node->next;
 	}
 	return (NULL);
 }
 
+
+
 static int	update_status_process(pid_t pid, int status)
 {
+	struct s_job		*job;
 	struct s_process	*process;
 
-	if (!(process = process_find(pid)))
+	if (!(process = process_find(pid, &job)))
 	{
 		ft_dprintf(2, "process %d not found\n", pid);
 		return (-1);
@@ -59,9 +70,10 @@ static int	update_status_process(pid_t pid, int status)
 	if (WIFSTOPPED(status))
 	{
 		process->stopped = 1;
-		g_jobctrl.current_job->id = g_jobctrl.start_id++;
-		print_job_infos(g_jobctrl.current_job, "stopped");
-		if (tcgetattr(0, &g_jobctrl.current_job->tmodes) < 0)
+		if (!job->id)
+			job->id = g_jobctrl.start_id++;
+		print_job_infos(job, "stopped");
+		if (tcgetattr(0, &job->tmodes) < 0)
 			ft_dprintf(2, "stop_job: tcsetpgrp error\n");
 	}
 	else
@@ -78,7 +90,7 @@ static int	update_status_process(pid_t pid, int status)
 	return (0);
 }
 
-static int	job_is_stopped(struct s_job *job)
+int			job_is_stopped(struct s_job *job)
 {
 	t_list				*process_node;
 	struct s_process	*process;
@@ -94,7 +106,7 @@ static int	job_is_stopped(struct s_job *job)
 	return (1);
 }
 
-static int	job_is_completed(struct s_job *job)
+int			job_is_completed(struct s_job *job)
 {
 	t_list				*process_node;
 	struct s_process	*process;
@@ -112,13 +124,13 @@ static int	job_is_completed(struct s_job *job)
 
 void		update_all_status_process(void)
 {
-	/*int				status;
+	int				status;
 	pid_t			pid;
 
 	while ((pid = waitpid(-1, &status, WUNTRACED | WNOHANG)) > 0)
 	{
 		update_status_process(pid, status);
-	}*/
+	}
 	/*if (pid == -1 && g_jobctrl.jobs)
 	{
 		ft_dprintf(2, "waitpid: error\n");
@@ -141,10 +153,10 @@ void		do_job_notification(void)
 		{
 			if (job->async && !job->notified)
 			{
-				print_job_infos(job, NULL);
+				print_job_infos(job, "Done");
 				job->notified = 1;
 			}
-			ft_lstdelif(&g_jobctrl.jobs, &job_node,
+			ft_lstdelif(&g_jobctrl.jobs, job_node,
 					&test_job_node, &del_job_node);
 		}
 		job_node = next_node;

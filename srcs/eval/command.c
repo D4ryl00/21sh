@@ -6,12 +6,21 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:52:24 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 16:08:34 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/19 15:22:11 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "eval.h"
 #include "jobcontrol.h"
+
+void	get_command_cmd_name(t_ast_command *command, t_buf *command_cmd_name)
+{
+	if (command->simple_command)
+		get_simple_command_cmd_name(command->simple_command, command_cmd_name);
+	if (command->compound_command)
+		get_compound_command_cmd_name(command->compound_command,
+				command_cmd_name);
+}
 
 int			eval_command(t_ast_command *command)
 {
