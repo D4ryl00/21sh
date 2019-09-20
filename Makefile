@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2019/09/17 22:55:28 by rbarbero         ###   ########.fr        #
+#    Updated: 2019/09/20 09:02:12 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ SRCS_EVAL = program.c pipeline.c pipe_sequence.c command.c simple_command.c \
 			complete_command.c list.c and_or.c
 
 DIR_UTILITES = $(DIR_SRCS)/utilities
-SRCS_UTILITES = cd.c fg.c jobs.c
+SRCS_UTILITES = cd.c fg.c bg.c jobs.c
 
 DIR_BUILTINS = $(DIR_SRCS)/builtins
 SRCS_BUILTINS = echo.c env.c setenv.c unsetenv.c exit.c

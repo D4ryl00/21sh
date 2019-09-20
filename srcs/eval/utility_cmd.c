@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 13:29:58 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/18 23:57:00 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/09/20 09:01:18 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ char	*g_utility_cmd[] =
 	"alias",
 	"cd",
 	"fg",
+	"bg",
 	"jobs",
 	""
 };
@@ -49,6 +50,8 @@ int		run_utility_cmd(char **av)
 			status = utility_cd(av);
 		else if (!ft_strcmp(av[0], "fg"))
 			status = utility_fg(av);
+		else if (!ft_strcmp(av[0], "bg"))
+			status = utility_bg(av);
 		else if (!ft_strcmp(av[0], "jobs"))
 			status = utility_jobs(av);
 		if (g_jobctrl.current_job->child)
