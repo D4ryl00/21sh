@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2019/09/17 23:27:15 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/01 17:12:47 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void		reprint_after(t_read_input *s)
 {
 	int	cursorposbackup;
 
+	cursorposbackup = 1;
 	cursorposbackup = s->cursorpos;
 	if (s->cursorpos == 1)
 		return ;
@@ -47,7 +48,7 @@ void		reprint_after(t_read_input *s)
 	{
 		ft_putchar_fd(s->buffer.buf[(s->cursorpos)], g_termcaps.fd);
 		s->cursorpos++;
-		if (get_cursorpos(s->cursorpos) == 0 /*&& get_cursorpos(cursorposbackup)*/)
+		if (get_cursorpos(s->cursorpos) == 0 && get_cursorpos(cursorposbackup))
 			ft_putstr_fd(g_termcaps.cursordown, g_termcaps.fd);
 	}
 	while (s->cursorpos > cursorposbackup)
@@ -57,19 +58,21 @@ void		reprint_after(t_read_input *s)
 static int	read_input_loop(t_read_input *s)
 {
 	s->c[3] = read(0, &(s->c), 1);
+	if (s->c[0] == 3)
+		return 0;
 	if (s->c[0] != 27 && (ft_isprint(s->c[0]) == 1) && (s->cursorpos +=
 	ft_buf_insert_char(&(s->buffer), s->c[0], s->cursorpos) + 1) == -1)
 		return (-1);
-	if ((s->c[0] != 27 && s->c[0] != 0 && ft_isprint(s->c[0]) == 1) ||
-	s->c[0] == '\n')
+	if ((s->c[0] != 27 && s->c[0] != 0 && ft_isprint(s->c[0]) == 1) || s->c[0] == '\n')
 	{
 		if (s->c[0] == '\n')
 			input_is_end(s);
 		term_putchar(s->c[0]);
-		if (get_cursorpos(s->cursorpos) == 0)
+		if (get_cursorpos(s->cursorpos) == 0 && s->cursorpos != s->buffer.i)
 			ft_putstr_fd(g_termcaps.cursordown, g_termcaps.fd);
-	}	
-	else if (s->c[0] == 127 || s->c[0] == 27 || s->c[0] == 3 || s->c[0] == 22)
+	}
+	else if (s->c[0] == 127 || s->c[0] == 27 || s->c[0] == 4 || s->c[0] == 22 
+	|| s->c[0] == 4)
 		input_is_special_char(s);
 	reprint_after(s);
 	return (0);
@@ -81,18 +84,23 @@ int			read_input(t_input *input, char *promptstring)
 
 	if ((set_t_read_input(&s, promptstring) == -1) || (ft_buf_init(&(s.buffer)) == -1))
 		return (-1);
-	while (s.c[3] && s.c[0] != '\n')
+	// Adri : Save current line buffer to global for sigwinch rewrite test
+	g_s = &s;
+	while (s.c[3] && s.c[0] != '\n' && s.c[0] != 3)
 		if (read_input_loop(&s) == -1)
 			return (-1);
-	if (ft_buf_add_char(&(s.buffer), '\n') == -1
-			|| ft_buf_add_char(&(s.buffer), '\0') == -1
-			|| !((input->str) = ft_buf_flush(&(s.buffer))))
-		return (-1);
-	/*if (s.promptstring && input->str && (ft_strlen(input->str)) > 1)
-		append_line_to_prev_hist(input->str);
-	else */if (/*input->str && */(ft_strlen(input->str)) > 1)
-		add_to_command_hist(input->str);
-	input->save = &(input->str[0]);
+	if (s.c[0] != 3)
+	{
+		if (ft_buf_add_char(&(s.buffer), '\n') == -1
+				|| ft_buf_add_char(&(s.buffer), '\0') == -1
+				|| !((input->str) = ft_buf_flush(&(s.buffer))))
+			return (-1);
+		/*if (s.promptstring && input->str && (ft_strlen(input->str)) > 1)
+			append_line_to_prev_hist(input->str);
+		else */if (/*input->str && */(ft_strlen(input->str)) > 1)
+			add_to_command_hist(input->str);
+		input->save = &(input->str[0]);
+	}
 	ft_buf_destroy(&(s.buffer));
 	if (s.tmpline)
 		free(s.tmpline);

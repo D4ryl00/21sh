@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   eval.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/12 09:01:11 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/01 17:18:42 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ int			eval(t_input *input)
 	{
 		termcaps_reset_term();
 		eval_program(program);
-		ft_set_term();
 	}
 	do_job_notification();
 	ft_lstdel(&tokens, token_free);

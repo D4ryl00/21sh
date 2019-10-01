@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 10:16:11 by amordret          #+#    #+#             */
-/*   Updated: 2019/08/01 12:07:43 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/01 16:58:16 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	ft_set_term(void)
 		return (ft_putstr(ERR_TCGETATTR));
 	(g_termcaps.current_termios).c_lflag &= ~(ICANON);
 	(g_termcaps.current_termios).c_lflag &= ~(ECHO);
+	(g_termcaps.current_termios).c_lflag &= ~(ISIG);
 	(g_termcaps.current_termios).c_cc[VMIN] = 1;
 	(g_termcaps.current_termios).c_cc[VTIME] = 0;
 	if (tcsetattr(g_termcaps.fd, TCSANOW, &(g_termcaps.current_termios)) < 0)

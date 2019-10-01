@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2019/09/20 09:02:12 by rbarbero         ###   ########.fr        #
+#    Updated: 2019/10/01 17:04:33 by amordret         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ NAME = 21sh
 DIR_SRCS = srcs
 SRCS_MAIN = main.c error.c free.c eval.c termcaps.c prompt.c input.c \
 	   input_termcaps.c input_upanddown.c misctools.c history.c \
-	   history2.c env_tools.c history_file.c input_homeend.c
+	   history2.c env_tools.c history_file.c input_homeend.c input_rightleft.c \
+	   input_ctrl.c
 
 DIR_LEXER = $(DIR_SRCS)/lexer
 SRCS_LEXER = lexer.c globals.c lexer_operator.c lexer_quote.c \
@@ -48,7 +49,7 @@ SRCS_JOBCONTROL = init.c newjob.c waitjobs.c stop_job.c job_list_misc.c \
 				  print_job_infos.c
 
 DIR_SIGNALS = $(DIR_SRCS)/signals
-SRCS_SIGNALS = init.c
+SRCS_SIGNALS = init.c sigwinch.c
 
 DIR_VIM = $(DIR_SRCS)/vim
 SRCS_VIM = vimmode.c visualmode.c vimmisctools.c vimmisctools2.c vimmode2.c \

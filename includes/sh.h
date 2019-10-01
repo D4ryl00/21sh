@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/08/02 10:59:46 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/01 16:21:08 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ extern char						*g_errors[];
 extern t_command_history		*g_first_cmd_history;
 extern t_list					*g_env;
 extern t_termcaps				g_termcaps;
+extern t_read_input				*g_s;
 
 typedef struct					s_input
 {
@@ -151,6 +152,7 @@ void							termcaps_reset_term_and_exit(int status);
 void							input_is_backspace(int *cursorpos,
 								t_buf *buffer, t_read_input *s);
 void							input_is_del(int *cursorpos, t_buf *buffer);
+void							input_is_ctrld(int *cursorpos, t_buf *buffer);
 void							input_is_up(t_read_input *s);
 void							input_is_down(t_read_input *s);
 void							input_is_end(t_read_input *s);
@@ -200,5 +202,5 @@ void							vimcut(int initialcursorpos,
 void							highlight(t_read_input *s, int initialcursorpos,
 								int cursorposbackup);
 int								d_was_pressed_again(t_read_input *s);
-
+void							sig_winch(int i);
 #endif

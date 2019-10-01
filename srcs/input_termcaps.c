@@ -6,49 +6,11 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2018/11/08 11:48:50 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/01 17:05:40 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
-
-void	input_is_left(int *cursorpos, t_read_input *s)
-{
-	int	i;
-
-	i = 0;
-	if (*cursorpos == 0 && (get_cursorpos(*cursorpos) >= 1))
-		return ;
-	if (s->buffer.buf && s->cursorpos <= s->buffer.i && s->cursorpos > 0 && (s->buffer.buf[s->cursorpos - 1] == '\n' || get_cursorpos(*cursorpos) == 0))
-	{
-		i = s->cursorpos - 1;
-		ft_putstr_fd(g_termcaps.cursorup, g_termcaps.fd);
-		while (--i >= 0 && s->buffer.buf[i] != '\n')
-		{
-			ft_putstr_fd(g_termcaps.cursorright, g_termcaps.fd);
-			if (i == 0)
-			{
-				i = g_termcaps.promptlength + 1;
-				while (--i > 0)
-				ft_putstr_fd(g_termcaps.cursorright, g_termcaps.fd);
-			}
-		}
-	}
-	else
-		ft_putstr_fd(g_termcaps.cursorleft, g_termcaps.fd);
-	(*cursorpos)--;
-}
-
-void		input_is_right(int *cursorpos, t_read_input *s)
-{
-	if (*cursorpos >= g_termcaps.writtenchars)
-		return ;
-	(*cursorpos)++;
-	if (get_cursorpos(*cursorpos) == 0 || (s->buffer.buf && s->cursorpos <= s->buffer.i && s->cursorpos > 0 && s->buffer.buf[s->cursorpos] && s->buffer.buf[s->cursorpos - 1] == '\n'))
-		ft_putstr_fd(g_termcaps.cursordown, g_termcaps.fd);
-	else
-		ft_putstr_fd(g_termcaps.cursorright, 0);
-}
 
 void	input_is_del(int *cursorpos, t_buf *buffer)
 {
@@ -75,15 +37,8 @@ void		input_is_backspace(int *cursorpos, t_buf *buffer, t_read_input *s)
 	if (g_termcaps.writtenchars)
 		g_termcaps.writtenchars--;
 }
-
-void		input_is_special_char(t_read_input *s)
+static void	input_is_double_special(t_read_input *s)
 {
-	if (s->c[0] == 127)
-		return (input_is_backspace(&(s->cursorpos), &(s->buffer), s));
-	if (s->c[0] == 3)
-		termcaps_reset_term_and_exit(0);
-	if (s->c[0] == 22)
-		return (go_vim_mode(s));
 	s->c[3] = read(0, &(s->c[1]), 2);
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 68)
 		return (input_is_left(&(s->cursorpos), s));
@@ -102,4 +57,16 @@ void		input_is_special_char(t_read_input *s)
 		return (input_is_home(s));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 49)
 		return (input_is_nextorprevword(s));
+}
+void		input_is_special_char(t_read_input *s)
+{
+	if (s->c[0] == 127)
+		return (input_is_backspace(&(s->cursorpos), &(s->buffer), s));
+	if (s->c[0] == 3)
+		return ;
+	if (s->c[0] == 4)
+		return (input_is_ctrld(&(s->cursorpos), &(s->buffer)));
+	if (s->c[0] == 22)
+		return (go_vim_mode(s));
+	input_is_double_special(s);
 }

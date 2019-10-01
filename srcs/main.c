@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/18 00:11:25 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/01 17:18:24 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 t_command_history	*g_first_cmd_history = NULL;
 t_list				*g_env = NULL;
+t_read_input		*g_s = NULL;
 
 int		newprompt(t_input *input, char *promptstring)
 {
@@ -33,7 +34,7 @@ int		newprompt(t_input *input, char *promptstring)
 	}
 	prompt(promptstring);
 	status = read_input(input, promptstring);
-	//termcaps_reset_term(); // remove for multiline quoted
+	termcaps_reset_term();
 	return (status);
 }
 
@@ -56,7 +57,11 @@ int		main(int argc, char **argv, char **environ)
 	while (42)
 	{
 		newprompt(&input, NULL);
-		status = eval(&input);
+		if (input.str)
+			status = eval(&input);
+		else
+			ft_putchar('\n');
+		ft_set_term();
 	}
 	termcaps_reset_term_and_exit(0);
 	return (status);
