@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2019/10/01 17:05:40 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/07 17:59:45 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void		input_is_backspace(int *cursorpos, t_buf *buffer, t_read_input *s)
 static void	input_is_double_special(t_read_input *s)
 {
 	s->c[3] = read(0, &(s->c[1]), 2);
+
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 68)
 		return (input_is_left(&(s->cursorpos), s));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 67)
@@ -62,8 +63,6 @@ void		input_is_special_char(t_read_input *s)
 {
 	if (s->c[0] == 127)
 		return (input_is_backspace(&(s->cursorpos), &(s->buffer), s));
-	if (s->c[0] == 3)
-		return ;
 	if (s->c[0] == 4)
 		return (input_is_ctrld(&(s->cursorpos), &(s->buffer)));
 	if (s->c[0] == 22)
