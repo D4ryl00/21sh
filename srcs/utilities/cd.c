@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 07:13:07 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/08 15:05:03 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/08 15:34:28 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,11 @@ static int	cd_add_pwd(char **path)
 	else
 		ft_sprintf(&fullpath, "%s/%s", pwd, *path);
 	if (!fullpath)
+	{
+		free(pwd);
 		return (return_perror(ENOMEM, NULL, -1));
+	}
+	free(pwd);
 	free(*path);
 	*path = fullpath;
 	return (0);
@@ -211,7 +215,6 @@ static int	cd_dot_dot_process(char *path, int i)
 	char		*tmp;
 	struct stat	statbuf;
 
-	tmp = NULL;
 	len = path[i + 2] == '/' ? 3 : 2;
 	if ((prev = correct_prev_component(path, i)) != -1)
 	{
@@ -224,6 +227,7 @@ static int	cd_dot_dot_process(char *path, int i)
 		else
 		{
 			ft_strmove(path + prev, path + i + len);
+			free(tmp);
 			return (prev);
 		}
 		free(tmp);
