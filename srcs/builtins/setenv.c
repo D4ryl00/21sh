@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/17 16:47:56 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/29 11:56:25 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/07 18:39:41 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	builtin_setenv(t_list **env, char **av)
 		else
 			free(entry->content);
 		entry->content = value;
-		entry->content_size = ft_strlen(value);
+		entry->content_size = ft_strlen(value) + 1;
 		entry->next = NULL;
 	}
 	else

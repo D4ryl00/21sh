@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 07:13:07 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/07/31 12:33:32 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/08 15:05:03 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,25 +57,40 @@ static void	cd_get_params(t_cd_params *params, char **av)
 	}
 }
 
-static int	cd_test_cdpath(char **fullpath, char *path, t_cd_params *params)
+static char	*constuct_fullpath(char *path, t_cd_params *params)
 {
+	char	*fullpath;
 	size_t	size;
-	int		status;
 
 	size = ft_strlen(path);
-	status = 0;
 	if (path[size - 1] != '/')
-		ft_sprintf(fullpath, "%s/%s", path, params->dir);
+		ft_sprintf(&fullpath, "%s/%s", path, params->dir);
 	else
-		*fullpath = ft_strjoin(path, params->dir);
+		fullpath = ft_strjoin(path, params->dir);
 	if (!*fullpath)
-		exit_perror(ENOMEM, NULL);
+	{
+		ft_perror(ENOMEM, NULL, 0);
+		return (NULL);
+	}
+	return (fullpath);
+}
+
+static int	cd_test_cdpath(char **fullpath, char *path, t_cd_params *params)
+{
+	int		status;
+
+	status = 0;
+	if (!(*fullpath = constuct_fullpath(path, params)))
+		return (-1);
 	if (access(*fullpath, F_OK) != -1)
 	{
 		if (access(*fullpath, X_OK) != -1)
 			status = 1;
 		else
+		{
 			status = -1;
+			ft_perror(EACCES, params->dir, 0);
+		}
 	}
 	if (status != 1)
 	{
@@ -97,11 +112,13 @@ static char	*cd_select_cdpath(t_cd_params *params)
 	if ((cdpath = env_get_value("CDPATH")) && cdpath[0])
 	{
 		if (!(arrpaths = ft_strsplit(cdpath, ':')))
-			exit_perror(ENOMEM, NULL);
+		{
+			ft_perror(ENOMEM, NULL, 0);
+			return (NULL);
+		}
 		i = -1;
 		while (arrpaths[++i])
-			if ((status = cd_test_cdpath(&path, arrpaths[i], params)) == 1
-					|| status == -1)
+			if ((status = cd_test_cdpath(&path, arrpaths[i], params)))
 				break ;
 		ft_strarrdel(arrpaths);
 	}
@@ -109,28 +126,27 @@ static char	*cd_select_cdpath(t_cd_params *params)
 		status = cd_test_cdpath(&path, "./", params);
 	if (!status)
 		ft_perror(ENOENT, params->dir, 0);
-	else if (status == -1)
-		ft_perror(EACCES, params->dir, 0);
 	return (path);
 }
 
-static void	cd_add_pwd(char **path)
+static int	cd_add_pwd(char **path)
 {
 	char	*pwd;
 	size_t	size;
 	char	*fullpath;
 
 	if (!(pwd = getcwd(NULL, 0)))
-		exit_perror(ENOMEM, NULL);
+		return (return_perror(ENOMEM, NULL, -1));
 	size = ft_strlen(pwd);
 	if (pwd[size - 1] == '/')
 		fullpath = ft_strjoin(pwd, *path);
 	else
 		ft_sprintf(&fullpath, "%s/%s", pwd, *path);
 	if (!fullpath)
-		exit_perror(ENOMEM, NULL);
+		return (return_perror(ENOMEM, NULL, -1));
 	free(*path);
 	*path = fullpath;
+	return (0);
 }
 
 static int	cd_remove_slash(char *path, int i)
@@ -200,7 +216,7 @@ static int	cd_dot_dot_process(char *path, int i)
 	if ((prev = correct_prev_component(path, i)) != -1)
 	{
 		if (!(tmp = ft_strndup(path, i - 1)))
-			exit_perror(ENOMEM, NULL);
+			return (return_perror(ENOMEM, NULL, -1));
 		if (stat(tmp, &statbuf) == -1)
 			ft_perror(ENOENT, tmp, 0);
 		else if ((statbuf.st_mode & S_IFMT) != S_IFDIR)
@@ -229,17 +245,17 @@ static int	cd_change_canonical(char *path)
 		else if (is_dot_component(path, i))
 			i = cd_remove_dot_slash(path, i);
 		else if (is_dot_dot_component(path, i))
-			i = cd_dot_dot_process(path, i);
+		{
+			if ((i = cd_dot_dot_process(path, i)) == -1)
+			{
+				free(path);
+				return (-1);
+			}
+		}
 		else
 			i++;
 	}
-	if (!*path)
-	{
-		free(path);
-		return (-1);
-	}
-	else
-		return (0);
+	return (0);
 }
 
 static int	cd_reduce_curpath(char *path, t_cd_params *params)
@@ -250,12 +266,16 @@ static int	cd_reduce_curpath(char *path, t_cd_params *params)
 
 	if (ft_strlen(params->dir) + 1 >= PATH_MAX)
 		return (-1);
-	pwd = getcwd(NULL, 0);
+	if (!(pwd = getcwd(NULL, 0)))
+		return (return_perror(ENOMEM, NULL, -1));
 	len = ft_strlen(pwd);
 	if (pwd[len - 1] != '/')
 	{
 		if (!(tmp = ft_strjoin(pwd, "/")))
-			exit_perror(ENOMEM, NULL);
+		{
+			free(pwd);
+			return (return_perror(ENOMEM, NULL, -1));
+		}
 		free(pwd);
 		pwd = tmp;
 	}
@@ -267,6 +287,88 @@ static int	cd_reduce_curpath(char *path, t_cd_params *params)
 	return (0);
 }
 
+static t_list	*new_env_node(t_list **env)
+{
+	t_list	*entry;
+
+	if (!(entry = (t_list *)malloc(sizeof(t_list))))
+	{
+		ft_perror(ENOMEM, NULL, 0);
+		return (NULL);
+	}
+	entry->content = NULL;
+	entry->content_size = 0;
+	entry->next = NULL;
+	ft_lstaddback(env, entry);
+	return (entry);
+}
+
+void	set_oldpwd(t_list **env)
+{
+	t_list	*entry;
+	char	*pwd;
+	char	*value;
+
+	if (!(pwd = env_get_value("PWD")))
+		pwd = "";
+	if (!(entry = ft_lstselect(*env, "OLDPWD", env_select_key)))
+	{
+		if (!(entry = new_env_node(env)))
+			return ;
+	}
+	else
+		free(entry->content);
+	if (ft_sprintf(&value, "%s=%s", "OLDPWD", pwd) == -1)
+	{
+		free(pwd);
+		ft_perror(ENOMEM, NULL, 0);
+		return ;
+	}
+	entry->content = (void *)value;
+	entry->content_size = ft_strlen(value) + 1;
+}
+
+void	set_pwd(t_list **env, const char *path)
+{
+	t_list	*entry;
+	char	*value;
+
+	if (!(entry = ft_lstselect(*env, "PWD", env_select_key)))
+	{
+		if (!(entry = new_env_node(env)))
+			return ;
+	}
+	else
+		free(entry->content);
+	if (ft_sprintf(&value, "%s=%s", "PWD", path) == -1)
+	{
+		ft_perror(ENOMEM, NULL, 0);
+		return ;
+	}
+	entry->content = (void *)value;
+	entry->content_size = ft_strlen(value) + 1;
+}
+
+static int	cd_hyphen(void)
+{
+	char	*oldpwd;
+	char	*av[3];
+	int		status;
+
+	status = 0;
+	if (!(oldpwd = env_get_value("OLDPWD")) || !oldpwd[0])
+		return (return_perror(EOTHER, "cd: OLDPWD not set", 1));
+	if (!(oldpwd = ft_strdup(oldpwd)))
+		return (return_perror(ENOMEM, NULL, 1));
+	av[0] = "cd";
+	av[1] = oldpwd;
+	av[2] = NULL;
+	if (!(status = utility_cd(av)))
+		ft_printf("%s\n", oldpwd);
+	free(oldpwd);
+	return (status);
+}
+
 int	utility_cd(char **av)
 {
 	char		*curpath;
@@ -276,12 +378,12 @@ int	utility_cd(char **av)
 	curpath = NULL;
 	cd_init_params(&params);
 	cd_get_params(&params, &(av[1]));
-	// step 1
-	if (!params.dir && !ft_lstselect(g_env, "HOME", env_select_key))
-		return (return_print("42sh: cd: HOME not set\n", -1));
-	// step 2
-	if (!params.dir && !(params.dir = env_get_value("HOME")))
-		return (0);
+	if (params.dir && params.dir[0] == '-' && !params.dir[1])
+		return (cd_hyphen());
+	// step 1, 2
+	if (!params.dir && (!(params.dir = env_get_value("HOME"))
+				|| !params.dir[0]))
+		return (return_print("42sh: cd: HOME not set\n", 1));
 	// step 3 and 4
 	if (params.dir[0] != '/' && params.dir[0] != '.')
 	{
@@ -291,15 +393,22 @@ int	utility_cd(char **av)
 	}
 	// step 6
 	else if (!(curpath = ft_strdup(params.dir)))
-		exit_perror(ENOMEM, NULL);
+		return (return_perror(ENOMEM, NULL, 1));
 	// step 7
 	if (!(params.P))
 	{
-		if (curpath[0] != '/')
-			cd_add_pwd(&curpath);
+		if (curpath[0] != '/' && cd_add_pwd(&curpath) == -1)
+		{
+			free(curpath);
+			return (1);
+		}
 		if (cd_change_canonical(curpath) == -1)
-			return (0);
-		pwd = ft_strdup(curpath);
+			return (1);
+		if (!(pwd = ft_strdup(curpath)))
+		{
+			free(curpath);
+			return (return_perror(ENOMEM, NULL, 1));
+		}
 		if (ft_strlen(curpath) + 1 >= PATH_MAX
 				&& cd_reduce_curpath(curpath, &params) == -1)
 		{
@@ -310,10 +419,20 @@ int	utility_cd(char **av)
 	}
 	// step 10
 	if (chdir(curpath) == -1)
+	{
+		if (curpath)
+			free(curpath);
+		free(pwd);
 		return (1);
-	if (params.P)
-		pwd = getcwd(NULL, 0);
+	}
+	if (params.P && !(pwd = getcwd(NULL, 0)))
+		ft_perror(ENOMEM, NULL, 0);
+	set_oldpwd(&g_env);
 	if (pwd)
-		return (0);
+	{
+		set_pwd(&g_env, pwd);
+		free(pwd);
+	}
+	free(curpath);
 	return (0);
 }

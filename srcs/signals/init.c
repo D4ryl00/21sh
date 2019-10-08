@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 17:59:24 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/01 16:46:34 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/08 11:56:26 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,8 @@ int	signals_init(void)
 	status |= sigaction(SIGQUIT, &action, NULL);
 	status |= sigaction(SIGTTIN, &action, NULL);
 	status |= sigaction(SIGTTOU, &action, NULL);
-	status |= sigaction(SIGCHLD, &action, NULL);
 	if (status)
-		return_perror(EOTHER, "sigaction error");
+		return (return_perror(EOTHER, "sigaction error", -1));
 	return (status);
 }
 
@@ -55,6 +54,5 @@ int	signals_restore(void)
 	status |= sigaction(SIGQUIT, &action, NULL);
 	status |= sigaction(SIGTTIN, &action, NULL);
 	status |= sigaction(SIGTTOU, &action, NULL);
-	status |= sigaction(SIGCHLD, &action, NULL);
 	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/01 16:21:08 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/08 11:46:35 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,8 @@ int								newprompt(t_input *input, char *promptstring);
 int								get_new_tokens(t_list **empty_tokens
 		, t_list *start);
 void							exit_perror(enum e_errno num, char *str);
-int								return_perror(enum e_errno num, char *str);
+int								return_perror(enum e_errno num, char *str,
+		int value);
 int								return_print(char *str, int status);
 void							ft_perror(enum e_errno num, char *str
 		, int suffix);

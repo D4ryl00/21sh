@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 13:38:43 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/02 11:06:21 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/08 13:31:06 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		t_redirs_save_fd(t_redirs *save, int fd)
 	if (fstat(fd, &buf) != -1)
 	{
 		if ((save->dup_cpy = dup(fd)) == -1)
-			return_perror(EDUP, NULL);
+			return (return_perror(EDUP, NULL, -1));
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:52:24 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/19 15:22:11 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/07 15:44:04 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	get_command_cmd_name(t_ast_command *command, t_buf *command_cmd_name)
 				command_cmd_name);
 }
 
-int			eval_command(t_ast_command *command)
+int		eval_command(t_ast_command *command)
 {
 	int	status;
 

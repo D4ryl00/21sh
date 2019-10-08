@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:50:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/19 17:00:53 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/08 11:49:43 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ static int	run_eval_pipe(t_pipe_env *pipe_env)
 {
 	if ((pipe_env->input.rd != -1)
 			&& (dup2(pipe_env->input.rd, pipe_env->input.wr) == -1))
-		return (return_perror(EDUP, NULL));
+		return (return_perror(EDUP, NULL, -1));
 	if ((pipe_env->output.rd != -1)
 			&& (dup2(pipe_env->output.wr, pipe_env->output.rd) == -1))
-		return (return_perror(EDUP, NULL));
+		return (return_perror(EDUP, NULL, -1));
 	return (0);
 }
 
@@ -44,10 +44,10 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
 
 	status = 0;
 	if (pipe(pipe_fd) == -1)
-		return (return_perror(EPIPE, NULL));
+		return (return_perror(EPIPE, NULL, -1));
 	set_pipe(&(pipe_env->output), 1, pipe_fd[1]);
 	if ((pipe_env->fd_cpy[1] = dup(1)) == -1)
-		return (return_perror(EDUP, NULL));
+		return (return_perror(EDUP, NULL, -1));
 	if (run_eval_pipe(pipe_env) == -1)
 		return (-1);
 	if (newprocess(g_jobctrl.current_job) == -1)
@@ -58,14 +58,14 @@ static int	eval_pipe(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
 	if (pipe_env->input.rd != -1)
 		close(pipe_env->input.rd);
 	if (pipe_env->fd_cpy[0] != -1 && dup2(pipe_env->fd_cpy[0], 0) == -1)
-		return (return_perror(EDUP, NULL));
+		return (return_perror(EDUP, NULL, -1));
 	pipe_env->fd_cpy[0] = -1;
 	close(pipe_fd[1]);
 	if (dup2(pipe_env->fd_cpy[1], 1) == -1)
-		return (return_perror(EDUP, NULL));
+		return (return_perror(EDUP, NULL, -1));
 	set_pipe(&(pipe_env->output), -1, -1);
 	if ((pipe_env->fd_cpy[0] = dup(0)) == -1)
-		return (return_perror(EDUP, NULL));
+		return (return_perror(EDUP, NULL, -1));
 	set_pipe(&(pipe_env->input), pipe_fd[0], 0);
 	return (status);
 }
@@ -122,11 +122,11 @@ int			eval_pipe_sequence(t_ast_pipe_sequence *ps)
 			if (pipe_env.input.rd != -1)
 				close(pipe_env.input.rd);
 			if (pipe_env.fd_cpy[0] != -1 && dup2(pipe_env.fd_cpy[0], 0) == -1)
-				return (return_perror(EDUP, NULL));
+				return (return_perror(EDUP, NULL, -1));
 			pipe_env.fd_cpy[0] = -1;
 			set_pipe(&(pipe_env.input), -1, -1);
 			if (tcsetpgrp(g_termcaps.fd, g_shell.pgid) == -1)
-				return_perror(EOTHER, "eval_pipe_sequence: tcsetpgrp error");
+				return_perror(EOTHER, "tcsetpgrp error", -1);
 		}
 		ps = ps->pipe_sequence;
 	}

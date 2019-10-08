@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/04 17:12:42 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/19 15:26:28 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/07 15:44:30 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	get_compound_command_cmd_name(t_ast_compound_command *cc,
 		get_subshell_cmd_name(cc->subshell, cc_cmd_name);
 }
 
-int	eval_compound_command(t_ast_compound_command *cc)
+int		eval_compound_command(t_ast_compound_command *cc)
 {
 	int	status;
 

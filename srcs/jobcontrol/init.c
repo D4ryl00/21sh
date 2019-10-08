@@ -6,7 +6,7 @@
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/29 10:27:12 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/05 16:20:58 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/08 13:32:39 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ void	init_s_shell(void)
 	g_shell.pid = getpid();
 	g_shell.pgid = g_shell.pid;
 	if (setpgid(g_shell.pid, g_shell.pgid) == -1)
-		return_perror(EOTHER, "setpgid error");
+		ft_perror(EOTHER, "setpgid error", 0);
 }

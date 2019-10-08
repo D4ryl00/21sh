@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 13:09:15 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/19 21:27:56 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/07 16:04:58 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,8 +183,6 @@ int		waitjob(struct s_job *job)
 	status = 0;
 	while ((pid = waitpid(-1, &status, WUNTRACED)) > 0)
 	{
-		if (pid == -1)
-			return (-1);
 		update_status_process(pid, status);
 		if (job_is_completed(job) || job_is_stopped(job))
 		{

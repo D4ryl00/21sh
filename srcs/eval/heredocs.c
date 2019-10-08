@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/02 10:33:46 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/04 16:39:27 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/08 11:55:15 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ static int	check_fd_pipe(int *fd_pipe, int io_number)
 	if (fd_pipe[0] == io_number)
 	{
 		if ((tmp = dup(fd_pipe[0])) == -1)
-			return_perror(EPIPE, NULL);
+			return (return_perror(EPIPE, NULL, -1));
 		close(fd_pipe[0]);
 		fd_pipe[0] = tmp;
 	}
 	if (fd_pipe[1] == io_number)
 	{
 		if ((tmp = dup(fd_pipe[1])) == -1)
-			return_perror(EPIPE, NULL);
+			return (return_perror(EPIPE, NULL, -1));
 		close(fd_pipe[1]);
 		fd_pipe[1] = tmp;
 	}
@@ -47,13 +47,13 @@ int			here_redirect(t_ast_io_redirect *io_redirect, int io_number
 	if (t_redirs_save_fd(&save, io_number) == -1)
 		return (-1);
 	if (pipe(fd_pipe) == -1)
-		return_perror(EPIPE, NULL);
+		return (return_perror(EPIPE, NULL, -1));
 	if (check_fd_pipe(fd_pipe, io_number) == -1)
 		return (-1);
 	write(fd_pipe[1], io_redirect->io_here->data
 			, io_redirect->io_here->data_len);
 	if (dup2(fd_pipe[0], io_number) == -1)
-		return_perror(EDUP, NULL);
+		return (return_perror(EDUP, NULL, -1));
 	if (!(node = ft_lstnew(&save, sizeof(t_redirs))))
 		exit_perror(ENOMEM, NULL);
 	ft_lstadd(redirs, node);

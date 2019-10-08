@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 14:06:22 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/02 11:10:28 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/08 11:50:22 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ int			filename_redirect_input(t_ast_io_redirect *io_redirect
 	t_redirs_init(&save);
 	if ((fd = open(io_redirect->io_file->filename->word
 		, mode, 0644)) == -1)
-		return (return_perror(EOPEN, NULL));
+		return (return_perror(EOPEN, NULL, -1));
 	if (t_redirs_save_fd(&save, io_number) == -1)
 		return (-1);
 	if (dup2(fd, io_number) == -1)
 	{
 		close(fd);
-		return (return_perror(EDUP, NULL));
+		return (return_perror(EDUP, NULL, -1));
 	}
 	close(fd);
 	if (!(node = ft_lstnew(&save, sizeof(t_redirs))))
@@ -64,13 +64,13 @@ int			filename_redirect_output(t_ast_io_redirect *io_redirect
 	t_redirs_init(&save);
 	if ((fd = open(io_redirect->io_file->filename->word
 		, mode, 0644)) == -1)
-		return (return_perror(EOPEN, NULL));
+		return (return_perror(EOPEN, NULL, -1));
 	if (t_redirs_save_fd(&save, io_number) == -1)
 		return (-1);
 	if (dup2(fd, io_number) == -1)
 	{
 		close(fd);
-		return (return_perror(EDUP, NULL));
+		return (return_perror(EDUP, NULL, -1));
 	}
 	close(fd);
 	if (!(node = ft_lstnew(&save, sizeof(t_redirs))))
@@ -131,7 +131,7 @@ int			fd_redirect(t_ast_io_redirect *io_redirect, int io_number, char op
 			return (-1);
 		if (dup2(ft_atoi(io_redirect->io_file->filename->word)
 		, io_number) == -1)
-			return (return_perror(EDUP, NULL));
+			return (return_perror(EDUP, NULL, -1));
 		if (!(node = ft_lstnew(&save, sizeof(t_redirs))))
 			exit_perror(ENOMEM, NULL);
 		ft_lstadd(redirs, node);

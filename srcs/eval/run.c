@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 17:48:21 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/18 00:28:28 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/07 17:13:08 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int			run(char *path, char **av, char **env)
 		if (signals_restore() == -1)
 			exit(1);
 		execve(path, av, env);
-		exit (1);
+		exit(1);
 	}
 	if (!g_jobctrl.current_job->nowait && !g_jobctrl.current_job->async)
 		status = waitjob(g_jobctrl.current_job);

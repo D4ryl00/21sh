@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:46:20 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/19 15:20:13 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/07 15:45:01 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		eval_pipeline(t_ast_pipeline *pipeline)
 	status = 0;
 	if (pipeline->pipe_sequence)
 		status = eval_pipe_sequence(pipeline->pipe_sequence);
-	if (pipeline->bang == '!') //to modify with status changes
+	if (pipeline->bang == '!')
 		status = ~status;
 	return (status);
 }

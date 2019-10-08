@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:17:08 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/18 00:28:15 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/08 11:56:15 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int				newprocess(struct s_job *job)
 
 	ft_memset(&process, 0, sizeof(process));
 	if ((pid = fork()) == -1)
-		return_perror(EFORK, NULL);
+		return (return_perror(EFORK, NULL, -1));
 	if (!pid)
 	{
 		process.pid = getpid();
@@ -64,6 +64,6 @@ int				newprocess(struct s_job *job)
 	if (!job->async)
 		tcsetpgrp(g_termcaps.fd, job->pgid);
 	if (!(node = ft_lstpushback(&job->processes, &process, sizeof(process))))
-		return_perror(ENOMEM, NULL);
+		return (return_perror(ENOMEM, NULL, -1));
 	return (0);
 }
