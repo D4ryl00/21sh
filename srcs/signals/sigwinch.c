@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/01 13:31:00 by amordret          #+#    #+#             */
-/*   Updated: 2019/10/10 14:44:02 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/10 14:53:53 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void    sig_winch(int a)
 	//action.sa_handler = SIG_IGN;
 	//status = sigaction(SIGWINCH, &action, NULL);
     g_s->c[0] = 0;
-	reprint_after(g_s);
+	//reprint_after(g_s);
     //action.sa_handler = &sig_winch;
 	//status = sigaction(SIGWINCH, &action, NULL);
 }
