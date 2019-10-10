@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2019/10/01 17:12:47 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/10 14:44:36 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,44 @@ static int	set_t_read_input(t_read_input *s, char *promptstring)
 void		reprint_after(t_read_input *s)
 {
 	int	cursorposbackup;
+	int	i;
 
 	cursorposbackup = 1;
+	i = 1 + (s->cursorpos + g_termcaps.promptlength) / get_real_windows_width();
 	cursorposbackup = s->cursorpos;
 	if (s->cursorpos == 1)
 		return ;
-	while (s->cursorpos < g_termcaps.writtenchars)
-		input_is_right(&(s->cursorpos), s);
-	ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
-	ft_putstr_fd(g_termcaps.deletetoend, g_termcaps.fd);
-	while (s->cursorpos > cursorposbackup)
+	while (i)
 	{
-		input_is_left(&(s->cursorpos), s);
-		ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
+		ft_putstr_fd(g_termcaps.returnhome, g_termcaps.fd);
+		ft_putstr_fd(g_termcaps.deleteline, g_termcaps.fd);
+		i--;
+		if (i && get_cursorpos(s->cursorpos))
+			ft_putstr_fd(g_termcaps.cursorup, g_termcaps.fd);
 	}
-	while (s->buffer.buf[(s->cursorpos)])
+	//while (s->cursorpos < g_termcaps.writtenchars)
+	//	input_is_right(&(s->cursorpos), s);
+	// input_is_end(s);
+	// ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);
+	// ft_putstr_fd(g_termcaps.deletetoend, g_termcaps.fd);
+	// s->cursorpos += g_termcaps.promptlength;
+	// while (i)
+	// {
+	// 	input_is_left(&(s->cursorpos), s);
+	// 	i--;
+	// 	ft_putstr_fd(g_termcaps.deleteline, g_termcaps.fd);
+	// 	ft_putstr_fd(g_termcaps.deletetoend, g_termcaps.fd);
+	// }
+
+	prompt(s->promptstring);
+	s->cursorpos = 0;
+	while (s->cursorpos < s->buffer.i)
 	{
 		ft_putchar_fd(s->buffer.buf[(s->cursorpos)], g_termcaps.fd);
 		s->cursorpos++;
-		if (get_cursorpos(s->cursorpos) == 0 && get_cursorpos(cursorposbackup))
-			ft_putstr_fd(g_termcaps.cursordown, g_termcaps.fd);
+		g_termcaps.writtenchars++;
+		//if (get_cursorpos(s->cursorpos) == 0)
+		//	ft_putstr_fd(g_termcaps.cursordown, g_termcaps.fd);
 	}
 	while (s->cursorpos > cursorposbackup)
 		input_is_left(&(s->cursorpos), s);
@@ -68,13 +86,14 @@ static int	read_input_loop(t_read_input *s)
 		if (s->c[0] == '\n')
 			input_is_end(s);
 		term_putchar(s->c[0]);
-		if (get_cursorpos(s->cursorpos) == 0 && s->cursorpos != s->buffer.i)
-			ft_putstr_fd(g_termcaps.cursordown, g_termcaps.fd);
+		//if (get_cursorpos(s->cursorpos) == 0 && s->cursorpos != s->buffer.i)
+		//	ft_putstr_fd(g_termcaps.cursordown, g_termcaps.fd);
 	}
 	else if (s->c[0] == 127 || s->c[0] == 27 || s->c[0] == 4 || s->c[0] == 22 
 	|| s->c[0] == 4)
 		input_is_special_char(s);
-	reprint_after(s);
+	if (s->c[0] != '\n')
+		reprint_after(s);
 	return (0);
 }
 

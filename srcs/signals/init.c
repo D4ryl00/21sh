@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 17:59:24 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/08 11:56:26 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/10 14:32:42 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int	signals_init(void)
 
 	status = 0;
 	ft_memset(&action, 0, sizeof(action));
-	//action.sa_handler = &sig_winch;
-	//status |= sigaction(SIGWINCH, &action, NULL);
+	action.sa_handler = &sig_winch;
+	status |= sigaction(SIGWINCH, &action, NULL);
 	action.sa_handler = SIG_IGN;
 	status |= sigaction(SIGTSTP, &action, NULL);
 	status |= sigaction(SIGINT, &action, NULL);
