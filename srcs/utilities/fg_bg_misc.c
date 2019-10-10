@@ -6,7 +6,7 @@
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 17:02:19 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/09 17:07:33 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/10 10:58:45 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,8 @@ static struct s_job	*find_last_bg_job(t_list *jobs)
 
 struct s_job		*job_find(t_list *jobs, unsigned int job_id)
 {
-	struct s_job	*finded_job;
 	t_list			*job_node;
 
-	finded_job = NULL;
 	job_node = NULL;
 	if (!job_id)
 		return (find_last_bg_job(jobs));

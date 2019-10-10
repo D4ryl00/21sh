@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/19 15:25:39 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/10 15:59:21 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int								eval_list(t_ast_list *list, int async);
 int								eval_and_or(t_ast_and_or *and_or, int async);
 int								eval_pipeline(t_ast_pipeline *pipeline);
 int								eval_pipe_sequence(t_ast_pipe_sequence *ps);
+void							set_pipe_struct(t_pipe *pipe, int rd, int wr);
+int								duplicate_fd(t_pipe_env *pipe_env);
 int								eval_command(t_ast_command *command);
 int								eval_compound_command(
 		t_ast_compound_command *cc);

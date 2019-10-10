@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2019/10/09 17:05:05 by rbarbero         ###   ########.fr        #
+#    Updated: 2019/10/10 16:25:49 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ SRCS_EVAL = program.c pipeline.c pipe_sequence.c command.c simple_command.c \
 			builtin_cmd.c special_builtin_cmd.c utility_cmd.c cmd_select.c \
 			run.c redirections_core.c redirections.c redirections_undo.c \
 			heredocs.c compound_command.c subshell.c complete_commands.c \
-			complete_command.c list.c and_or.c
+			complete_command.c list.c and_or.c pipe_sequence_misc.c
 
 DIR_UTILITES = $(DIR_SRCS)/utilities
 SRCS_UTILITES = cd.c cd_hyphen.c cd_setpwd.c cd_path_to_canonical.c \
@@ -48,7 +48,7 @@ SRCS_BUILTINS = echo.c env.c setenv.c unsetenv.c exit.c
 
 DIR_JOBCONTROL = $(DIR_SRCS)/jobcontrol
 SRCS_JOBCONTROL = init.c newjob.c waitjobs.c stop_job.c job_list_misc.c \
-				  print_job_infos.c
+				  print_job_infos.c process_list_misc.c update_status.c
 
 DIR_SIGNALS = $(DIR_SRCS)/signals
 SRCS_SIGNALS = init.c sigwinch.c
