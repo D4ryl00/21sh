@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2019/10/10 14:44:36 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/11 11:36:12 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void		reprint_after(t_read_input *s)
 	int	cursorposbackup;
 	int	i;
 
-	cursorposbackup = 1;
 	i = 1 + (s->cursorpos + g_termcaps.promptlength) / get_real_windows_width();
 	cursorposbackup = s->cursorpos;
 	if (s->cursorpos == 1)
@@ -77,7 +76,7 @@ static int	read_input_loop(t_read_input *s)
 {
 	s->c[3] = read(0, &(s->c), 1);
 	if (s->c[0] == 3)
-		return 0;
+		return input_is_ctrlc(s);
 	if (s->c[0] != 27 && (ft_isprint(s->c[0]) == 1) && (s->cursorpos +=
 	ft_buf_insert_char(&(s->buffer), s->c[0], s->cursorpos) + 1) == -1)
 		return (-1);
@@ -92,7 +91,7 @@ static int	read_input_loop(t_read_input *s)
 	else if (s->c[0] == 127 || s->c[0] == 27 || s->c[0] == 4 || s->c[0] == 22 
 	|| s->c[0] == 4)
 		input_is_special_char(s);
-	if (s->c[0] != '\n')
+	if (s->c[0] != '\n' && get_cursorpos(s->cursorpos))
 		reprint_after(s);
 	return (0);
 }

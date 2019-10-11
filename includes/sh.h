@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/08 11:46:35 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 11:35:56 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ void							input_is_backspace(int *cursorpos,
 								t_buf *buffer, t_read_input *s);
 void							input_is_del(int *cursorpos, t_buf *buffer);
 void							input_is_ctrld(int *cursorpos, t_buf *buffer);
+int								input_is_ctrlc(t_read_input *s);
 void							input_is_up(t_read_input *s);
 void							input_is_down(t_read_input *s);
 void							input_is_end(t_read_input *s);
