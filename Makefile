@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2019/10/10 16:25:49 by rbarbero         ###   ########.fr        #
+#    Updated: 2019/10/11 11:48:15 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ DIR_BUILTINS = $(DIR_SRCS)/builtins
 SRCS_BUILTINS = echo.c env.c setenv.c unsetenv.c exit.c
 
 DIR_JOBCONTROL = $(DIR_SRCS)/jobcontrol
-SRCS_JOBCONTROL = init.c newjob.c waitjobs.c stop_job.c job_list_misc.c \
+SRCS_JOBCONTROL = init.c newjob.c waitjobs.c job_list_misc.c \
 				  print_job_infos.c process_list_misc.c update_status.c
 
 DIR_SIGNALS = $(DIR_SRCS)/signals

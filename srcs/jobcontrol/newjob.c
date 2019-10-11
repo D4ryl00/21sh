@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:17:08 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/08 11:56:15 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 12:04:59 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,21 @@ struct s_job	*newjob(int async)
 	return ((struct s_job *)node->content);
 }
 
+static void		set_process_values(pid_t pid, struct s_job *job,
+		struct s_process *process)
+{
+	if (!pid)
+	{
+		process->pid = getpid();
+		job->child = 1;
+	}
+	if (pid)
+	{
+		process->pid = pid;
+		job->forked = 1;
+	}
+}
+
 int				newprocess(struct s_job *job)
 {
 	pid_t				pid;
@@ -44,16 +59,7 @@ int				newprocess(struct s_job *job)
 	ft_memset(&process, 0, sizeof(process));
 	if ((pid = fork()) == -1)
 		return (return_perror(EFORK, NULL, -1));
-	if (!pid)
-	{
-		process.pid = getpid();
-		job->child = 1;
-	}
-	if (pid)
-	{
-		process.pid = pid;
-		job->forked = 1;
-	}
+	set_process_values(pid, job, &process);
 	if (!job->processes)
 		job->pgid = process.pid;
 	if (setpgid(process.pid, job->pgid) == -1)
