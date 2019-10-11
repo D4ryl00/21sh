@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:08:19 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/04 13:28:27 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 17:55:21 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,20 @@ static int	ast_and_or_error(t_ast_and_or **and_or, int status)
 static int	ast_and_or_next(t_ast_and_or **and_or, t_list **tokens
 		, t_list *save)
 {
+	int	status;
+
 	(*and_or)->op = ((t_token *)(*tokens)->content)->type;
 	*tokens = (*tokens)->next;
 	ast_linebreak(&((*and_or)->linebreak), tokens);
 	while (!*tokens)
 	{
-		if (!*tokens && get_new_tokens(tokens, save) == -1)
-			return (ast_and_or_error(and_or, -1));
+		if (!*tokens)
+		{
+			if ((status = get_new_tokens(tokens, save)) == -1)
+				return (ast_and_or_error(and_or, -1));
+			else if (!status)
+				return (ast_and_or_error(and_or, 0));
+		}
 		ast_linebreak(&((*and_or)->linebreak), tokens);
 	}
 	if (ast_and_or(&((*and_or)->and_or), tokens) < 1)

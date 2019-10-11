@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/10 16:35:49 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 16:20:13 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int			get_new_tokens(t_list **empty_tokens, t_list *start)
 	input.str = NULL;
 	if (*empty_tokens)
 		ft_lstdel(empty_tokens, token_free);
-	newprompt(&input, "> ");
+	if (newprompt(&input, "> ") == -1)
+		return (0);
 	if (!(*empty_tokens = lexer(&input)))
 	{
 		free(input.save);

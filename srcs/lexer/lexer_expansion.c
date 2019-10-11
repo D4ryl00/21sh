@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:54:19 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/07 11:50:09 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 17:40:03 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,19 @@ int	variable_expansion(t_buf *buffer, t_input *input
 int	bracket_expansion(t_buf *buffer, t_input *input
 		, unsigned char f_params[2])
 {
+	int	status;
+
+	status = 0;
 	while (42)
 	{
 		if (!*(input->str) && (newprompt(input, "> ") == -1))
 			return (-1);
 		else if (*(input->str) == '\'')
-			sq_case(buffer, input, f_params);
+			status = sq_case(buffer, input, f_params);
 		else if (*(input->str) == '"')
-			dq_case(buffer, input, f_params);
+			status = dq_case(buffer, input, f_params);
 		else if (*(input->str) == '\\')
-			bs_case(buffer, input, f_params);
+			status = bs_case(buffer, input, f_params);
 		else
 		{
 			if (ft_buf_add_char(buffer, *(input->str)) == -1)
@@ -57,5 +60,5 @@ int	bracket_expansion(t_buf *buffer, t_input *input
 				break ;
 		}
 	}
-	return (0);
+	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2019/10/11 14:39:12 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/11 17:59:15 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ static int	read_input_loop(t_read_input *s)
 	else if (s->c[0] == 127 || s->c[0] == 27 || s->c[0] == 4 || s->c[0] == 22
 	|| s->c[0] == 4)
 		input_is_special_char(s);
-	if (g_termcaps.promptlength > 5 &&  s->c[0] != '\n' && get_cursorpos(s->cursorpos))
+	if (g_termcaps.promptlength > 5 && s->c[0] != '\n'
+			&& get_cursorpos(s->cursorpos))
 		reprint_after(s);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 14:24:53 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/04 12:40:11 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 17:04:16 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,20 @@
 int	dollar_case(t_buf *buffer, t_input *input
 		, unsigned char f_params[2])
 {
+	int	status;
+
+	status = 0;
 	if (ft_buf_add_char(buffer, *(input->str)) == -1)
 		exit_perror(ENOMEM, NULL);
 	(input->str)++;
 	if (*(input->str) == '{')
-		bracket_expansion(buffer, input, f_params);
+		status = bracket_expansion(buffer, input, f_params);
 	else if (*(input->str) == '(' && input->str[1] == '(')
-		arithmetic_expansion(buffer, input, f_params);
+		status = arithmetic_expansion(buffer, input, f_params);
 	else if (*(input->str) == '(')
-		substitution_case(buffer, input, f_params, ')');
+		status = substitution_case(buffer, input, f_params, ')');
 	else
-		variable_expansion(buffer, input, f_params);
+		status = variable_expansion(buffer, input, f_params);
 	f_params[0] = 1;
 	return (0);
 }

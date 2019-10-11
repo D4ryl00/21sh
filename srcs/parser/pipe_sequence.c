@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:05:34 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/04 13:29:39 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 16:28:56 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,13 @@ static int	ast_pipe_sequence_next(t_ast_pipe_sequence **ps, t_list **tokens
 	ast_linebreak(&((*ps)->linebreak), tokens);
 	while (!*tokens)
 	{
-		if (!*tokens && get_new_tokens(tokens, save) == -1)
-			return (-1);
+		if (!*tokens)
+		{
+			if ((status = get_new_tokens(tokens, save)) == -1)
+				return (-1);
+			else if (!status)
+				return (0);
+		}
 		ast_linebreak(&((*ps)->linebreak), tokens);
 	}
 	if ((status = ast_pipe_sequence(&((*ps)->pipe_sequence), tokens)) < 1)

@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 22:57:48 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/04 12:39:48 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 17:52:04 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,40 +62,51 @@ void		insert_token(t_list **tokens, char *token, enum e_token type)
 	ft_lstaddback(tokens, tmp);
 }
 
+static int	char_cases(t_list **tokens, t_input *input
+		, t_buf *buffer, unsigned char f_params[2])
+{
+	int	status;
+
+	if (f_params[1])
+		status = operator_case(tokens, buffer, input, f_params);
+	else if (*(input->str) == '\'')
+		status = sq_case(buffer, input, f_params);
+	else if (*(input->str) == '"')
+		status = dq_case(buffer, input, f_params);
+	else if (*(input->str) == '\\')
+		status = bs_case(buffer, input, f_params);
+	else if (*(input->str) == '$')
+		status = dollar_case(buffer, input, f_params);
+	else if (*(input->str) == '`')
+		status = substitution_case(buffer, input, f_params, '`');
+	else if (is_operator(buffer, *(input->str), f_params))
+		status = operator_start_case(tokens, buffer, input, f_params);
+	else if (*(input->str) == ' ')
+		status = delimiter_case(tokens, buffer, input, f_params);
+	else if (f_params[0])
+		status = add_char_to_token(buffer, input);
+	else if (*(input->str) == '#')
+		status = comment_input(input);
+	else
+		status = add_char_new_token(buffer, input, f_params);
+	return (status);
+}
+
 /*
 ** Take each character in a buffer.
 ** When a token is completed, duplicate it in a token list
 ** whith its category.
 */
 
-static void	for_each_char(t_list **tokens, t_input *input
+static int	for_each_char(t_list **tokens, t_input *input
 		, t_buf *buffer, unsigned char f_params[2])
 {
 	while (*(input->str))
 	{
-		if (f_params[1])
-			operator_case(tokens, buffer, input, f_params);
-		else if (*(input->str) == '\'')
-			sq_case(buffer, input, f_params);
-		else if (*(input->str) == '"')
-			dq_case(buffer, input, f_params);
-		else if (*(input->str) == '\\')
-			bs_case(buffer, input, f_params);
-		else if (*(input->str) == '$')
-			dollar_case(buffer, input, f_params);
-		else if (*(input->str) == '`')
-			substitution_case(buffer, input, f_params, '`');
-		else if (is_operator(buffer, *(input->str), f_params))
-			operator_start_case(tokens, buffer, input, f_params);
-		else if (*(input->str) == ' ')
-			delimiter_case(tokens, buffer, input, f_params);
-		else if (f_params[0])
-			add_char_to_token(buffer, input);
-		else if (*(input->str) == '#')
-			comment_input(input);
-		else
-			add_char_new_token(buffer, input, f_params);
+		if (char_cases(tokens, input, buffer, f_params) == -1)
+			return (-1);
 	}
+	return (0);
 }
 
 /*
@@ -116,8 +127,8 @@ t_list		*lexer(t_input *input)
 		exit_perror(ENOMEM, NULL);
 	f_params[0] = 0;
 	f_params[1] = 0;
-	for_each_char(&tokens, input, &buffer, f_params);
-	if (f_params[0] || f_params[1])
+	if (!for_each_char(&tokens, input, &buffer, f_params)
+			&& (f_params[0] || f_params[1]))
 	{
 		if (!(word = ft_buf_flush(&buffer)))
 			exit_perror(ENOMEM, NULL);

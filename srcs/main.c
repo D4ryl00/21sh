@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/11 15:38:39 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/11 18:03:14 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int		main(int argc, char **argv, char **environ)
 	status = 0;
 	g_env = ft_strarrtolist(environ);
 	init_s_shell();
-	//ft_set_term();
 	if (signals_init() == -1)
 		termcaps_reset_term_and_exit(1);
 	fill_command_hist();
