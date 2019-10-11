@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/10 16:30:02 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 11:48:06 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ struct s_job			*newjob(int async);
 int						newprocess(struct s_job *job);
 int						waitjob(struct s_job *job);
 void					do_job_notification(void);
-void					stop_job(int signal);
 void					del_job_node(void *content, size_t content_size);
 int						test_job_node(t_list *node, void *data);
 void					print_job_infos(struct s_job *job, const char *action);
