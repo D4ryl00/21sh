@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 10:16:11 by amordret          #+#    #+#             */
-/*   Updated: 2019/10/10 14:51:49 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/11 13:12:18 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	termcaps_strings(void)
 		ft_putstr(ERR_TGETSTR);
 	if ((g_termcaps.deletetoend = tgetstr("ce", NULL)) == NULL)
 		ft_putstr(ERR_TGETSTR);
-	if ((g_termcaps.entervideomode = tgetstr("mr", NULL)) == NULL) // MR
+	if ((g_termcaps.entervideomode = tgetstr("mr", NULL)) == NULL)
 		ft_putstr(ERR_TGETSTR);
-	if ((g_termcaps.leavevideomode = tgetstr("me", NULL)) == NULL) // ME
+	if ((g_termcaps.leavevideomode = tgetstr("me", NULL)) == NULL)
 		ft_putstr(ERR_TGETSTR);
 }
 
@@ -92,5 +92,4 @@ void	ft_set_term(void)
 	if (tcsetattr(g_termcaps.fd, TCSANOW, &(g_termcaps.current_termios)) < 0)
 		return (ft_putstr(ERR_TCSETATTR));
 	termcaps_strings();
-	//ft_putstr_fd(g_termcaps.enterinsertmode, g_termcaps.fd);
 }

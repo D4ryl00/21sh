@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:48:23 by amordret          #+#    #+#             */
-/*   Updated: 2018/11/07 11:03:01 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/11 13:11:49 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	sh_print_prompt(void)
 {
 	char	*pwd;
-	
+
 	pwd = NULL;
 	if (!(((pwd = getenv("PWD")) == NULL)))
 	{

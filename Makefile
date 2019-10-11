@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2019/10/11 11:49:23 by amordret         ###   ########.fr        #
+#    Updated: 2019/10/11 13:09:59 by amordret         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,13 @@ NAME = 21sh
 
 DIR_SRCS = srcs
 
-SRCS_MAIN = main.c 
+SRCS_MAIN = main.c env_tools.c eval.c
 
 DIR_UI = $(DIR_SRCS)/ui
-SRCS_UI = error.c free.c eval.c termcaps.c prompt.c input.c \
-	   input_termcaps.c input_upanddown.c misctools.c history.c \
-	   history2.c env_tools.c history_file.c input_homeend.c input_rightleft.c \
-	   input_ctrl.c
+SRCS_UI = error.c free.c termcaps.c prompt.c input.c \
+	   input_termcaps.c input_upanddown.c misctools.c misctools2.c history.c \
+	   history2.c history_file.c input_homeend.c input_rightleft.c \
+	   input_ctrl.c input_wordmove.c 
 
 DIR_LEXER = $(DIR_SRCS)/lexer
 SRCS_LEXER = lexer.c globals.c lexer_operator.c lexer_quote.c \

@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/08 16:48:25 by amordret          #+#    #+#             */
-/*   Updated: 2018/11/09 11:06:29 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/11 11:52:18 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ static void	visualmode_reprint_all2(t_read_input *s, int initialcursorpos)
 void		visualmode_reprint_all(t_read_input *s, int initialcursorpos,
 int cursorposbackup)
 {
-	//if (s->cursorpos == 1)
-	//	return ;
 	while (s->cursorpos < g_termcaps.writtenchars)
 		input_is_right(&(s->cursorpos), s);
 	ft_putstr_fd(g_termcaps.delete, g_termcaps.fd);

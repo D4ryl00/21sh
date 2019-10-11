@@ -6,13 +6,13 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2019/10/11 11:34:49 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/11 12:04:43 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh.h"
 
-void	input_is_del(int *cursorpos, t_buf *buffer)
+void		input_is_del(int *cursorpos, t_buf *buffer)
 {
 	char c;
 
@@ -37,10 +37,10 @@ void		input_is_backspace(int *cursorpos, t_buf *buffer, t_read_input *s)
 	if (g_termcaps.writtenchars)
 		g_termcaps.writtenchars--;
 }
+
 static void	input_is_double_special(t_read_input *s)
 {
 	s->c[3] = read(0, &(s->c[1]), 2);
-
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 68)
 		return (input_is_left(&(s->cursorpos), s));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 67)
@@ -59,6 +59,7 @@ static void	input_is_double_special(t_read_input *s)
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 49)
 		return (input_is_nextorprevword(s));
 }
+
 void		input_is_special_char(t_read_input *s)
 {
 	if (s->c[0] == 127)
