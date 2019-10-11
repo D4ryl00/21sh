@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2019/10/11 14:06:56 by amordret         ###   ########.fr        #
+#    Updated: 2019/10/11 15:57:15 by amordret         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,10 @@ NAME = 21sh
 
 DIR_SRCS = srcs
 
-SRCS_MAIN = main.c env_tools.c eval.c
+SRCS_MAIN = main.c env_tools.c eval.c error.c
 
 DIR_UI = $(DIR_SRCS)/ui
-SRCS_UI = error.c free.c termcaps.c prompt.c input.c \
+SRCS_UI = free.c termcaps.c prompt.c input.c \
 	   input_termcaps.c input_upanddown.c misctools.c misctools2.c history.c \
 	   history2.c history_file.c input_homeend.c input_rightleft.c \
 	   input_ctrl.c input_wordmove.c 

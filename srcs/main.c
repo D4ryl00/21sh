@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/01 17:18:24 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/11 15:38:39 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int		newprompt(t_input *input, char *promptstring)
 {
 	int	status;
 
+	ft_set_term();
 	if (input)
 	{
 		if (input->save)
@@ -50,7 +51,7 @@ int		main(int argc, char **argv, char **environ)
 	status = 0;
 	g_env = ft_strarrtolist(environ);
 	init_s_shell();
-	ft_set_term();
+	//ft_set_term();
 	if (signals_init() == -1)
 		termcaps_reset_term_and_exit(1);
 	fill_command_hist();
@@ -61,7 +62,6 @@ int		main(int argc, char **argv, char **environ)
 			status = eval(&input);
 		else
 			ft_putchar('\n');
-		ft_set_term();
 	}
 	termcaps_reset_term_and_exit(0);
 	return (status);

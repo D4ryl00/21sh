@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/01 16:17:55 by amordret          #+#    #+#             */
-/*   Updated: 2019/10/11 11:58:48 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/11 15:45:50 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,7 @@ void	input_is_ctrld(int *cursorpos, t_buf *buffer)
 int		input_is_ctrlc(t_read_input *s)
 {
 	input_is_end(s);
-	return (0);
+	if (g_termcaps.promptlength < 5)
+		ft_putchar_fd('\n', g_termcaps.fd);
+	return (-1);
 }

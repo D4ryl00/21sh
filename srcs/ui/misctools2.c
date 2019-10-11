@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 13:10:20 by amordret          #+#    #+#             */
-/*   Updated: 2019/10/11 13:11:28 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/11 15:18:50 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int		get_real_windows_width(void)
 	struct winsize	ws;
 
 	ioctl(g_termcaps.fd, TIOCGWINSZ, &ws);
+	if (ws.ws_col == 0)
+		return (1);
 	return (ws.ws_col);
 }
 

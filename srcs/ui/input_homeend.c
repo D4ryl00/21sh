@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 11:23:11 by amordret          #+#    #+#             */
-/*   Updated: 2019/10/11 12:01:35 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/11 15:17:56 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	input_is_upline(t_read_input *s)
 	struct winsize	ws;
 
 	if ((ioctl(g_termcaps.fd, TIOCGWINSZ, &ws)) == -1)
+		return ;
+	if (ws.ws_col == 0)
 		return ;
 	if (!(s->cursorpos / ws.ws_col))
 		return (input_is_home(s));
