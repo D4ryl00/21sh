@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:45:30 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/01 17:18:42 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/10 16:35:49 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,6 @@ int			get_new_tokens(t_list **empty_tokens, t_list *start)
 	return (0);
 }
 
-/*static void	print_tokens(t_list *tokens)
-{
-	enum e_token	type;
-
-	while (tokens)
-	{
-		type = ((t_token *)tokens->content)->type;
-		ft_printf("%s(%d)", ((t_token *)tokens->content)->content
-				, ((t_token *)tokens->content)->type);
-		if (tokens->next)
-			ft_putstr(" | ");
-		tokens = tokens->next;
-	}
-	ft_putchar('\n');
-}*/
-
 int			eval(t_input *input)
 {
 	t_list			*tokens;
@@ -75,7 +59,6 @@ int			eval(t_input *input)
 	input->str = NULL;
 	if (!tokens)
 		return (-1);
-	//print_tokens(tokens);
 	if (ast_program(&program, tokens) > 0)
 	{
 		termcaps_reset_term();

@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/19 21:28:02 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/10 16:30:02 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,10 @@ void					stop_job(int signal);
 void					del_job_node(void *content, size_t content_size);
 int						test_job_node(t_list *node, void *data);
 void					print_job_infos(struct s_job *job, const char *action);
-int						get_job_status(struct s_job *job);
 void					update_all_status_process(void);
+int						update_status_process(pid_t pid, int status);
 int						job_is_completed(struct s_job *job);
 int						job_is_stopped(struct s_job *job);
+struct s_process		*process_find(int pid, struct s_job **jobp);
 
 #endif
