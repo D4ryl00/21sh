@@ -6,14 +6,18 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2019/10/10 16:25:49 by rbarbero         ###   ########.fr        #
+#    Updated: 2019/10/11 11:49:23 by amordret         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = 21sh
 
 DIR_SRCS = srcs
-SRCS_MAIN = main.c error.c free.c eval.c termcaps.c prompt.c input.c \
+
+SRCS_MAIN = main.c 
+
+DIR_UI = $(DIR_SRCS)/ui
+SRCS_UI = error.c free.c eval.c termcaps.c prompt.c input.c \
 	   input_termcaps.c input_upanddown.c misctools.c history.c \
 	   history2.c env_tools.c history_file.c input_homeend.c input_rightleft.c \
 	   input_ctrl.c
@@ -53,11 +57,12 @@ SRCS_JOBCONTROL = init.c newjob.c waitjobs.c stop_job.c job_list_misc.c \
 DIR_SIGNALS = $(DIR_SRCS)/signals
 SRCS_SIGNALS = init.c sigwinch.c
 
-DIR_VIM = $(DIR_SRCS)/vim
+DIR_VIM = $(DIR_UI)/vim
 SRCS_VIM = vimmode.c visualmode.c vimmisctools.c vimmisctools2.c vimmode2.c \
 			visualmode2.c
 
 SRCS = $(addprefix $(DIR_SRCS)/,$(SRCS_MAIN)) \
+	   $(addprefix $(DIR_UI)/, $(SRCS_UI)) \
 	   $(addprefix $(DIR_LEXER)/, $(SRCS_LEXER)) \
 	   $(addprefix $(DIR_PARSER)/, $(SRCS_PARSER)) \
 	   $(addprefix $(DIR_EVAL)/, $(SRCS_EVAL)) \
