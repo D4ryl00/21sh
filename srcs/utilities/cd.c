@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 07:13:07 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/09 16:20:56 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 13:23:30 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	cd_stage3(char *curpath, t_cd_params *params, char *pwd)
 		free(curpath);
 		return (1);
 	}
-	if (params->P && !(pwd = getcwd(NULL, 0)))
+	if (params->p && !(pwd = getcwd(NULL, 0)))
 		ft_perror(ENOMEM, NULL, 0);
 	set_oldpwd(&g_env);
 	if (pwd)
@@ -101,7 +101,7 @@ static int	cd_stage2(char *curpath, t_cd_params *params)
 	char	*pwd;
 
 	pwd = NULL;
-	if (!(params->P) && cd_stage2_2(&curpath, params, &pwd) == 1)
+	if (!(params->p) && cd_stage2_2(&curpath, params, &pwd) == 1)
 		return (1);
 	return (cd_stage3(curpath, params, pwd));
 }

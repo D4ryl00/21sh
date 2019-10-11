@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:53:52 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/04 16:05:49 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 13:47:04 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 # define IO_NUMBER_SIZE	4
 
-typedef struct						s_ast_and_or t_ast_and_or;
+typedef struct s_ast_and_or			t_ast_and_or;
 
 /*
 ** Structures for the AST
@@ -160,13 +160,13 @@ typedef struct						s_ast_pipeline
 	t_ast_pipe_sequence				*pipe_sequence;
 }									t_ast_pipeline;
 
-typedef struct						s_ast_and_or
+struct								s_ast_and_or
 {
 	enum e_token					op;
 	t_ast_pipeline					*pipeline;
 	t_ast_linebreak					*linebreak;
 	struct s_ast_and_or				*and_or;
-}									t_ast_and_or;
+};
 
 typedef struct						s_ast_list
 {

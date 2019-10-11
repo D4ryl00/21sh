@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/11 11:35:56 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/11 13:23:00 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,8 @@ void							input_is_home(t_read_input *s);
 void							input_is_nextorprevword(t_read_input *s);
 void							input_is_nextword(t_read_input *s);
 void							input_is_prevword(t_read_input *s);
+void							input_is_upline(t_read_input *s);
+void							input_is_downline(t_read_input *s);
 int								open_history_file(char write);
 void							close_history_file(int fd);
 void							fill_command_hist(void);
@@ -204,5 +206,4 @@ void							vimcut(int initialcursorpos,
 void							highlight(t_read_input *s, int initialcursorpos,
 								int cursorposbackup);
 int								d_was_pressed_again(t_read_input *s);
-void							sig_winch(int i);
 #endif

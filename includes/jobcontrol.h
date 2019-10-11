@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   jobcontrol.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 09:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/11 11:48:06 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 13:47:25 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ struct					s_jobctrl
 	unsigned int		start_id;
 };
 
-struct							s_shell
+struct					s_shell
 {
-	pid_t						pid;
-	pid_t						pgid;
+	pid_t				pid;
+	pid_t				pgid;
 };
 
 /*

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 12:13:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/19 10:37:54 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 13:16:53 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char			**ft_strsplit(char const *s, char c);
 char			**ft_strsplitstr(char const *s, char *tokens);
 t_list			*ft_strnarrtolist(char **arr, int len);
 t_list			*ft_strarrtolist(char **arr);
-char 			*ft_strarrtostr(const char **array, const char *delim);
+char			*ft_strarrtostr(const char **array, const char *delim);
 void			ft_strarrdel(char **arr);
 int				ft_absolute(int nbr);
 char			*ft_itoa(int n);

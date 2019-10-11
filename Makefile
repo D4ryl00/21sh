@@ -6,11 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2019/10/11 13:09:59 by amordret         ###   ########.fr        #
-=======
-#    Updated: 2019/10/11 13:09:54 by rbarbero         ###   ########.fr        #
->>>>>>> c5a2ffaf08f72bf206316fc225a20be8997a0e56
+#    Updated: 2019/10/11 13:25:31 by amordret         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +55,7 @@ SRCS_JOBCONTROL = init.c newjob.c waitjobs.c job_list_misc.c \
 				  print_job_infos.c process_list_misc.c update_status.c
 
 DIR_SIGNALS = $(DIR_SRCS)/signals
-SRCS_SIGNALS = init.c sigwinch.c
+SRCS_SIGNALS = init.c
 
 DIR_VIM = $(DIR_UI)/vim
 SRCS_VIM = vimmode.c visualmode.c vimmisctools.c vimmisctools2.c vimmode2.c \
@@ -86,7 +82,7 @@ HEADERS_DIR = includes/
 LHEADERS = $(HEADERS:%.h=$(HEADERS_DIR)%.h)
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -pedantic
 
 all: $(NAME)
 

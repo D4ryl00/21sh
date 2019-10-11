@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/09 07:14:18 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/09 17:04:39 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 13:26:58 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILITES_H
-# define UTILITES_H
+#ifndef UTILITIES_H
+# define UTILITIES_H
 
 /*
 ** STRUCTURES
@@ -19,8 +19,8 @@
 
 typedef struct	s_cd_params
 {
-	unsigned char	L;
-	unsigned char	P;
+	unsigned char	l;
+	unsigned char	p;
 	char			*dir;
 }				t_cd_params;
 
@@ -52,7 +52,6 @@ int				utility_fg(char **av);
 int				utility_bg(char **av);
 int				job_get_arg(char **av);
 struct s_job	*job_find(t_list *jobs, unsigned int job_id);
-
 int				utility_jobs(char **av);
 
 #endif

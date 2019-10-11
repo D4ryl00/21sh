@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_tools.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:18:00 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/18 11:16:18 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 13:15:38 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** Is it a valid name for a function? (see XBD Name POSIX)
 */
 
-int	is_valid_posix_name(char *str)
+int		is_valid_posix_name(char *str)
 {
 	if (!*str || ft_isdigit(*str))
 		return (0);

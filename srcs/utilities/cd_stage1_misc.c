@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_stage1_misc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 16:14:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/09 16:17:34 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/11 13:23:40 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 void	cd_init_params(t_cd_params *params)
 {
-	params->L = 0;
-	params->P = 0;
+	params->l = 0;
+	params->p = 0;
 	params->dir = NULL;
 }
 
@@ -27,13 +27,13 @@ void	cd_get_params(t_cd_params *params, char **av)
 	{
 		if ((*av)[0] == '-' && (*av)[1] == 'L')
 		{
-			params->L = 1;
-			params->P = 0;
+			params->l = 1;
+			params->p = 0;
 		}
 		else if ((*av)[0] == '-' && (*av)[1] == 'P')
 		{
-			params->L = 1;
-			params->P = 0;
+			params->l = 1;
+			params->p = 0;
 		}
 		else
 		{
