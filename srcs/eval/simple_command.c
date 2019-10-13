@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:06:29 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/09/19 16:53:13 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/13 23:25:47 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,17 @@
 #include "parser.h"
 #include "jobcontrol.h"
 
+static void	del_node(void *data, size_t size)
+{
+	(void)size;
+	free(data);
+}
+
 /*
 ** For a simple_command, return the number of arguments of the command.
 */
 
-static int	ast_get_cmd_args_size(t_ast_simple_command *sc)
+/*static int	ast_get_cmd_args_size(t_ast_simple_command *sc)
 {
 	int					size;
 	t_ast_cmd_suffix	*suffix;
@@ -33,7 +39,7 @@ static int	ast_get_cmd_args_size(t_ast_simple_command *sc)
 		suffix = suffix->cmd_suffix;
 	}
 	return (size);
-}
+}*/
 
 /*
 ** For a simple_command, return the command name for execve
@@ -49,13 +55,41 @@ static char	*ast_get_cmd_name(t_ast_simple_command *sc)
 		return (NULL);
 }
 
+static char	**ast_construct_cmd_args(t_ast_simple_command *sc)
+{
+	t_list				*l_av;
+	t_ast_cmd_suffix	*suffix;
+	char				**argv;
+
+	l_av = NULL;
+	if (word_expansion(&l_av, ast_get_cmd_name(sc), QUOTE_REMOVAL) == -1)
+		return (NULL);
+	suffix = sc->cmd_suffix;
+	while (suffix)
+	{
+		if (suffix->word)
+		{
+			if (word_expansion(&l_av, suffix->word, QUOTE_REMOVAL) == -1)
+			{
+				ft_lstdel(&l_av, del_node);
+				return (NULL);
+			}
+		}
+		suffix = suffix->cmd_suffix;
+	}
+	if (!(argv = ft_lsttoarrstr(l_av)))
+		ft_perror(ENOMEM, NULL, 0);
+	ft_lstdel(&l_av, del_node);
+	return (argv);
+}
+
 /*
 ** For a simple_command, return an array of string with arguments
-** of the command for execve. It's begin by the command name
-** and terminate by a NULL pointer.
+** of the command for execve. It begins by the command name
+** and terminates by a NULL pointer.
 */
 
-static char	**ast_construct_cmd_args(t_ast_simple_command *sc)
+/*static char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 {
 	char				**args;
 	int					size;
@@ -66,21 +100,22 @@ static char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 	size = ast_get_cmd_args_size(sc) + 1;
 	if (!(args = (char **)malloc(sizeof(char *) * size + 1)))
 		exit_perror(ENOMEM, NULL);
-	args[0] = ft_strdup(ast_get_cmd_name(sc));
+	if (!(args[0] = ast_get_cmd_name(sc)))
+		exit_perror(ENOMEM, NULL);
 	i = 1;
 	suffix = sc->cmd_suffix;
 	while (suffix)
 	{
 		if (suffix->word)
 		{
-			if (!(args[i++] = ft_strdup(suffix->word)))
+			if (!(args[i++] = word_expansion(suffix->word)))
 				exit_perror(ENOMEM, NULL);
 		}
 		suffix = suffix->cmd_suffix;
 	}
 	args[size] = NULL;
 	return (args);
-}
+}*/
 
 void		get_simple_command_cmd_name(t_ast_simple_command *sc,
 		t_buf *sc_cmd_name)
@@ -96,7 +131,12 @@ void		get_simple_command_cmd_name(t_ast_simple_command *sc,
 	{
 		ft_buf_add_char(sc_cmd_name, ' ');
 		if (suffix->word)
-			ft_buf_add_str(sc_cmd_name, suffix->word);
+		{
+			if (!(str = ft_strdup(suffix->word)))
+				exit_perror(ENOMEM, NULL);
+			ft_buf_add_str(sc_cmd_name, str);
+			free(str);
+		}
 		suffix = suffix->cmd_suffix;
 	}
 }

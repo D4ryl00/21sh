@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/10 15:59:21 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/12 18:40:07 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "sh.h"
 # include "parser.h"
 # include "jobcontrol.h"
+
+# define QUOTE_REMOVAL 0x1
 
 extern char						*g_builtin_cmd[];
 extern char						*g_special_builtin_cmd[];
@@ -101,4 +103,7 @@ void							t_redirs_del(void *content
 		, size_t content_size);
 int								t_redirs_save_fd(t_redirs *save, int fd);
 int								undo_redirs(t_list **redirs);
+int								word_expansion(t_list **out, const char *in,
+		int options);
+int								quote_removal(t_list **out, const char *in);
 #endif

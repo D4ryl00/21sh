@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 14:24:53 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/11 17:04:16 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/12 17:24:24 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	dollar_case(t_buf *buffer, t_input *input
 	else
 		status = variable_expansion(buffer, input, f_params);
 	f_params[0] = 1;
-	return (0);
+	return (status);
 }
 
 /*

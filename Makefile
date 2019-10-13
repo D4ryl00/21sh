@@ -6,7 +6,7 @@
 #    By: amordret <amordret@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/04 17:30:48 by rbarbero          #+#    #+#              #
-#    Updated: 2019/10/11 15:57:15 by amordret         ###   ########.fr        #
+#    Updated: 2019/10/12 18:42:15 by rbarbero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,8 @@ SRCS_EVAL = program.c pipeline.c pipe_sequence.c command.c simple_command.c \
 			builtin_cmd.c special_builtin_cmd.c utility_cmd.c cmd_select.c \
 			run.c redirections_core.c redirections.c redirections_undo.c \
 			heredocs.c compound_command.c subshell.c complete_commands.c \
-			complete_command.c list.c and_or.c pipe_sequence_misc.c
+			complete_command.c list.c and_or.c pipe_sequence_misc.c \
+			word_expansion.c quote_removal.c
 
 DIR_UTILITES = $(DIR_SRCS)/utilities
 SRCS_UTILITES = cd.c cd_hyphen.c cd_setpwd.c cd_path_to_canonical.c \
