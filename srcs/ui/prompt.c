@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:48:23 by amordret          #+#    #+#             */
-/*   Updated: 2019/10/11 15:14:02 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/14 10:14:30 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static void	sh_print_prompt(void)
 	char	*pwd;
 
 	pwd = NULL;
-	if (!(((pwd = getenv("PWD")) == NULL)))
+	g_termcaps.promptlength = 0;
+	if (!(((pwd = env_get_value("PWD")) == NULL)))
 	{
 		term_putstr_fd(PROMPT1, 2);
 		term_putstr_fd(pwd, 2);
