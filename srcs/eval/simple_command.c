@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:06:29 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/13 23:25:47 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/14 09:26:04 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,6 @@ static void	del_node(void *data, size_t size)
 /*
 ** For a simple_command, return the number of arguments of the command.
 */
-
-/*static int	ast_get_cmd_args_size(t_ast_simple_command *sc)
-{
-	int					size;
-	t_ast_cmd_suffix	*suffix;
-
-	size = 0;
-	suffix = sc->cmd_suffix;
-	while (suffix)
-	{
-		if (suffix->word)
-			size++;
-		suffix = suffix->cmd_suffix;
-	}
-	return (size);
-}*/
 
 /*
 ** For a simple_command, return the command name for execve
@@ -88,34 +72,6 @@ static char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 ** of the command for execve. It begins by the command name
 ** and terminates by a NULL pointer.
 */
-
-/*static char	**ast_construct_cmd_args(t_ast_simple_command *sc)
-{
-	char				**args;
-	int					size;
-	int					i;
-	t_ast_cmd_suffix	*suffix;
-
-	args = NULL;
-	size = ast_get_cmd_args_size(sc) + 1;
-	if (!(args = (char **)malloc(sizeof(char *) * size + 1)))
-		exit_perror(ENOMEM, NULL);
-	if (!(args[0] = ast_get_cmd_name(sc)))
-		exit_perror(ENOMEM, NULL);
-	i = 1;
-	suffix = sc->cmd_suffix;
-	while (suffix)
-	{
-		if (suffix->word)
-		{
-			if (!(args[i++] = word_expansion(suffix->word)))
-				exit_perror(ENOMEM, NULL);
-		}
-		suffix = suffix->cmd_suffix;
-	}
-	args[size] = NULL;
-	return (args);
-}*/
 
 void		get_simple_command_cmd_name(t_ast_simple_command *sc,
 		t_buf *sc_cmd_name)
