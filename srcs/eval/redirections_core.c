@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 14:06:22 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/08 11:50:22 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/14 10:36:59 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,19 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
+
+static char	*get_filename(const char *str)
+{
+	char	*filename;
+	t_list	*l_name;
+
+	l_name = NULL;
+	if (word_expansion(&l_name, str, QUOTE_REMOVAL) == -1)
+		return (NULL);
+	filename = ft_strdup(l_name->content);
+	ft_lstdel(&l_name, word_expansion_del_node);
+	return (filename);
+}
 
 /*
 ** Redirection [n]< into a file,
@@ -31,7 +44,7 @@ int			filename_redirect_input(t_ast_io_redirect *io_redirect
 
 	io_number = io_number == -1 ? 0 : io_number;
 	t_redirs_init(&save);
-	if ((fd = open(io_redirect->io_file->filename->word
+	if ((fd = open(get_filename(io_redirect->io_file->filename->word)
 		, mode, 0644)) == -1)
 		return (return_perror(EOPEN, NULL, -1));
 	if (t_redirs_save_fd(&save, io_number) == -1)
@@ -62,7 +75,7 @@ int			filename_redirect_output(t_ast_io_redirect *io_redirect
 
 	io_number = io_number == -1 ? 1 : io_number;
 	t_redirs_init(&save);
-	if ((fd = open(io_redirect->io_file->filename->word
+	if ((fd = open(get_filename(io_redirect->io_file->filename->word)
 		, mode, 0644)) == -1)
 		return (return_perror(EOPEN, NULL, -1));
 	if (t_redirs_save_fd(&save, io_number) == -1)
@@ -91,7 +104,7 @@ static int	fd_redirect_other(t_ast_io_redirect *io_redirect, int io_number
 	t_list		*node;
 
 	t_redirs_init(&save);
-	if (!ft_strcmp(io_redirect->io_file->filename->word, "-"))
+	if (!ft_strcmp(get_filename(io_redirect->io_file->filename->word), "-"))
 	{
 		if (t_redirs_save_fd(&save, io_number) == -1)
 			return (-1);
@@ -125,11 +138,11 @@ int			fd_redirect(t_ast_io_redirect *io_redirect, int io_number, char op
 	if (io_number == -1)
 		io_number = op == '>' ? 1 : 0;
 	t_redirs_init(&save);
-	if (ft_isstrdigit(io_redirect->io_file->filename->word))
+	if (ft_isstrdigit(get_filename(io_redirect->io_file->filename->word)))
 	{
 		if (t_redirs_save_fd(&save, io_number) == -1)
 			return (-1);
-		if (dup2(ft_atoi(io_redirect->io_file->filename->word)
+		if (dup2(ft_atoi(get_filename(io_redirect->io_file->filename->word))
 		, io_number) == -1)
 			return (return_perror(EDUP, NULL, -1));
 		if (!(node = ft_lstnew(&save, sizeof(t_redirs))))

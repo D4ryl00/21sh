@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:06:29 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/14 09:26:04 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/14 10:32:20 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 #include "eval.h"
 #include "parser.h"
 #include "jobcontrol.h"
-
-static void	del_node(void *data, size_t size)
-{
-	(void)size;
-	free(data);
-}
 
 /*
 ** For a simple_command, return the number of arguments of the command.
@@ -55,7 +49,7 @@ static char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 		{
 			if (word_expansion(&l_av, suffix->word, QUOTE_REMOVAL) == -1)
 			{
-				ft_lstdel(&l_av, del_node);
+				ft_lstdel(&l_av, word_expansion_del_node);
 				return (NULL);
 			}
 		}
@@ -63,7 +57,7 @@ static char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 	}
 	if (!(argv = ft_lsttoarrstr(l_av)))
 		ft_perror(ENOMEM, NULL, 0);
-	ft_lstdel(&l_av, del_node);
+	ft_lstdel(&l_av, word_expansion_del_node);
 	return (argv);
 }
 

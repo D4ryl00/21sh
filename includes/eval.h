@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/12 18:40:07 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/14 10:32:05 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,7 @@ int								t_redirs_save_fd(t_redirs *save, int fd);
 int								undo_redirs(t_list **redirs);
 int								word_expansion(t_list **out, const char *in,
 		int options);
+void							word_expansion_del_node(void *content,
+		size_t size);
 int								quote_removal(t_list **out, const char *in);
 #endif

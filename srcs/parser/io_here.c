@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:47:05 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/04 16:46:50 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/14 16:53:42 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,30 @@
 #include "sh.h"
 #include "parser.h"
 
+/*
+** Remove newline and compare with end word.
+*/
+
+static int	is_end_word(char *input, const char *end_word)
+{
+	int		status;
+	char	tmp;
+	size_t	len;
+
+	status = 0;
+	len = ft_strlen(input);
+	tmp = input[len - 1];
+	input[len - 1] = '\0';
+	if (!ft_strcmp(input, end_word))
+		status = 1;
+	input[len - 1] = tmp;
+	return (status);
+}
+
 static int	here_loop(t_ast_io_here *here)
 {
 	int		status;
 	t_input	input;
-	int		len;
 	t_buf	buffer;
 
 	status = 0;
@@ -26,10 +45,9 @@ static int	here_loop(t_ast_io_here *here)
 	if (ft_buf_init(&buffer) == -1)
 		exit_perror(ENOMEM, NULL);
 	while ((status = newprompt(&input, "> ") != -1)
-			&& (((len = ft_strlen(input.str)) == 1) || ft_strncmp(input.str
-				, here->here_end->word, len - 1)))
+			&& !is_end_word(input.str, here->here_end->word))
 	{
-		if (ft_buf_add_nstr(&buffer, input.str, len) == -1)
+		if (ft_buf_add_nstr(&buffer, input.str, ft_strlen(input.str)) == -1)
 			exit_perror(ENOMEM, NULL);
 		free(input.save);
 		input.save = NULL;

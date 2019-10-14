@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 17:57:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/13 03:32:09 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/14 12:01:59 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "sh.h"
 #include "eval.h"
 
-int	word_expansion(t_list **out, const char *in, int options)
+int		word_expansion(t_list **out, const char *in, int options)
 {
 	int	status;
 
@@ -27,4 +27,10 @@ int	word_expansion(t_list **out, const char *in, int options)
 			status = -1;
 	}
 	return (status);
+}
+
+void	word_expansion_del_node(void *content, size_t size)
+{
+	(void)size;
+	free(content);
 }
