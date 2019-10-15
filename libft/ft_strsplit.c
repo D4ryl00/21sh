@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 19:56:55 by rbarbero          #+#    #+#             */
-/*   Updated: 2017/11/16 21:55:44 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/15 16:46:01 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char		**ft_strsplit(char const *s, char c)
 	if (!s)
 		return (NULL);
 	size = count_words(s, c);
-	if (!(ar = (char **)malloc(sizeof(char *) * size + 1)))
+	if (!(ar = (char **)malloc(sizeof(char *) * (size + 1))))
 		return (NULL);
 	ar[size] = 0;
 	if (!add_words(ar, s, c))

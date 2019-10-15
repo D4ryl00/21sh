@@ -6,7 +6,7 @@
 /*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/01 10:34:02 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/09 17:07:24 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/15 17:44:38 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,6 @@ int	utility_fg(char **av)
 	}
 	g_jobctrl.current_job = job;
 	g_jobctrl.current_job->id = 0;
-	if (tcsetattr(0, TCSADRAIN, &g_jobctrl.current_job->tmodes) < 0)
-	{
-		ft_putstr(ERR_TCSETATTR);
-		return (-1);
-	}
 	if (tcsetpgrp(g_termcaps.fd, g_jobctrl.current_job->pgid) == -1)
 		return (return_perror(EOTHER, "fg: tcsetpgrp error", -1));
 	killpg(g_jobctrl.current_job->pgid, SIGCONT);

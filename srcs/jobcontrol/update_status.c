@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:22:18 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/10 16:34:19 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/15 17:17:30 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	set_process_as_stopped(struct s_job *job, struct s_process *process)
 	process->stopped = 1;
 	if (!job->id)
 		job->id = g_jobctrl.start_id++;
-	print_job_infos(job, "stopped");
+	print_job_infos(job, "Stopped");
 	if (tcgetattr(0, &job->tmodes) < 0)
 		ft_dprintf(2, "stop_job: tcsetpgrp error\n");
 }
