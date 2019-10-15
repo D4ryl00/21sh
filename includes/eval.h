@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/14 10:32:05 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/15 14:47:41 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int								run_utility_cmd(char **av);
 int								run(char *path, char **av, char **env);
 int								do_eval_redirs(t_ast_simple_command *sc
 		, t_list **redirs);
+char							*redir_get_filename(const char *str);
 int								filename_redirect_input(t_ast_io_redirect
 		*io_redirect, int io_number, int mode, t_list **redirs);
 int								filename_redirect_output(t_ast_io_redirect
