@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:12:56 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/02 11:12:06 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/15 11:31:57 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,13 @@ int		ast_program(t_ast_program **program, t_list *tokens)
 		if ((status = ast_complete_commands(&((*program)->complete_commands)
 						, &tokens)) > 0)
 			ast_linebreak(&((*program)->post_linebreak), &tokens);
-		if (!(*program)->linebreak || status == -1)
+		if (!(*program)->linebreak || status < 0)
 		{
 			free_ast_program(*program);
 			*program = NULL;
-			ft_perror(ESYNT, tokens ? ((t_token *)tokens->content)->content
-					: "NULL", 1);
+			if (status == -1)
+				ft_perror(ESYNT, tokens ? ((t_token *)tokens->content)->content
+						: "NULL", 1);
 			return (status);
 		}
 		return (1);

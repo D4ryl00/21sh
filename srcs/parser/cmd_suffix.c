@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:52:08 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/11/02 15:22:55 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/15 13:14:16 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,15 @@ static void	ast_cmd_suffix_init(t_ast_cmd_suffix *suffix)
 
 int			ast_cmd_suffix(t_ast_cmd_suffix **suffix, t_list **tokens)
 {
+	int	status;
+
 	if (*tokens)
 	{
 		if (!(*suffix = (t_ast_cmd_suffix *)malloc(sizeof(t_ast_cmd_suffix))))
 			exit_perror(ENOMEM, NULL);
 		ast_cmd_suffix_init(*suffix);
-		if (ast_io_redirect(&((*suffix)->io_redirect), tokens) == -1)
-			return (ast_cmd_suffix_error(suffix, -1));
+		if ((status = ast_io_redirect(&((*suffix)->io_redirect), tokens)) < 0)
+			return (ast_cmd_suffix_error(suffix, status));
 		if (!((*suffix)->io_redirect)
 				&& (((t_token *)(*tokens)->content)->type == TOKEN))
 		{
@@ -81,9 +83,9 @@ int			ast_cmd_suffix(t_ast_cmd_suffix **suffix, t_list **tokens)
 				exit_perror(ENOMEM, NULL);
 			*tokens = (*tokens)->next;
 		}
-		if (((*suffix)->io_redirect || (*suffix)->word)
-				&& (ast_cmd_suffix(&((*suffix)->cmd_suffix), tokens) == -1))
-			return (ast_cmd_suffix_error(suffix, -1));
+		if (((*suffix)->io_redirect || (*suffix)->word) && ((status =
+						ast_cmd_suffix(&((*suffix)->cmd_suffix), tokens)) < 0))
+			return (ast_cmd_suffix_error(suffix, status));
 		if (!(*suffix)->io_redirect && !(*suffix)->word)
 			return (ast_cmd_suffix_error(suffix, 0));
 		return (1);

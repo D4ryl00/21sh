@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:54:20 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/17 18:17:24 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/15 13:30:58 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,28 @@ static int	ast_cmd_prefix_error(t_ast_cmd_prefix **prefix, int status)
 	return (status);
 }
 
+static void	init_struct(t_ast_cmd_prefix **prefix)
+{
+	(*prefix)->io_redirect = NULL;
+	(*prefix)->assignment_word = NULL;
+	(*prefix)->cmd_prefix = NULL;
+}
+
 /*
 ** construct a prefix of a simple_command (see shell grammar)
 */
 
 int			ast_cmd_prefix(t_ast_cmd_prefix **prefix, t_list **tokens)
 {
+	int	status;
+
 	if (*tokens)
 	{
 		if (!(*prefix = (t_ast_cmd_prefix *)malloc(sizeof(t_ast_cmd_prefix))))
 			exit_perror(ENOMEM, NULL);
-		(*prefix)->io_redirect = NULL;
-		(*prefix)->assignment_word = NULL;
-		(*prefix)->cmd_prefix = NULL;
-		if (ast_io_redirect(&((*prefix)->io_redirect), tokens) == -1)
-			return (ast_cmd_prefix_error(prefix, -1));
+		init_struct(prefix);
+		if ((status = ast_io_redirect(&((*prefix)->io_redirect), tokens)) < 0)
+			return (ast_cmd_prefix_error(prefix, status));
 		else if (!((*prefix)->io_redirect) && is_assignment_word(((t_token *)
 						(*tokens)->content) ->content))
 		{
@@ -90,8 +97,8 @@ int			ast_cmd_prefix(t_ast_cmd_prefix **prefix, t_list **tokens)
 				exit_perror(ENOMEM, NULL);
 			*tokens = (*tokens)->next;
 		}
-		if (((*prefix)->io_redirect || (*prefix)->assignment_word)
-				&& (ast_cmd_prefix(&((*prefix)->cmd_prefix), tokens) == -1))
+		if (((*prefix)->io_redirect || (*prefix)->assignment_word) && ((status =
+						ast_cmd_prefix(&((*prefix)->cmd_prefix), tokens)) < 0))
 			return (ast_cmd_prefix_error(prefix, -1));
 		if (!(*prefix)->io_redirect && !(*prefix)->assignment_word)
 			return (ast_cmd_prefix_error(prefix, 0));

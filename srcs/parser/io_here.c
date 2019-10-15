@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:47:05 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/14 16:53:42 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/15 11:21:51 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,21 @@ static int	is_end_word(char *input, const char *end_word)
 	return (status);
 }
 
+/*
+** if newprompt catch ctrl+c or an error, return -2 because -1 is an
+** invalid syntax error.
+*/
+
 static int	here_loop(t_ast_io_here *here)
 {
 	int		status;
 	t_input	input;
 	t_buf	buffer;
 
-	status = 0;
 	input.save = NULL;
 	if (ft_buf_init(&buffer) == -1)
 		exit_perror(ENOMEM, NULL);
-	while ((status = newprompt(&input, "> ") != -1)
+	while (((status = newprompt(&input, "> ")) != -1)
 			&& !is_end_word(input.str, here->here_end->word))
 	{
 		if (ft_buf_add_nstr(&buffer, input.str, ft_strlen(input.str)) == -1)
@@ -52,13 +56,16 @@ static int	here_loop(t_ast_io_here *here)
 		free(input.save);
 		input.save = NULL;
 	}
-	here->data_len = buffer.i;
-	if (!(here->data = ft_buf_flush(&buffer)))
-		exit_perror(ENOMEM, NULL);
+	if (status != -1)
+	{
+		here->data_len = buffer.i;
+		if (!(here->data = ft_buf_flush(&buffer)))
+			exit_perror(ENOMEM, NULL);
+	}
 	if (input.save)
 		free(input.save);
 	ft_buf_destroy(&buffer);
-	return (status);
+	return (status == -1 ? -2 : 0);
 }
 
 static void	io_here_init(t_ast_io_here *here)
@@ -86,13 +93,12 @@ int			ast_io_here(t_ast_io_here **here, t_list **tokens)
 			*tokens = (*tokens)->next;
 			status = ast_here_end(&((*here)->here_end), tokens);
 		}
-		if (status < 1)
+		if ((status < 1) || ((status = here_loop(*here)) == -2))
 		{
 			free_ast_io_here(*here);
 			*here = NULL;
 			return (status);
 		}
-		here_loop(*here);
 		return (1);
 	}
 	return (0);

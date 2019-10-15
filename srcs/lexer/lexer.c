@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 22:57:48 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/11 17:52:04 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/15 10:14:44 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,18 +121,24 @@ t_list		*lexer(t_input *input)
 	unsigned char	f_params[2];
 	t_buf			buffer;
 	char			*word;
+	int				status;
 
 	tokens = NULL;
 	if (ft_buf_init(&buffer) == -1)
 		exit_perror(ENOMEM, NULL);
 	f_params[0] = 0;
 	f_params[1] = 0;
-	if (!for_each_char(&tokens, input, &buffer, f_params)
+	if (!(status = for_each_char(&tokens, input, &buffer, f_params))
 			&& (f_params[0] || f_params[1]))
 	{
 		if (!(word = ft_buf_flush(&buffer)))
 			exit_perror(ENOMEM, NULL);
 		insert_token(&tokens, word, get_op_type(word));
+	}
+	if (status == -1)
+	{
+		ft_lstdel(&tokens, token_free);
+		tokens = NULL;
 	}
 	ft_buf_destroy(&buffer);
 	return (tokens);

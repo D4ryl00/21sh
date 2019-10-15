@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:56:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/09 06:51:05 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/15 13:11:46 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,13 @@ int			ast_simple_command(t_ast_simple_command **sc, t_list **tokens)
 		{
 			if ((status = ast_cmd_word(&((*sc)->cmd_word), tokens)) > 0)
 				status = ast_cmd_suffix(&((*sc)->cmd_suffix), tokens);
-			if (status == -1)
+			if (status < 0)
 				return (ast_simple_command_error(sc, status));
 		}
 		else if (!status && (status = ast_cmd_name(&((*sc)->cmd_name), tokens))
 				> 0)
 		{
-			if ((status = ast_cmd_suffix(&((*sc)->cmd_suffix), tokens)) == -1)
+			if ((status = ast_cmd_suffix(&((*sc)->cmd_suffix), tokens)) < 0)
 				return (ast_simple_command_error(sc, status));
 		}
 		else
