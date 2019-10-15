@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 09:50:04 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/10 15:58:43 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/15 15:44:22 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ static int	process_pipe_sequence(t_ast_pipe_sequence *ps, t_pipe_env *pipe_env)
 		return (-1);
 	g_jobctrl.current_job->nowait = 1;
 	status = eval_command(ps->command);
+	if (g_jobctrl.current_job->child)
+		exit(status);
 	if (restore_fd(pipe_env, pipe_fd) == -1)
 		return (-1);
 	if ((pipe_env->fd_cpy[0] = dup(0)) == -1)
@@ -79,15 +81,17 @@ static int	process_final_pipe_sequence(t_ast_pipe_sequence *ps,
 {
 	int	status;
 
+	if (duplicate_fd(pipe_env) == -1)
+		return (-1);
 	if (multipipes)
 	{
 		if (newprocess(g_jobctrl.current_job) == -1)
 			return (-1);
 		g_jobctrl.current_job->nowait = 0;
 	}
-	if (duplicate_fd(pipe_env) == -1)
-		return (-1);
 	status = eval_command(ps->command);
+	if (g_jobctrl.current_job->child)
+		exit(status);
 	if (pipe_env->input.rd != -1)
 		close(pipe_env->input.rd);
 	if (pipe_env->fd_cpy[0] != -1 && dup2(pipe_env->fd_cpy[0], 0) == -1)
