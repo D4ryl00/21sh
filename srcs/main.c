@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:39:41 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/14 10:37:01 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/16 15:37:02 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 
 t_command_history	*g_first_cmd_history = NULL;
 t_list				*g_env = NULL;
-t_read_input		*g_s = NULL;
 
 int		newprompt(t_input *input, char *promptstring)
 {

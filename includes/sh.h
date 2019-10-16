@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/11 13:23:00 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/16 15:36:57 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ extern char						*g_errors[];
 extern t_command_history		*g_first_cmd_history;
 extern t_list					*g_env;
 extern t_termcaps				g_termcaps;
-extern t_read_input				*g_s;
 
 typedef struct					s_input
 {
@@ -153,7 +152,8 @@ void							termcaps_reset_term_and_exit(int status);
 void							input_is_backspace(int *cursorpos,
 								t_buf *buffer, t_read_input *s);
 void							input_is_del(int *cursorpos, t_buf *buffer);
-void							input_is_ctrld(int *cursorpos, t_buf *buffer);
+int								input_is_ctrld(t_read_input *s,
+								int *cursorpos, t_buf *buffer);
 int								input_is_ctrlc(t_read_input *s);
 void							input_is_up(t_read_input *s);
 void							input_is_down(t_read_input *s);

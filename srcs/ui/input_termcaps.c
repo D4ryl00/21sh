@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/11 16:51:27 by amordret          #+#    #+#             */
-/*   Updated: 2019/10/11 12:04:43 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/16 15:05:39 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ void		input_is_special_char(t_read_input *s)
 {
 	if (s->c[0] == 127)
 		return (input_is_backspace(&(s->cursorpos), &(s->buffer), s));
-	if (s->c[0] == 4)
-		return (input_is_ctrld(&(s->cursorpos), &(s->buffer)));
 	if (s->c[0] == 22)
 		return (go_vim_mode(s));
 	input_is_double_special(s);

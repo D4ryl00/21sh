@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2019/10/14 10:01:11 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/16 15:36:39 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static int	read_input_loop(t_read_input *s)
 	s->c[3] = read(0, &(s->c), 1);
 	if (s->c[0] == 3)
 		return (input_is_ctrlc(s));
+	if (s->c[0] == 4 && input_is_ctrld(s, &(s->cursorpos), &(s->buffer)) == -1)
+		return (-1);
 	if (s->c[0] != 27 && (ft_isprint(s->c[0]) == 1) && (s->cursorpos +=
 	ft_buf_insert_char(&(s->buffer), s->c[0], s->cursorpos) + 1) == -1)
 		return (-1);
@@ -71,8 +73,7 @@ static int	read_input_loop(t_read_input *s)
 			input_is_end(s);
 		term_putchar(s->c[0]);
 	}
-	else if (s->c[0] == 127 || s->c[0] == 27 || s->c[0] == 4 || s->c[0] == 22
-	|| s->c[0] == 4)
+	else if (s->c[0] == 127 || s->c[0] == 27)
 		input_is_special_char(s);
 	if (g_termcaps.promptlength > 5 && s->c[0] != '\n'
 			&& get_cursorpos(s->cursorpos))
@@ -87,11 +88,13 @@ int			read_input(t_input *input, char *promptstring)
 	if ((set_t_read_input(&s, promptstring) == -1) ||
 	(ft_buf_init(&(s.buffer)) == -1))
 		return (-1);
-	g_s = &s;
 	while (s.c[3] && s.c[0] != '\n' && s.c[0] != 3)
 		if (read_input_loop(&s) == -1)
+		{
 			s.c[3] = -1;
-	if (s.c[0] != 3 && s.c[3] != -1)
+			break ;
+		}
+	if (s.c[0] != 3 && s.c[0] != 4 && s.c[3] != -1)
 	{
 		if (ft_buf_add_char(&(s.buffer), '\n') == -1
 				|| ft_buf_add_char(&(s.buffer), '\0') == -1
