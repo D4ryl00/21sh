@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 13:31:31 by amordret          #+#    #+#             */
-/*   Updated: 2019/10/16 15:53:26 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/16 16:20:30 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int			read_input(t_input *input, char *promptstring)
 	(ft_buf_init(&(s.buffer)) == -1))
 		return (-1);
 	while (s.c[3] && s.c[0] != '\n' && s.c[0] != 3)
-		if (read_input_loop(&s) == -1)
+		if (read_input_loop(&s) != 0)
 		{
 			s.c[3] = -1;
 			break ;
@@ -107,5 +107,5 @@ int			read_input(t_input *input, char *promptstring)
 	ft_buf_destroy(&(s.buffer));
 	if (s.tmpline)
 		free(s.tmpline);
-	return (s.c[3]);
+	return ((s.c[0] == 4) ? CTRL_D : s.c[3]);
 }

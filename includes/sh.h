@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 11:34:06 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/16 15:36:57 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/16 16:20:18 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 # define ERR_COM_HIST	"\nError while fetching command history -> Wont work \n"
 
 # define MAX_HISTORY	1000
+# define CTRL_D	-2
 
 typedef struct termios			t_termios;
 
