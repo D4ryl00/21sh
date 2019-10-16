@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 18:30:42 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/13 03:37:46 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/16 23:26:03 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	backslash(t_buf *buf, const char **in)
 		return (-1);
 }
 
-static int	process_quote_removal(t_buf *buf, const char *in)
+static int	do_quote_removal(t_buf *buf, const char *in)
 {
 	int	status;
 
@@ -62,7 +62,7 @@ static int	process_quote_removal(t_buf *buf, const char *in)
 	return (status);
 }
 
-int			quote_removal(t_list **out, const char *in)
+int			quote_removal(t_list *node)
 {
 	t_buf	buf;
 	int		status;
@@ -71,16 +71,19 @@ int			quote_removal(t_list **out, const char *in)
 	status = 0;
 	if (ft_buf_init(&buf) == -1)
 		return (-1);
-	status = process_quote_removal(&buf, in);
-	if (status != -1)
+	if (!(status = do_quote_removal(&buf, (const char *)node->content)))
 	{
-		if (!(tmp = ft_buf_flush(&buf)) || !ft_lstpushback(out, tmp,
-					sizeof(char) * (ft_strlen(tmp) + 1)))
+		if (!(tmp = ft_buf_flush(&buf)))
 		{
 			status = -1;
 			ft_perror(ENOMEM, NULL, 0);
 		}
-		free(tmp);
+		else
+		{
+			free(node->content);
+			node->content = tmp;
+			node->content_size = sizeof(char) * (ft_strlen(tmp) + 1);
+		}
 	}
 	ft_buf_destroy(&buf);
 	return (status);

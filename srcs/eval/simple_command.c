@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:06:29 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/14 10:32:20 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/17 00:00:52 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 	{
 		if (suffix->word)
 		{
-			if (word_expansion(&l_av, suffix->word, QUOTE_REMOVAL) == -1)
+			if (word_expansion(&l_av, suffix->word,
+						TILDE_EXPANSION | QUOTE_REMOVAL) == -1)
 			{
 				ft_lstdel(&l_av, word_expansion_del_node);
 				return (NULL);
