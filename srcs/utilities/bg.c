@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bg.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/01 10:34:02 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/09 17:06:16 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/16 10:58:32 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int					utility_bg(char **av)
 	job = job_find(g_jobctrl.jobs, requested_job);
 	if (!job)
 	{
-		dprintf(2, "bg: %s: no such job\n", av[1] ? av[1] : "current");
+		ft_dprintf(2, "bg: %s: no such job\n", av[1] ? av[1] : "current");
 		return (1);
 	}
 	killpg(job->pgid, SIGCONT);

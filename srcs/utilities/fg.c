@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fg.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbarbero <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/01 10:34:02 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/15 17:44:38 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/16 10:58:39 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	utility_fg(char **av)
 	job = job_find(g_jobctrl.jobs, requested_job);
 	if (!job)
 	{
-		dprintf(2, "fg: %s: no such job\n", av[1] ? av[1] : "current");
+		ft_dprintf(2, "fg: %s: no such job\n", av[1] ? av[1] : "current");
 		return (1);
 	}
 	g_jobctrl.current_job = job;

@@ -6,7 +6,7 @@
 #    By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/09 12:15:31 by rbarbero          #+#    #+#              #
-#    Updated: 2019/09/19 10:39:38 by rbarbero         ###   ########.fr        #
+#    Updated: 2019/10/16 10:48:58 by amordret         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ HEADERS_DIR = includes/
 HEADERS = libft.h get_next_line.h ft_vsdprintf.h
 LHEADERS = $(HEADERS:%.h=$(HEADERS_DIR)%.h)
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
