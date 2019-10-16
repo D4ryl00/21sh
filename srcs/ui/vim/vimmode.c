@@ -6,7 +6,7 @@
 /*   By: amordret <amordret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 16:59:04 by amordret          #+#    #+#             */
-/*   Updated: 2018/11/08 17:07:49 by amordret         ###   ########.fr       */
+/*   Updated: 2019/10/16 15:55:24 by amordret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ static void	vim_special_char(t_read_input *s)
 		return (input_is_left(&(s->cursorpos), s));
 	if ((s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 67) || s->c[0] == 'l')
 		return (input_is_right(&(s->cursorpos), s));
+	if (s->c[0] == 'j')
+		return (input_is_downline(s));
+	if (s->c[0] == 'k')
+		return (input_is_upline(s));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 51)
 		return (input_is_del(&(s->cursorpos), &(s->buffer)));
 	if (s->c[0] == 27 && s->c[1] == 91 && s->c[2] == 70)
