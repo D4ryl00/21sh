@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:47:05 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/15 11:21:51 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/22 12:48:28 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	here_loop(t_ast_io_here *here)
 	input.save = NULL;
 	if (ft_buf_init(&buffer) == -1)
 		exit_perror(ENOMEM, NULL);
-	while (((status = newprompt(&input, "> ")) != -1)
+	while (((status = newprompt(&input, "> ")) >= 0)
 			&& !is_end_word(input.str, here->here_end->word))
 	{
 		if (ft_buf_add_nstr(&buffer, input.str, ft_strlen(input.str)) == -1)

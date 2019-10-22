@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:48:53 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/11 17:50:20 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/22 12:56:23 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	call_newprompt(t_input *input)
 {
 	free(input->save);
 	input->save = NULL;
-	if (newprompt(input, "> ") == -1)
+	if (newprompt(input, "> ") < 0)
 		return (-1);
 	return (0);
 }

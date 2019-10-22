@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 14:03:03 by rbarbero          #+#    #+#             */
-/*   Updated: 2018/10/07 11:55:16 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/22 12:50:22 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	arithmetic_expansion(t_buf *buffer, t_input *input
 	parenthesis = 2;
 	while (42)
 	{
-		if (!*(input->str) && (newprompt(input, "> ") == -1))
+		if (!*(input->str) && (newprompt(input, "> ") < 0))
 			return (-1);
 		else if (*(input->str) == '\'')
 			sq_case(buffer, input, f_params);

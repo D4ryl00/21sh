@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:54:19 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/11 17:40:03 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/22 12:50:44 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	bracket_expansion(t_buf *buffer, t_input *input
 	status = 0;
 	while (42)
 	{
-		if (!*(input->str) && (newprompt(input, "> ") == -1))
+		if (!*(input->str) && (newprompt(input, "> ") < 0))
 			return (-1);
 		else if (*(input->str) == '\'')
 			status = sq_case(buffer, input, f_params);
