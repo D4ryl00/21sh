@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 17:57:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/16 23:22:48 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/23 14:43:20 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ int		word_expansion(t_list **out, const char *in, int options)
 		if (!(node = ft_lstpushback(out, (void *)in,
 					sizeof(char) * (ft_strlen(in) + 1))))
 			return_perror(ENOMEM, NULL, -1);
-		if (options & TILDE_EXPANSION)
+		if (options & TILDE)
 			status |= tilde_expansion(node);
-		if (options & QUOTE_REMOVAL)
+		if (options & PARAMETER)
+			status |= parameter_expansion(node);
+		if (options & QUOTE)
 			status |= quote_removal(node);
 	}
 	return (status);

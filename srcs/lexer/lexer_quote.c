@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:48:53 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/22 12:56:23 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/23 17:37:47 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,28 +53,23 @@ int			sq_case(t_buf *buffer, t_input *input
 int			bs_case(t_buf *buffer, t_input *input
 		, unsigned char f_params[2])
 {
-	(input->str)++;
-	if (!*(input->str) || *(input->str) == '\n')
+	if (!input->str[1] || (input->str[1] == '\n'))
 	{
 		if (call_newprompt(input) == -1)
 			return (-1);
 	}
 	else if (*(input->str))
 	{
-		if (ft_buf_add_char(buffer, *(input->str)) == -1)
+		if (ft_buf_add_nstr(buffer, input->str, 2) == -1)
 			exit_perror(ENOMEM, NULL);
-		(input->str)++;
+		input->str += 2;
 		f_params[0] = 1;
 	}
 	return (0);
 }
 
-static int	dq_case_req(t_buf *buffer, t_input *input
-		, unsigned char f_params[2])
+static int	dq_case_req(t_buf *buffer, t_input *input)
 {
-	int	status;
-
-	status = 0;
 	while (1)
 	{
 		if (!*(input->str) && (call_newprompt(input) == -1))
@@ -82,17 +77,21 @@ static int	dq_case_req(t_buf *buffer, t_input *input
 		if (*(input->str) == '"')
 			break ;
 		else if (*(input->str) == '\\')
-			status = bs_case(buffer, input, f_params);
-		else if (*(input->str) == '$')
-			status = dollar_case(buffer, input, f_params);
-		else
 		{
-			if (ft_buf_add_char(buffer, *(input->str)) == -1)
+			if (!input->str[1] || (input->str[1] == '\n'))
+			{
+				if (call_newprompt(input) == -1)
+					return (-1);
+				continue ;
+			}
+			if (ft_buf_add_nstr(buffer, input->str, 2) == -1)
 				exit_perror(ENOMEM, NULL);
-			(input->str)++;
+			input->str += 2;
 		}
+		else if (ft_buf_add_char(buffer, *(input->str++)) == -1)
+			exit_perror(ENOMEM, NULL);
 	}
-	return (status);
+	return (0);
 }
 
 int			dq_case(t_buf *buffer, t_input *input
@@ -101,7 +100,7 @@ int			dq_case(t_buf *buffer, t_input *input
 	if (ft_buf_add_char(buffer, *(input->str)) == -1)
 		exit_perror(ENOMEM, NULL);
 	(input->str)++;
-	if (dq_case_req(buffer, input, f_params) == -1)
+	if (dq_case_req(buffer, input) == -1)
 		return (-1);
 	if (ft_buf_add_char(buffer, *(input->str)) == -1)
 		exit_perror(ENOMEM, NULL);

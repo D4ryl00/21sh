@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 08:48:09 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/16 23:22:26 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/23 14:42:31 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@
 # include "parser.h"
 # include "jobcontrol.h"
 
-# define TILDE_EXPANSION 0x1
-# define QUOTE_REMOVAL 0x2
+# define TILDE 0b1
+# define PARAMETER 0b10
+# define QUOTE 0b100
 
 extern char						*g_builtin_cmd[];
 extern char						*g_special_builtin_cmd[];
@@ -111,4 +112,5 @@ void							word_expansion_del_node(void *content,
 		size_t size);
 int								quote_removal(t_list *node);
 int								tilde_expansion(t_list *node);
+int								parameter_expansion(t_list *node);
 #endif

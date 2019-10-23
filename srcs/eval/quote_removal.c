@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 18:30:42 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/16 23:26:03 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/23 17:40:54 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,12 @@ static int	quote(t_buf *buf, const char **in, const char delim)
 {
 	while (*(++(*in)))
 	{
-		if (**in == delim)
+		if (**in == '\\' && delim == '"')
+		{
+			if (ft_buf_add_char(buf, *(++(*in))) == -1)
+				return_perror(ENOMEM, NULL, -1);
+		}
+		else if (**in == delim)
 		{
 			(*in)++;
 			return (0);
@@ -33,7 +38,7 @@ static int	backslash(t_buf *buf, const char **in)
 	(*in)++;
 	if (**in)
 	{
-		if (ft_buf_add_char(buf, **in) == -1)
+		if (ft_buf_add_char(buf, *((*in)++)) == -1)
 			return_perror(ENOMEM, NULL, -1);
 		return (0);
 	}
@@ -68,6 +73,8 @@ int			quote_removal(t_list *node)
 	int		status;
 	char	*tmp;
 
+	if (!node)
+		return (0);
 	status = 0;
 	if (ft_buf_init(&buf) == -1)
 		return (-1);

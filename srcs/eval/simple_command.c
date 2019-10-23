@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 11:06:29 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/17 00:00:52 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/23 17:22:29 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 	char				**argv;
 
 	l_av = NULL;
-	if (word_expansion(&l_av, ast_get_cmd_name(sc), QUOTE_REMOVAL) == -1)
+	if (word_expansion(&l_av, ast_get_cmd_name(sc), QUOTE) == -1)
 		return (NULL);
 	suffix = sc->cmd_suffix;
 	while (suffix)
@@ -48,7 +48,7 @@ static char	**ast_construct_cmd_args(t_ast_simple_command *sc)
 		if (suffix->word)
 		{
 			if (word_expansion(&l_av, suffix->word,
-						TILDE_EXPANSION | QUOTE_REMOVAL) == -1)
+						TILDE | PARAMETER | QUOTE) == -1)
 			{
 				ft_lstdel(&l_av, word_expansion_del_node);
 				return (NULL);
@@ -107,7 +107,8 @@ int			eval_simple_command(t_ast_simple_command *sc)
 	redirs = NULL;
 	if (!(env = ft_lsttoarrstr(g_env)))
 		exit_perror(ENOMEM, NULL);
-	av = ast_construct_cmd_args(sc);
+	if (!(av = ast_construct_cmd_args(sc)))
+		return (-1);
 	if (do_eval_redirs(sc, &redirs) == -1)
 		return (-1);
 	status = cmd_select_type(av, env);

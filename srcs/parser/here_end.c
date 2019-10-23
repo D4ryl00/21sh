@@ -6,7 +6,7 @@
 /*   By: rbarbero <rbarbero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 07:45:33 by rbarbero          #+#    #+#             */
-/*   Updated: 2019/10/14 15:57:57 by rbarbero         ###   ########.fr       */
+/*   Updated: 2019/10/23 14:42:52 by rbarbero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*get_end_word(const char *str)
 	l_name = NULL;
 	if (!str)
 		return (NULL);
-	if (word_expansion(&l_name, str, QUOTE_REMOVAL) == -1)
+	if (word_expansion(&l_name, str, QUOTE) == -1)
 		return (NULL);
 	word = ft_strdup(l_name->content);
 	ft_lstdel(&l_name, word_expansion_del_node);
